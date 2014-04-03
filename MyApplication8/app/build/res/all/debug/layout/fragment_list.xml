@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/fragment_container"
+    tools:context="com.myapplication8.app.ListActivity">
+
+    <TextView
+        android:id="@+id/section_label1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="123" />
+
+</FrameLayout>
+<!-- From: file:/C:/Users/xxx/AndroidStudioProjects/MyApplication8/app/src/main/res/layout/fragment_list.xml -->
