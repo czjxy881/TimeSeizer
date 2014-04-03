@@ -73,7 +73,7 @@ public class Today {
 	private int WorkTime;//
 	private int RestTime;//
 	private int LongRestTime;//
-	private int LastingTimes;
+	private int LastingTimes;//finish-->update
 	private String StartTime;
 	private String Summary;
 	private int ActualNum;
@@ -94,9 +94,11 @@ public class Today {
 	public void setSummary(String Summary){
 		this.Summary=Summary;
 	}
-	public void saveDay(FindDb db){
+	public void saveDay(InnerforUI forUI){
 		DailyList list=new DailyList();
-		list.set(new Date().getDate()+"", Summary, ActualNum, RestTime);
-		db.updateDailyList(list);
+		Date date=forUI.date;
+		list.set(date.getYear()+"-"+date.getMonth()+"-"+date.getDate(), 
+				Summary, ActualNum, RestTime,WorkTime,LongRestTime);
+		forUI.db.updateDailyList(list);
 	}
 }

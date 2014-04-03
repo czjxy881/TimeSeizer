@@ -16,8 +16,8 @@ public class TaskView {
 	 */
 	public TaskView(Context context) {
 		db=new FindDb(context);
-		RunnerID=db.queryPlanList();
-		CurrentID=db.queryIDList();
+		RunnerID=db.queryRunnerID();
+		CurrentID=db.queryID();
 	}
 	
 	/**根据时间获取Task表
@@ -57,8 +57,10 @@ public class TaskView {
 	public void addTask(Task a){
 		String[] strings=a.get().split(":");
 		db.updateIDList(strings[0]);
+		db.updatePlanList(strings[1], RunnerID);
 		//RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority
 		CurrentID++;
+		RunnerID++;
 	}
 	
 	/**添加周期任务到数据库
@@ -67,7 +69,10 @@ public class TaskView {
 	 */
 	public void addPeriodTask(PeroidTask a){
 		String[] strings=a.get().split(":");
+		db.updateIDList(strings[0]);
+		db.updatePlanList(strings[1], RunnerID);
 		db.updatePeroidList(strings[2]);
+		RunnerID++;
 	}
 	
 	/**获取周期任务的数据库
