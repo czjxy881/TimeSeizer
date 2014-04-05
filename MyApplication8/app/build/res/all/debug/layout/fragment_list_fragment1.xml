@@ -5,14 +5,38 @@
     android:orientation="vertical"
     tools:context="com.myapplication8.app.ListActivity$PlaceholderFragment">
 
-    <TextView
+    <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="      任 务 列 表      "
+            android:textSize="33dp"/>
+
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="临时添加"
+            android:id="@+id/btnadd"
+            android:layout_gravity="center" />
+        </LinearLayout>
+
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false">
+
+    </ListView>
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="intddent"
-        android:id="@+id/btnadd"/>
+        android:id="@+id/btnfreeworker"
+        android:text="列表添加"/>
 
 
     </LinearLayout><!-- From: file:/C:/Users/xxx/AndroidStudioProjects/MyApplication8/app/src/main/res/layout/fragment_list_fragment1.xml -->
