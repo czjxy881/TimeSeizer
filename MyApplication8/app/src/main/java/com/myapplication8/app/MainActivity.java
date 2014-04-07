@@ -94,8 +94,8 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position==0)return new LeftFragment();
-            if(position==2)return new RightFragment();
+            if(position==2)return new LeftFragment();
+            if(position==0)return new RightFragment();
             if (position==1)return new CenterFragment();
             return PlaceholderFragment.newInstance(position + 1);
 
@@ -107,19 +107,7 @@ public class MainActivity extends ActionBarActivity {
             return 3;
         }
 
-        @Override
-        public CharSequence getPageTitle(int position) {
-            Locale l = Locale.getDefault();
-            switch (position) {
-                case 0:
-                    return getString(R.string.title_section1).toUpperCase(l);
-                case 1:
-                    return getString(R.string.title_section2).toUpperCase(l);
-                case 2:
-                    return getString(R.string.title_section3).toUpperCase(l);
-            }
-            return null;
-        }
+
     }
 
     /**

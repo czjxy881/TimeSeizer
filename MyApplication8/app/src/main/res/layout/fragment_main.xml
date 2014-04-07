@@ -54,11 +54,13 @@
            android:text="当前任务"
            android:textSize="30dp"/>
        <TextView
+           android:id="@+id/RemindTime"
            android:layout_width="fill_parent"
            android:layout_height="wrap_content"
-           android:text="1233445566"
+           android:text=""
            android:gravity="center"
-           android:textSize="30dp"/>
+           android:textSize="30dp"
+           android:autoText="false" />
        </LinearLayout>
 
 

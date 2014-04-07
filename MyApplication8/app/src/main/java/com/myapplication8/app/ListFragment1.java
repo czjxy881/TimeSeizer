@@ -18,28 +18,23 @@ import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.myapplication8.app.Back.*;
 
+import java.util.Vector;
 
 public class ListFragment1 extends ListFragment {
     private Button btnadd;
     private Button btnfreeworker;
+    Vector<String> presidents = new Vector<String>();
 
-    public ListFragment1(){}
-    String[] presidents = {
-            "Dwight D. Eisenhower",
-            "John F. Kennedy",
-            "Lyndon B. Johnson",
-            "Richard Nixon",
-            "Gerald Ford",
-            "Jimmy Carter",
-            "Ronald Reagan",
-            "George H. W. Bush",
-            "Bill Clinton",
-            "George W. Bush",
-            "Barack Obama"
-    };
+    public ListFragment1() {
+        presidents.add("123");
+        presidents.add("2312");
+      //  Vector<TodayTask> TodayLi = InnerforUI.getInstance(getActivity()).showTodayList();
+        //for(TodayTask s:TodayLi){
+       // //    presidents.add(s.getName());
 
-
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list_fragment1, container, false);
@@ -101,7 +96,7 @@ public class ListFragment1 extends ListFragment {
                                 int position, long id)
     {
         Toast.makeText(getActivity(),
-                "selected " + presidents[position],
+                "selected " + presidents.get(position),
                 Toast.LENGTH_SHORT).show();
     }
 
