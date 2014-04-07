@@ -49,7 +49,7 @@ public class TabFragment1 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, presidents));
+                android.R.layout.simple_list_item_multiple_choice, presidents));
     }
 
     public void onListItemClick(ListView parent, View v,

@@ -43,12 +43,18 @@ public class ListFragment2 extends ListFragment {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         builder.setTitle("添加任务");
-                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker, null);
+                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker2, null);
                         builder.setView(freework);
                         builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //添加
+                            }
+                        });
+                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //取消
                             }
                         });
                         builder.create().show();

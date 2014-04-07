@@ -22,9 +22,6 @@
         <activity android:name=".TabActivity">
 
         </activity>
-        <activity android:name=".FreeworkerActivity">
-
-        </activity>
     </application>
 
 </manifest>

@@ -4231,16 +4231,16 @@ useLogo|showHome|showTitle
                     msgid="2031811694353399454" >"Επιλέξτε κάποια εφαρμογή"
                 </string>
                 <string
+                    name="abc_searchview_description_clear"
+                    msgid="3691816814315814921" >"Διαγραφή ερωτήματος"
+                </string>
+                <string
                     name="abc_searchview_description_voice"
                     msgid="893419373245838918" >"Φωνητική αναζήτηση"
                 </string>
                 <string
                     name="abc_action_menu_overflow_description"
                     msgid="3588849162933574182" >"Περισσότερες επιλογές"
-                </string>
-                <string
-                    name="abc_searchview_description_clear"
-                    msgid="3691816814315814921" >"Διαγραφή ερωτήματος"
                 </string>
             </file>
             <file
@@ -5519,16 +5519,16 @@ true
                     msgid="4076576682505996667" >"Atlikta"
                 </string>
                 <string
+                    name="abc_action_bar_home_description"
+                    msgid="4600421777120114993" >"Eiti į pagrindinį puslapį"
+                </string>
+                <string
                     name="abc_searchview_description_search"
                     msgid="8264924765203268293" >"Paieška"
                 </string>
                 <string
                     name="abc_shareactionprovider_share_with_application"
                     msgid="7165123711973476752" >"Bendrinti naudojant „%s“"
-                </string>
-                <string
-                    name="abc_action_bar_home_description"
-                    msgid="4600421777120114993" >"Eiti į pagrindinį puslapį"
                 </string>
             </file>
             <file
@@ -7631,6 +7631,11 @@ false
             <file
                 name="activity_tab"
                 path="C:\Users\xxx\AndroidStudioProjects\MyApplication8\app\src\main\res\layout\activity_tab.xml"
+                qualifiers=""
+                type="layout" />
+            <file
+                name="freetimeworker2"
+                path="C:\Users\xxx\AndroidStudioProjects\MyApplication8\app\src\main\res\layout\freetimeworker2.xml"
                 qualifiers=""
                 type="layout" />
         </source>
