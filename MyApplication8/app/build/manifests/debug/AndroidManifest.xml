@@ -15,9 +15,6 @@
         <activity android:name="com.myapplication8.app.TabActivity">
 
         </activity>
-        <activity android:name="com.myapplication8.app.FreeworkerActivity">
-
-        </activity>
     </application>
 
 </manifest>

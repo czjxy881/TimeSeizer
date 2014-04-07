@@ -73,6 +73,12 @@ public class ListFragment1 extends ListFragment {
                                 //添加
                             }
                         });
+                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //取消
+                            }
+                        });
                         builder.create().show();
                     }
 
@@ -95,7 +101,7 @@ public class ListFragment1 extends ListFragment {
                                 int position, long id)
     {
         Toast.makeText(getActivity(),
-                "You have selected " + presidents[position],
+                "selected " + presidents[position],
                 Toast.LENGTH_SHORT).show();
     }
 

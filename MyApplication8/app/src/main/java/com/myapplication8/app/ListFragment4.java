@@ -52,12 +52,18 @@ public class ListFragment4 extends ListFragment {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         builder.setTitle("添加任务");
-                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker, null);
+                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker2, null);
                         builder.setView(freework);
                         builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 //添加
+                            }
+                        });
+                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //取消
                             }
                         });
                         builder.create().show();
@@ -71,7 +77,7 @@ public class ListFragment4 extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, presidents));
+                android.R.layout.simple_list_item_multiple_choice, presidents));
     }
 
     public void onListItemClick(ListView parent, View v,
