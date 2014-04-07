@@ -8,17 +8,19 @@ public class PlanList{
 	int ExpectNum;
 	String ExpectTimeString;
 	int priority;
+	int State;
 	
-	public void set(int RunnerID,int ID,String BeginTimeString,int ExpectNum,String ExpectTimeString,int priority){
+	public void set(int RunnerID,int ID,String BeginTimeString,int ExpectNum,String ExpectTimeString,int priority,int State){
 		this.RunnerID=RunnerID;
 		this.ID=ID;
 		this.BeginTimeString=BeginTimeString;
 		this.ExpectNum=ExpectNum;
 		this.ExpectTimeString=ExpectTimeString;
 		this.priority=priority;
+		this.State=State;
 	}
 	
 	public String get(){
-		return RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority;
+		return RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority+","+State;
 	}
 }

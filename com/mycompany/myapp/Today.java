@@ -4,11 +4,24 @@ import java.util.Date;
 
 import android.content.Context;
 
-public class Today {
+public class Today {//Set in InnerForUI
 	private int WeekDay;//
+	private int WorkTime;//
+	private int RestTime;//
+	private int LongRestTime;//
+	private int LastingTimes;//finish-->update
+	private String StartTime;
+	private String Summary;
+	private int ActualNum;
 	
-	public Today(Context context){
+	
+	public Today(Context context,FindDb db){
 		ActualNum=0;
+		DailyList dailyList=new DailyList();
+		dailyList=db.FindDailyListNew(DailyList.class);
+		setWorkTime(dailyList.getWorkTIme());
+		setRestTime(dailyList.getRestTime());
+		setLongRestTime(dailyList.getLongRestTime());
 	}
 	
 	public int getWeekDay() {
@@ -64,35 +77,19 @@ public class Today {
 	}
 
 	public void setActualNum(int actualNum) {
-		ActualNum = actualNum;
+		ActualNum += actualNum;
 	}
 
 	public String getSummary() {
 		return Summary;
 	}
-	private int WorkTime;//
-	private int RestTime;//
-	private int LongRestTime;//
-	private int LastingTimes;//finish-->update
-	private String StartTime;
-	private String Summary;
-	private int ActualNum;
 
-	
-//	public void set(int WorkTime,int RestTime,int LongRestTime,String StartTime){
-//		Date date=new Date();
-//		WeekDay=date.getDay();
-//		this.WorkTime=WorkTime;
-//		this.RestTime=RestTime;
-//		this.LongRestTime=LongRestTime;
-//		this.StartTime=StartTime;
-//	}
-//	public String get() {
-//		return 	WeekDay+","+WorkTime+","+RestTime+","+
-//				LongRestTime+","+LastingTimes+","+StartTime+","+Summary;
-//	}
 	public void setSummary(String Summary){
 		this.Summary=Summary;
+	}
+	
+	public String get(){
+		return WeekDay+","+WorkTime+","+RestTime+","+LongRestTime+","+LastingTimes+","+StartTime+","+Summary+","+ActualNum;
 	}
 	public void saveDay(InnerforUI forUI){
 		DailyList list=new DailyList();
@@ -101,4 +98,5 @@ public class Today {
 				Summary, ActualNum, RestTime,WorkTime,LongRestTime);
 		forUI.db.updateDailyList(list);
 	}
+	
 }

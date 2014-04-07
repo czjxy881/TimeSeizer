@@ -3,12 +3,12 @@ package com.mycompany.myapp;
 
 public class PeroidTask extends Task{
 	
-	long Kind;
+	int Kind;
 	public PeroidTask(){
 		Kind=1;
 	}
 	
-	public long getKind(){
+	public int getKind(){
 		return Kind;
 	}
 	public void setKind(int Kind){
@@ -16,11 +16,11 @@ public class PeroidTask extends Task{
 	}	
 	
 	
-	public boolean judgeRun(int WeekDay){                 //Random??
+	public boolean judgeRun(String day){                 //Necessary??
 		return true;
 	}
 
-	public void set(String Name,int ID,int ExpectNum,String ExpectDate,long Kind){
+	public void set(String Name,int ID,int ExpectNum,String ExpectDate,int Kind){
 		this.Name=Name;
 		this.ID=ID;
 		this.ExpectNum=ExpectNum;
