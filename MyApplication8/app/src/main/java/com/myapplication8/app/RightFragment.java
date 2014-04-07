@@ -13,7 +13,13 @@ import android.widget.Toast;
  */
 public class RightFragment extends android.support.v4.app.Fragment {
     private RatingBar rbmysocre;
-    public RightFragment(){}
+    private static RightFragment rigthFragment=null;
+    public static RightFragment getInstance(){
+        if (rigthFragment==null){
+            rigthFragment=new RightFragment();
+            return rigthFragment;
+        }else return rigthFragment;
+    }
     @Override
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

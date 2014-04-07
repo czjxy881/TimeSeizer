@@ -22,7 +22,13 @@ import android.widget.Toast;
 public class ListFragment4 extends ListFragment {
     private Button btnadd4;
 
-    public ListFragment4(){}
+    private static ListFragment4 listFragment4 = null;
+    public static ListFragment4 getInstance(){
+        if (listFragment4==null){
+            listFragment4=new ListFragment4();
+            return listFragment4;
+        }else return listFragment4;
+    }
     String[] presidents = {
             "Dwight D. Eisenhower",
             "John F. Kennedy",

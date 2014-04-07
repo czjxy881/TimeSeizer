@@ -90,10 +90,10 @@ public class ListActivity extends ActionBarActivity implements ActionBar.OnNavig
         // page view.
         Fragment s;
         switch (position){
-            case 0:s=new ListFragment1();break;
-            case 1:s=new ListFragment2();break;
-            case 2:s=new ListFragment3();break;
-            case 3:s=new ListFragment4();break;
+            case 0:s=ListFragment1.getInstance();break;
+            case 1:s=ListFragment2.getInstance();break;
+            case 2:s=ListFragment3.getInstance();break;
+            case 3:s=ListFragment4.getInstance();break;
             default:s=PlaceholderFragment.newInstance(position+1);
         }
         getSupportFragmentManager().beginTransaction()

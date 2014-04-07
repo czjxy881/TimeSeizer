@@ -17,7 +17,13 @@ import android.widget.Toast;
 public class LeftFragment extends android.support.v4.app.Fragment {
     private Button btntask;
 
-    public LeftFragment(){}
+    private static LeftFragment leftFragment=null;
+    public static LeftFragment getInstance(){
+        if (leftFragment==null){
+            leftFragment=new LeftFragment();
+            return leftFragment;
+        }else return leftFragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_second, container, false);

@@ -23,21 +23,24 @@ import android.widget.Toast;
 public class ListFragment1 extends ListFragment {
     private Button btnadd;
     private Button btnfreeworker;
+    private static ListFragment1 listFragment1=null;
+    public static ListFragment1 getInstance(){
+        if (listFragment1==null){
+            listFragment1=new ListFragment1();
+            return listFragment1;
+        }else return listFragment1;
+    }
+    public ListFragment1() {
+        presidents.add("123");
+        presidents.add("2312");
+        Vector<TodayTask> TodayLi = InnerforUI.getInstance(MainActivity.activity).showTodayList();
+        for(TodayTask s:TodayLi) {
+            presidents.add(s.getName());
+        }
+    }
 
-    public ListFragment1(){}
-    String[] presidents = {
-            "Dwight D. Eisenhower",
-            "John F. Kennedy",
-            "Lyndon B. Johnson",
-            "Richard Nixon",
-            "Gerald Ford",
-            "Jimmy Carter",
-            "Ronald Reagan",
-            "George H. W. Bush",
-            "Bill Clinton",
-            "George W. Bush",
-            "Barack Obama"
-    };
+
+
 
 
     @Override

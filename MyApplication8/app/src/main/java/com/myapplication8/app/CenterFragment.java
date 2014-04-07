@@ -11,7 +11,13 @@ import android.view.ViewGroup;
 
 
 public class CenterFragment extends Fragment {
-    public CenterFragment(){}
+    private static CenterFragment centerFragment=null;
+    public static CenterFragment getInstance(){
+        if (centerFragment==null){
+            centerFragment=new CenterFragment();
+            return centerFragment;
+        }else return centerFragment;
+    }
 
 
     @Override

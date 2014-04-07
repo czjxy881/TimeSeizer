@@ -14,6 +14,13 @@ import android.widget.Toast;
 
 
 public class TabFragment3 extends ListFragment {
+    private static TabFragment3 tabFragment3=null;
+    public static TabFragment3 getInstance(){
+        if (tabFragment3==null){
+            tabFragment3=new TabFragment3();
+            return tabFragment3;
+        }else return tabFragment3;
+    }
     String[] presidents = {
             "1","2","3","4"
     };

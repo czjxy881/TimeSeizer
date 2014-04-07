@@ -22,6 +22,8 @@ import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity {
+    static ActionBarActivity activity;
+
 
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
@@ -94,10 +96,14 @@ public class MainActivity extends ActionBarActivity {
         public Fragment getItem(int position) {
             // getItem is called to instantiate the fragment for the given page.
             // Return a PlaceholderFragment (defined as a static inner class below).
-            if(position==0)return new LeftFragment();
-            if(position==2)return new RightFragment();
-            if (position==1)return new CenterFragment();
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment f;
+            switch (position){
+                case 0:f=RightFragment.getInstance();break;
+                case 1:f=CenterFragment.getInstance();break;
+                case 2:f=LeftFragment.getInstance();break;
+                default:f=PlaceholderFragment.newInstance(position + 1);
+            }
+            return f;
 
         }
 

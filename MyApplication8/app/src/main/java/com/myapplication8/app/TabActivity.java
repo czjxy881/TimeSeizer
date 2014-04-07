@@ -123,10 +123,14 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
 
         @Override
         public Fragment getItem(int position) {
-            if(position==0)return new TabFragment1();
-            if(position==1)return new TabFragment2();
-            if(position==2)return new TabFragment3();
-            return PlaceholderFragment.newInstance(position + 1);
+            Fragment f;
+            switch (position){
+                case 0:f=TabFragment1.getInstance();break;
+                case 1:f=TabFragment2.getInstance();break;
+                case 2:f=TabFragment3.getInstance();break;
+                default:f=PlaceholderFragment.newInstance(position + 1);
+            }
+            return f;
         }
 
         @Override

@@ -21,7 +21,12 @@ import java.util.Map;
 
 public class TabFragment1 extends ListFragment {
 
-    public TabFragment1() {
+    private static TabFragment1 tabFragment1=null;
+    public static TabFragment1 getInstance(){
+        if (tabFragment1==null){
+            tabFragment1=new TabFragment1();
+            return tabFragment1;
+        }else return tabFragment1;
     }
 
 

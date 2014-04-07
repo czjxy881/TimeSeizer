@@ -22,7 +22,13 @@ import android.widget.Toast;
 public class ListFragment2 extends ListFragment {
     private Button btnadd2;
 
-    public ListFragment2(){}
+    private static ListFragment2 listFragment2 = null;
+    public static ListFragment2 getInstance(){
+        if (listFragment2==null){
+            listFragment2=new ListFragment2();
+            return listFragment2;
+        }else return listFragment2;
+    }
 
     String[] presidents = {
             "2","2","3","222","333","2","2","3","222","333"
