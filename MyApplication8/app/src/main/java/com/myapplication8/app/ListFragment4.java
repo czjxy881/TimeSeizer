@@ -52,33 +52,8 @@ public class ListFragment4 extends ListFragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        btnadd4 = (Button) getActivity().findViewById(R.id.btnadd4);
-        btnadd4.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        builder.setTitle("添加任务");
-                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker2, null);
-                        builder.setView(freework);
-                        builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //添加
-                            }
-                        });
-                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //取消
-                            }
-                        });
-                        builder.create().show();
-                    }
-
-
-                }
-        );
     }
+
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

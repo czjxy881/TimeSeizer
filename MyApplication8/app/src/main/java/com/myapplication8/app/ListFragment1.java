@@ -14,15 +14,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import com.myapplication8.app.Back.*;
 
+import java.util.Vector;
 
 public class ListFragment1 extends ListFragment {
     private Button btnadd;
     private Button btnfreeworker;
+    private EditText etworker;
+    private EditText etfanqie;
+    private EditText etbeizhu;
+    Vector <String> presidents = new Vector<String>();
+
+
     private static ListFragment1 listFragment1=null;
     public static ListFragment1 getInstance(){
         if (listFragment1==null){
@@ -33,11 +42,11 @@ public class ListFragment1 extends ListFragment {
     public ListFragment1() {
         presidents.add("123");
         presidents.add("2312");
-        Vector<TodayTask> TodayLi = InnerforUI.getInstance(MainActivity.activity).showTodayList();
-        for(TodayTask s:TodayLi) {
-            presidents.add(s.getName());
+        //Vector<TodayTask> TodayLi = InnerforUI.getInstance(MainActivity.activity).showTodayList();
+        //for(TodayTask s:TodayLi) {
+            //presidents.add(s.getName());
         }
-    }
+
 
 
 
@@ -68,12 +77,21 @@ public class ListFragment1 extends ListFragment {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         builder.setTitle("添加任务");
-                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker, null);
+                        final TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker, null);
                         builder.setView(freework);
                         builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
-                                //添加
+                                //点击添加按钮的事件
+                                EditText etworker = (EditText)freework.findViewById(R.id.etworker);
+                                EditText etfanqie = (EditText)freework.findViewById(R.id.etfanqie);
+                                EditText etbeizhu = (EditText)freework.findViewById(R.id.etbeizhu);
+                                String a = etworker.getText().toString();
+                                String b = etfanqie.getText().toString();
+                                String c = etbeizhu.getText().toString();
+                                Toast.makeText(getActivity(),a+"+"+b+"+"+c,Toast.LENGTH_SHORT).show();
+
+
                             }
                         });
                         builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
@@ -104,7 +122,7 @@ public class ListFragment1 extends ListFragment {
                                 int position, long id)
     {
         Toast.makeText(getActivity(),
-                "selected " + presidents[position],
+                "selected " + presidents.get(position),
                 Toast.LENGTH_SHORT).show();
     }
 

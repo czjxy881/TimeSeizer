@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -21,6 +22,9 @@ import android.widget.Toast;
 
 public class ListFragment3 extends ListFragment {
     private Button btnadd3;
+    private EditText etworker3;
+    private EditText etfanqie3;
+    private EditText etbeizhu3;
 
     private static ListFragment3 listFragment3 = null;
     public static ListFragment3 getInstance(){
@@ -48,11 +52,18 @@ public class ListFragment3 extends ListFragment {
                 new Button.OnClickListener() {
                     public void onClick(View v) {
                         builder.setTitle("添加任务");
-                        TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker2, null);
+                        final TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.freetimeworker2, null);
                         builder.setView(freework);
                         builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
+                                EditText etworker3 = (EditText)freework.findViewById(R.id.etworker2);
+                                EditText etfanqie3 = (EditText)freework.findViewById(R.id.etfanqie2);
+                                EditText etbeizhu3 = (EditText)freework.findViewById(R.id.etbeizhu2);
+                                String a = etworker3.getText().toString();
+                                String b = etfanqie3.getText().toString();
+                                String c = etbeizhu3.getText().toString();
+                                Toast.makeText(getActivity(),a+"+"+b+"+"+c,Toast.LENGTH_SHORT).show();
                                 //添加
                             }
                         });
