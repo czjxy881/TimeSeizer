@@ -1,4 +1,6 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
+
+import android.util.Log;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -13,15 +15,14 @@ public class TodayTask extends Task{
 	private int OuterInturrptTimes;
 	private int State;
 	private int RunnerID;
-	FindDb db;
+
 	Date date;
-	public TodayTask(FindDb db){
+	public TodayTask(){
 		ActualNum=0;
 		InnerInturrptTimes=0;
 		OuterInturrptTimes=0;
 		State=0;
 		RunnerID=-1;
-		this.db=db;
 		date=new Date();
 	}
 	
@@ -41,22 +42,22 @@ public class TodayTask extends Task{
 		oneClockPass();
 		if(ExpectNum==ActualNum)
 		State=2;
-		db.updateFinishList(date,this);
+		InnerforUI.db.updateFinishList(date,this);
 			//set new date by kind
 			String SDate=setNewDate();
 			if(SDate!=null)
-			db.updatePlanList(ID+","+ExpectNum+",'"+SDate+"'",RunnerID,2);	
+                InnerforUI.db.updatePlanList(RunnerID+","+ID+","+ExpectNum+",'"+SDate+"',"+Priority,2);
 			//RunnerID,ID,ExpectNum,ExpectDate
 	}
-	//÷’÷π»ŒŒÒ
+	//????????
 	public void abort(){
 		State=1;
 		String SDate=setNewDate();
-		db.updatePlanList(ID+","+ExpectNum+",'"+SDate+"'",RunnerID,1);
-		db.updateFinishList(date, this);
+        InnerforUI.db.updatePlanList(RunnerID+","+ID+","+ExpectNum+",'"+SDate+"','"+BeginTime+"',"+Priority,1);
+        InnerforUI.db.updateFinishList(date, this);
 	}
 	private String setNewDate() {
-		Vector<PeroidTask> peroidTask=db.FindPeroidTaskByID(PeroidTask.class, ID);
+		Vector<PeroidTask> peroidTask=InnerforUI.db.FindPeroidTaskByID(PeroidTask.class, ID);
 		if(peroidTask.isEmpty()==false){
 			int Kind=peroidTask.get(0).getKind();
 			Calendar c=Calendar.getInstance();   
@@ -64,7 +65,8 @@ public class TodayTask extends Task{
 			c.setTime(new Date());   
 			c.add(Calendar.DATE,Kind);   
 			Date d2=c.getTime();   
-			String SDate=df.format(d2); 
+			String SDate=df.format(d2);
+            Log.e("setNewDate", SDate);
 			return SDate;
 		}
 		else return null;
@@ -73,7 +75,7 @@ public class TodayTask extends Task{
 		return State;
 	}
 	public void set(int ActualNum,int InnerInturrptTimes,int OuterInturrptTimes,
-		int RunnerID,String Name,int ID,int ExpectNum,String ExpectDate,int State){
+		int RunnerID,String Name,int ID,int ExpectNum,String ExpectDate,int State,String Note){
 		this.ActualNum=ActualNum;
 		this.InnerInturrptTimes=InnerInturrptTimes;
 		this.OuterInturrptTimes=OuterInturrptTimes;
@@ -83,9 +85,10 @@ public class TodayTask extends Task{
 		this.ExpectNum=ExpectNum;
 		this.ExpectDate=ExpectDate;
 		this.State=State;
+        this.NoteString=Note;
 	}
 	public String get(){
 		return "'"+Name+"':"+RunnerID+","+ID+":'"+
-				ExpectDate+"':"+ActualNum+","+InnerInturrptTimes+","+OuterInturrptTimes+":"+State+","+ExpectNum;
+				ExpectDate+"':"+ActualNum+","+InnerInturrptTimes+","+OuterInturrptTimes+":"+State+","+ExpectNum+":"+NoteString;
 	}//int RunnerID,int ID,String FinishDateString,String FinishTimeString,int ActualNum,int InnerInturrptTimes,int OuterInturrptTimes
 }

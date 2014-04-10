@@ -1,17 +1,17 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 import java.util.Vector;
 
 
 public class TodayList {
 	private TaskView taskView;
-	private TodayTask todayTask;
 	private Vector<TodayTask> vector=null;
 	private int taskIndex=0;
 	private int vectorLength=-1;
 	
 	public TodayList(TaskView taskView){
 		this.taskView = taskView;
+        vector=new Vector<TodayTask>();
 		setTodayList();
 	}
 	//
@@ -40,10 +40,12 @@ public class TodayList {
 	public void setTodayList() {
 		Vector<Task> vtask=taskView.getTodayOptionalTask();
 		Task task;
+        TodayTask todayTask;
 			for(int i=0;i<vtask.size();i++){
 				task=vtask.get(i);
-				todayTask.set(task.Name,task.ID, task.ExpectNum, task.ExpectDate, task.NoteString);
-				vector.add(todayTask);	
+                todayTask=new TodayTask();
+                todayTask.set(0,0,0,i,task.Name,task.ID, task.ExpectNum, task.ExpectDate,0,task.NoteString);
+				vector.add(todayTask);
 			}
 	}
 }

@@ -1,17 +1,17 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 import android.database.sqlite.*;
 import android.util.Log;
 
 public class SQLiteHelper extends SQLiteOpenHelper
 {
-	public SQLiteHelper(android.content.Context context, java.lang.String name,
-	android.database.sqlite.SQLiteDatabase.CursorFactory factory, int version){
+	public SQLiteHelper(android.content.Context context, String name,
+	SQLiteDatabase.CursorFactory factory, int version){
 		super(context, name,factory,version);
 	}
-	public SQLiteHelper(android.content.Context context, java.lang.String name,int version){
+	public SQLiteHelper(android.content.Context context, String name,int version){
 		super(context, name,null,version);
 	}
-	public SQLiteHelper(android.content.Context context, java.lang.String name)
+	public SQLiteHelper(android.content.Context context, String name)
 	{
 		super(context, name,null,1);
 	}

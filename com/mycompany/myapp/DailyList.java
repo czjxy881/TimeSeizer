@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 public class DailyList{
 	//Date date primary key,Summary char(1),ActualNum int,RestTime int
@@ -20,7 +20,7 @@ public class DailyList{
 	public int getRestTime() {
 		return RestTime;
 	}
-	public int getWorkTIme(){
+	public int getWorkTime(){
 		return WorkTime;
 	}
 	public int getLongRestTime() {

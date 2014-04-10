@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 public class PlanList{
 	//RunnerID int primary key,ID int references IDList(ID),BeginTime time,ExpectNum int,ExpectTime time,priority int
@@ -6,21 +6,21 @@ public class PlanList{
 	int ID;
 	String BeginTimeString;
 	int ExpectNum;
-	String ExpectTimeString;
-	int priority;
+	String ExpectDate;
+	int Priority;
 	int State;
 	
-	public void set(int RunnerID,int ID,String BeginTimeString,int ExpectNum,String ExpectTimeString,int priority,int State){
+	public void set(int RunnerID,int ID,String BeginTimeString,int ExpectNum,String ExpectTimeString,int Priority,int State){
 		this.RunnerID=RunnerID;
 		this.ID=ID;
 		this.BeginTimeString=BeginTimeString;
 		this.ExpectNum=ExpectNum;
-		this.ExpectTimeString=ExpectTimeString;
-		this.priority=priority;
+		this.ExpectDate=ExpectTimeString;
+		this.Priority=Priority;
 		this.State=State;
 	}
 	
 	public String get(){
-		return RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority+","+State;
+		return RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectDate+"',"+Priority+","+State;
 	}
 }

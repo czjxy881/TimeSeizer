@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 public class FinishList{
 	//RunnerID int,ID int references IDList(ID),FinishDate date,FinishTime time,ActualNum int,

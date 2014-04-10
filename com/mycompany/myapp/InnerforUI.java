@@ -1,39 +1,58 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 
-
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
+
+import android.app.Activity;
 import android.content.Context;
+import android.util.Log;
 
 public class InnerforUI {
-	Date date=new Date();
-	TodayList todayList;
-	TaskView taskView;
-	Today today;
-	FindDb db;
-	Timer timer=new Timer();
+    static InnerforUI in=null;
+    public String DAY=null;
+    public String TIME=null;
+    Date date=new Date();
+    TodayList todayList=null;
+    TaskView taskView=null;
+    Today today=null;
+    Timer timer=new Timer();
 
-	int sign=0;//标记todayList的变化
-	//初始化
-	public InnerforUI(Context context,FindDb db){
-		taskView=new TaskView(context,db);
+    static FindDb db=null;
+    int sign=0;//????todayList??????
+    //??????
+    public static InnerforUI getInstance(Context context){
+        if(in==null){
+            in=new InnerforUI(context);
+            return in;
+        }else{
+            return in;
+        }
+    }
+	public InnerforUI(Context context){
+        taskView=new TaskView(context);
+        db=taskView.db;
 		todayList=new TodayList(taskView);
-		db=new FindDb(context);
+        Log.e("InnerforUI","initialToday");
 		today=initialToday(context,db);
+        DAY=db.day;
 	}
 	
-	//初始化_Today
+	//??????_Today          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	private Today initialToday(Context context,FindDb db) {
 		Today today=new Today(context,db);
+        Log.e("initialToday","new Today()");
 		today.setWeekDay(date.getDay());
-		//YYYY-MM-DD HH:MM:SS
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //YYYY-MM-DD HH:MM:SS
 		//date.getYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+
-		String time=date.getYear()+"-"+date.getMonth()+"-"+date.getDay()+
-				" "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
-		today.setStartTime(time);
+		TIME=df.format(date);
+        Log.e("InnerforUI/initialToday",TIME+" today.getWorkTime--"+today.getWorkTime());
+		today.setStartTime(TIME);
 
-		//初始默认
+		//????????
 		today.setLastingTimes(0);
 		today.setActualNum(0);
 		today.setSummary(null);
@@ -41,48 +60,76 @@ public class InnerforUI {
 	}
 	
 	
-	//when set today information..
+	//when set today information..          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	public void setTodayRestTime(int RestTime){
 		today.setRestTime(RestTime);
 	}
+    //                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	public void setTodayWorkTime(int WorkTime){
 		today.setWorkTime(WorkTime);
 	}
+    //                                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	public void setTodayLongRestTime(int LongRestTIme){
 		today.setLongRestTime(LongRestTIme);
 	}
 	//when click add task ..	
-	//1.new task..
-	public boolean clickAddTask(String Name,int ExpectNum,String ExpectDate,String NoteString){
-		int ID=taskView.getCurrentID();
-		if(notExistName(Name)){
-			Task task=new Task();
-			task.set(Name, ID, ExpectNum, ExpectDate, NoteString);
-			taskView.addTask(task);
-			return true;
-		}
-		return false;
+	//1.new task..    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	public boolean clickAddTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Priority){
+        if(notExistName(Name)) {
+            int ID = taskView.getCurrentID();
+            int RunnerID = taskView.getRunnerID();
+            if (notExistName(Name)) {
+                Task task = new Task();
+                task.set(Name, ID, null, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
+                taskView.addTask(task);
+                return true;
+            }
+            return false;
+        }
+        else return false;
 	}
-	//2.exist ID..
-	public boolean clickSetTask(int ID,int ExpectNum,String ExpectDate){
-		if(noExistID(ID)==false){
+	//2.exist ID..         ????????????????????????????????????????????????????????????????????????????????
+	public boolean clickSetTask(int ID,int ExpectNum,String ExpectDate,int Priority){
+		if(noExistTaskID(ID)==false){
 			Task task=new Task();
+            int RunnerID=taskView.getRunnerID();
 			IDList idList=db.FindIDListByID(IDList.class, ID);
 			String[] s=idList.get().split(",");
-			task.set(s[1], ID, ExpectNum, ExpectDate, s[2]);
+			task.set(s[1], ID,null, ExpectNum, ExpectDate, s[2],RunnerID,Priority);
 			taskView.addTask(task);
 			return true;
 		}
 		return false;
-	}
+	}                       
+    public boolean clickDeletePeroid(int ID){
+        if(noExistPeroidID(ID)==false){
+            taskView.delPeroid(ID);
+            return true;
+        }
+        return false;
+    }
+    public boolean clickDeleteTask(int RunnerID){
+        if(noExistTaskRunnerID(RunnerID)==false){
+            taskView.delTask(RunnerID);
+            return true;
+        }
+        return false;
+    }
 
-	//when click add peroidtask ..
+    private boolean noExistTaskRunnerID(int RunnerID) {
+        Task task=taskView.getTaskByRunnerId(RunnerID);
+        if(task==null)return true;
+        return false;
+    }
+
+    //when click add peroidtask ..
 		//1.new task ..
-	public boolean clickAddPeroidNewTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind){
+	public boolean clickAddPeroidNewTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
 		if(notExistName(Name)){
 			int ID=taskView.getCurrentID();
+            int RunnerID=taskView.getRunnerID();
 			PeroidTask pTask=new PeroidTask();
-			pTask.set(Name, ID, ExpectNum, ExpectDate, Kind);
+			pTask.set(RunnerID,Name, ID,null, ExpectNum, ExpectDate,NoteString, Kind,Priority);
 			taskView.addPeriodTask(pTask,0);
 			return true;
 		}
@@ -91,22 +138,28 @@ public class InnerforUI {
 
 
 		//2.exist ID ..
-	public boolean clickSetPeroidTask(int ID,int ExpectNum,String ExpectDate,int Kind){
-		if(noExistID(ID)==false){
-			Vector<Task> vector=taskView.getTaskById(ID);
+	public boolean clickSetPeroidTask(int ID,int ExpectNum,String ExpectDate,int Kind,int Priority,String Note){
+
+			IDList idList=taskView.getIDListByID(ID);
+        if(idList!=null){
 			PeroidTask pTask=new PeroidTask();
-			pTask.set(vector.get(0).getName(),ID,ExpectNum,ExpectDate,Kind);
+			pTask.set(taskView.getRunnerID(),idList.getName(),ID,null,ExpectNum,ExpectDate,Note,Kind,Priority);
 			taskView.addPeriodTask(pTask,1);
 			return true;
 		}
 		return false;
 	}
 	
-	private boolean noExistID(int ID) {
+	private boolean noExistPeroidID(int ID) {
 		Vector<PeroidTask> vector=taskView.getPeriodTaskById(ID);
 		if(vector.isEmpty())return false;
 		return true;
 	}
+    private boolean noExistTaskID(int ID) {
+        Vector<Task> vector=taskView.getTaskById(ID);
+        if(vector.isEmpty())return false;
+        return true;
+    }
 
 	private boolean notExistName(String Name) {
 		if(db.queryNameExist(Name))return false;
@@ -139,7 +192,7 @@ public class InnerforUI {
 	public Vector<TodayTask> showTodayList(){
 		TodayList todayList=new TodayList(taskView);
 		setTodayList();
-		return todayList.getTodayList();		
+		return todayList.getTodayList();
 	}
 
 	public void setTodayList(){
@@ -172,7 +225,7 @@ public class InnerforUI {
 	}
 	
 	
-	//when finish 。。not operated by user
+	//when finish ????not operated by user
 	//1.if all finish(start return -1),set Summary..
 	public void setSummary(String Summary){
 		today.setSummary(Summary);
@@ -181,11 +234,11 @@ public class InnerforUI {
 	//2.if not ,get id from start
 	public void writeTodayTask(){
 		timer.finish();
+        today.setActualNum(1);
 		//ActualNum   (+1)
-		today.setActualNum(1);
 	}
 	//when show Today Information
-	public String getToday(){	
-		return today.get();
+	public Today getToday(){
+		return today;
 	}
 }

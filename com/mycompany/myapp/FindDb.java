@@ -1,4 +1,4 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,77 +8,96 @@ import java.util.Vector;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.renderscript.RenderScript;
 import android.util.Log;
 
 
 
 public class FindDb {
 	
-	/*** 属性 ***/
-	private SQLiteDatabase db=null;
+	/*** ???? ***/
+	static SQLiteDatabase db=null;
 	private SQLiteHelper sql=null;
-	Date date;
+	Date date=new Date();
 	String day;
 
 	public FindDb(Context context) {
 		sql=new SQLiteHelper(context, "sqlite");
 		db=sql.getWritableDatabase();
 		createTable();
-		day=date.getYear()+"-"+date.getMonth()+"-"+date.getDate();
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+        day=df.format(date);
+        Log.e("day",day);
 		tidePlanList();
 	}
 	
 	private void tidePlanList() {
-		Cursor cursor=db.query("PlanList", null, "ExpectDate<?",new String[]{"'"+day+"'"}, null, null, null);
-		int ID,RunnerID,ExpectNum;
-		String Date,newDate;
+		Cursor cursor=db.query("PeroidTask", null, "ExpectDate<'"+day+"'",null, null, null, null);
+       // cursor.moveToNext();
+       // Log.e("cursor",cursor.getString(cursor.getColumnIndex("ExpectDate")));
+		int ID,RunnerID,ExpectNum,Priority;
+		String Date,newDate,BeginTime;
 		while(cursor.moveToNext()){
 			RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
 			ID=cursor.getInt(cursor.getColumnIndex("ID"));
 			Date=cursor.getString(cursor.getColumnIndex("ExpectDate"));
 			ExpectNum=cursor.getInt(cursor.getColumnIndex("ExpectNum"));
+            BeginTime=null;
+            Priority=cursor.getInt(cursor.getColumnIndex("Priority"));
+            Log.e("beforehaha",Date);
 			newDate=setNewDate(ID,Date);
-			updatePlanList(ID+","+ExpectNum+",'"+newDate+"'", RunnerID,0);
+            if(newDate!=null)
+			updatePlanList(RunnerID+","+ID+","+ExpectNum+",'"+newDate+"','"+BeginTime+"',"+Priority ,0);
+            Log.e("haha",newDate);
+            //RunnerID,ID,ExpectNum,ExpectDate,Priority,State
 		}
 	}
 	private String setNewDate(int ID,String date) {
 		Vector<PeroidTask> peroidTask=FindPeroidTaskByID(PeroidTask.class, ID);
-		int Kind=peroidTask.get(0).getKind();
+        if(peroidTask.isEmpty())return null;
+		int Kind=peroidTask.get(0).getKind(),i=0;
 		String SDate=date;
-		Calendar c=Calendar.getInstance();   
+		Calendar c=Calendar.getInstance();
 		DateFormat df=new SimpleDateFormat("yyyy-MM-dd");   
 		while(SDate.compareTo(day)<0){
-			c.setTime(new Date(SDate+" 0:0:0"));   
-			c.add(Calendar.DATE,Kind);   
+            String[] s=SDate.split("-");
+            c.set(Integer.parseInt(s[0]),Integer.parseInt(s[1]),Integer.parseInt(s[2]));
+			c.add(Calendar.DATE,Kind);
 			Date d2=c.getTime(); 
-			SDate=df.format(d2); 
+			SDate=df.format(d2);
 		}
-		return SDate;
+        return SDate;
 	}
 
 	public void sql(String s){
 		db.execSQL(s);
 	}
 	public int queryRunnerID(){
-		int i;
+		int i,j=0;
 		Cursor cursor=db.query("PlanList", null, null, null, null, null, null);
 		if(cursor.moveToNext()!=true)return 0;
 		else{
 			do{
 				i=cursor.getInt(cursor.getColumnIndex("RunnerID"));
+                if(j<i)
+                    j=i;
 			}while(cursor.moveToNext());
-			return i+1;
+            Log.e("queryRunnerID",j+1+"");
+			return j+1;
 		}
 	}
 	public int queryID() {
-		int i;
+		int i,j=0;
 		Cursor cursor=db.query("IDList", null, null, null, null, null, null);
 		if(cursor.moveToNext()!=true)return 0;
 		else{
 			do{
 				i=cursor.getInt(cursor.getColumnIndex("ID"));
+                if(j<i)
+                    j=i;
 			}while(cursor.moveToNext());
-			return i+1;
+            Log.e("queryID",j+1+"");
+			return j+1;
 		}
 	}
 	public boolean queryNameExist(String Name) {
@@ -87,26 +106,39 @@ public class FindDb {
 	}
 
 	private void createTable(){
+//        db.execSQL("Drop table FinishList");
+//         db.execSQL("Drop table PlanList");
+//          db.execSQL("Drop table IDList");
+//          db.execSQL("Drop table DailyList");
+//          db.execSQL("Drop table PeroidList");
+//        db.needUpgrade(1);
 		db.execSQL("Create table if not exists IDList(ID int primary key,Name varchar(30),Note varchar(100))");
-		db.execSQL("Create table if not exists FinishList(RunnerID int,ID int references IDList(ID),FinishDate date,FinishTime time,ActualNum int,InnerInturrptTimes int,OuterInturrptTimes int,primary key(ID,FinishDate,FinishTime))");
-		db.execSQL("Create table if not exists PlanList(RunnerID int primary key,ID int references IDList(ID),BeginTime time,ExpectNum int,ExpectTime time,Priority int,State int)");
-		db.execSQL("Create table if not exists DailyList(Date date primary key,Summary char(1),ActualNum int,RestTime int,WorkTime int,LongRestTime int)");
+		db.execSQL("Create table if not exists FinishList(RunnerID int,ID int references IDList(ID),FinishDate String,FinishTime String,ActualNum int,InnerInturrptTimes int,OuterInturrptTimes int,primary key(ID,FinishDate,FinishTime))");
+
+		db.execSQL("Create table if not exists PlanList(RunnerID int primary key,ID int references IDList(ID),BeginTime String,ExpectNum int,ExpectDate String,Priority int,State int)");
+
+        db.execSQL("Create table if not exists DailyList(Date date primary key,Summary char(3),ActualNum int,RestTime int,WorkTime int,LongRestTime int)");
 		db.execSQL("Create table if not exists PeroidList(ID int primary key references IDList(ID),Kind int)");
-		
-		
-		db.execSQL("Create view if not exists FinishTask as select IDList.*,FinishList.* from IDList,FinishList where IDList.ID=FinishList.ID");
-		db.execSQL("Create view if not exists PeroidTask as select IDList.*,PeroidList.* from IDList,PeroidList where IDList.ID=PeroidList.ID");
+        db.execSQL("replace into IDList(ID,Name,Note) values(3,'workhard','haha')");
+		db.execSQL("replace into IDList(ID,Name,Note) values(1,'cdy','haha')");
+        db.execSQL("replace into IDList(ID,Name,Note) values(2,'cd','haha')");
+       db.execSQL("replace into PlanList(RunnerID,ID,BeginTime,ExpectNum,ExpectDate,Priority,State) values(1,1,null,10,'2013-02-16',5,0)");
+        db.execSQL("replace into PlanList(RunnerID,ID,BeginTime,ExpectNum,ExpectDate,Priority,State) values(2,2,null,10,'2014-04-10',5,0)");
+        db.execSQL("replace into PeroidList(ID,Kind) values(1,1)");
+
+		db.execSQL("Create view if not exists FinishTask as select IDList.*,FinishList.*,PlanList.* from IDList,FinishList,PlanList where IDList.ID=FinishList.ID and IDList.ID=PlanList.ID");
+		db.execSQL("Create view if not exists PeroidTask as select IDList.*,PeroidList.*,PlanList.* from IDList,PeroidList,PlanList where IDList.ID=PeroidList.ID and IDList.ID=PlanList.ID");
 		db.execSQL("Create view if not exists DailySummary as select IDList.*,FinishList.*,DailyList.* from IDlist,FinishList,DailyList where IDList.ID=FinishList.ID and FinishList.FinishDate=DailyList.Date");
 		db.execSQL("Create view if not exists PlanTask as select IDList.*,PlanList.* from IDLIst,PlanList where IDLIst.ID=PlanList.ID");
 	}
 	
-	/*** update方法  -->replace 主键存在时覆盖***/
-	public void updatePlanList(String string,int RunnerID,int State){
+	/*** update????  -->replace ??????????????***/
+	public void updatePlanList(String string,int State){
 		String s=string;		
 		if(s.equals(null))
 			Log.e("updatePlanList", "s==null");
 		else {
-			db.execSQL("replace into PlanList(RunnerID,ID,ExpectNum,ExpectDate,Priority,State) values("+RunnerID+","+s+",1,"+State+")");			
+			db.execSQL("replace into PlanList(RunnerID,ID,ExpectNum,ExpectDate,BeginTime,Priority,State) values("+s+","+State+")");
 		}
 	}	
 	public void updateIDList(String string){
@@ -130,7 +162,7 @@ public class FindDb {
 		if(s.equals(null))
 			Log.e("updateDailyList", "s==null");
 		else {
-			db.execSQL("replace into updateDailyList(Date,Summary,ActualNum,RestTime,WorkTime,+LongRestTime) values("+s+")");			
+			db.execSQL("replace into updateDailyList(Date,Summary,ActualNum,RestTime,WorkTime,LongRestTime) values("+s+")");
 		}
 	}	
 	public void updateFinishList(Date date,TodayTask task){
@@ -138,17 +170,20 @@ public class FindDb {
 		if(s.equals(null))
 			Log.e("updateFinishList", "s==null");
 		else {
-			String dateString=date.getYear()+"-"+date.getMonth()+"-"+date.getDate();
-			String timeString=date.getHours()+":"+date.getMinutes()+":"+date.getSeconds();
+            DateFormat df=new SimpleDateFormat("HH:mm:ss");
+            String time=df.format(date);
+			String dateString=day;
+			String timeString=time;
 			db.execSQL("replace into updateFinishList(RunnerID,ID,FinishDateString,FinishTimeString,ActualNum,InnerInturrptTimes,OuterInturrptTimes) " +
 					"values("+s[1]+",'"+dateString+"','"+timeString+"',"+s[3]+")");			
 		}
 	}
 	public DailyList FindDailyListNew(Class<DailyList> list){
-		DailyList dailyList=new DailyList();
+		DailyList dailyList=null;
 		Cursor cursor=db.query("DailyList",null,null,null,null, null, "Date desc");
 		if(cursor.moveToNext()){
 			dailyList=getDailyListEntity(cursor, list);
+            Log.e("FindDailyListNew","moveToNext");
 		}
 		return dailyList;
 	}
@@ -195,7 +230,7 @@ public class FindDb {
 	//////////////////////////////////////////////////////////////////////////////////////////////////////////
 	public Vector<Task> FindTask(Class<Task> list) {
 		Vector<Task> vector=new Vector<Task>();
-		Cursor cursor=db.query("PlanTask",new String[]{"Name","ID","ExpectNum","ExpectDate"},
+		Cursor cursor=db.query("PlanTask",null,
 				null,null,null, null, null);
 		while(cursor.moveToNext()){
 			vector.add(getTaskEntity(cursor, list));
@@ -204,8 +239,8 @@ public class FindDb {
 	}
 	public Vector<Task> FindTaskByID(Class<Task> list,int ID){
 		Vector<Task> vector=new Vector<Task>();
-		Cursor cursor=db.query("PlanTask",new String[]{"Name","ID","ExpectNum","ExpectDate"},
-				"ID=?",new String[]{""+ID},null, null, null);
+		Cursor cursor=db.query("PlanTask",null,
+				"ID="+ID,null,null, null, null);
 		while(cursor.moveToNext()){
 			vector.add(getTaskEntity(cursor, list));
 		}
@@ -213,10 +248,11 @@ public class FindDb {
 	}
 	public Vector<Task> FindTaskByDay(Class<Task> list, String Day) {
 		Vector<Task> vector=new Vector<Task>();
-		Cursor cursor=db.query("PlanTask",new String[]{"Name","ID","ExpectNum","ExpectDate"},
-				"ExpectDate=?",new String[]{Day},null, null, null);
+		Cursor cursor=db.query("PlanTask",null,
+				"ExpectDate='"+Day+"'",null,null, null, null);
 		while(cursor.moveToNext()){
 			vector.add(getTaskEntity(cursor, list));
+            Log.e("FindTaskByDay","moveToNext");
 		}
 		return vector;	
 	}
@@ -248,22 +284,38 @@ public class FindDb {
 			string="ExpectDate DESC";
 		}
 		vector=new Vector<Task>();
-		Cursor cursor=db.query("PlanTask",new String[]{"Name","ID","ExpectNum","ExpectDate"},
+		Cursor cursor=db.query("PlanTask",null,
 				null,null,null, null,string);
 		while(cursor.moveToNext()){
 			vector.add(getTaskEntity(cursor, list));
 		}
 		return vector;
 	}
+    public Task FindTaskByRunnerID(Class<Task> list, int RunnerID) {
+        Vector<Task> vector=new Vector<Task>();
+        Cursor cursor=db.query("PlanTask",null,
+                "RunnerID="+RunnerID,null,null, null, null);
+        if(cursor.moveToNext()){
+            vector.add(getTaskEntity(cursor, list));
+            Log.e("FindTaskByRunnerID","moveToNext");
+            return vector.get(0);
+        }
+        else
+            return null;
+
+    }
 
 	private Task getTaskEntity(Cursor cursor, Class<Task> list) {
-		Task object=new Task();		
+		Task object=new Task();
+        int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
 		String Name=cursor.getString(cursor.getColumnIndex("Name"));
 		int ID=cursor.getInt(cursor.getColumnIndex("ID"));
+        String BeginTime=cursor.getString(cursor.getColumnIndex("BeginTime"));
 		int ExpectNum=cursor.getInt(cursor.getColumnIndex("ExpectNum"));
 		String ExpectDate=cursor.getString(cursor.getColumnIndex("ExpectDate"));
-		String NoteString=cursor.getString(cursor.getColumnIndex("NoteString"));
-		object.set(Name, ID, ExpectNum, ExpectDate,NoteString);
+		String NoteString=cursor.getString(cursor.getColumnIndex("Note"));
+        int Priority=cursor.getInt(cursor.getColumnIndex("Priority"));
+		object.set(Name, ID,BeginTime, ExpectNum, ExpectDate,NoteString,RunnerID,Priority);
 		return object;
 	}
 	
@@ -271,8 +323,9 @@ public class FindDb {
 	
 	public Vector<PeroidTask> FindPeroidTaskByID(Class<PeroidTask> list,int ID){
 		Vector<PeroidTask> vector=new Vector<PeroidTask>();
-		Cursor cursor=db.query("PeroidTask",new String[]{"Name","ID","ExpectNum","ExpectDate","Kind"},
+		Cursor cursor=db.query("PeroidTask",null,
 				"ID=?",new String[]{""+ID},null, null, null);
+
 		while(cursor.moveToNext()){
 			vector.add(getPeroidTaskEntity(cursor, list));
 		}
@@ -280,23 +333,36 @@ public class FindDb {
 	}
 	public Vector<PeroidTask> FindPeroidTask(Class<PeroidTask> list){
 		Vector<PeroidTask> vector=new Vector<PeroidTask>();
-		Cursor cursor=db.query("PeroidTask",new String[]{"Name","ID","ExpectNum","ExpectDate","Kind"},
+		Cursor cursor=db.query("PeroidTask",null,
 				null,null,null, null, null);
 		while(cursor.moveToNext()){
 			vector.add(getPeroidTaskEntity(cursor, list));
 		}
 		return vector;		
 	}
-	
+    public PeroidTask FindOnePeroidTask(Class<PeroidTask> list,int RunnerID){
+        Vector<PeroidTask> vector=new Vector<PeroidTask>();
+        Cursor cursor=db.query("PeroidTask",null,
+                "RunnerID="+RunnerID,null,null, null, null);
+        if(cursor.moveToNext()){
+            vector.add(getPeroidTaskEntity(cursor, list));
+            return vector.get(0);
+        }
+        else
+            return null;
+    }
 	private PeroidTask getPeroidTaskEntity(Cursor cursor, Class<PeroidTask> list) {
 		PeroidTask object=new PeroidTask();
-		
+		int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
 		String Name=cursor.getString(cursor.getColumnIndex("Name"));
-		int ID=cursor.getInt(cursor.getColumnIndex("ID"));;
-		int ExpectNum=cursor.getInt(cursor.getColumnIndex("ExpectNum"));;
+		int ID=cursor.getInt(cursor.getColumnIndex("ID"));
+        String BeginTime=cursor.getString(cursor.getColumnIndex("BeginTime"));
+		int ExpectNum=cursor.getInt(cursor.getColumnIndex("ExpectNum"));
 		String ExpectDate=cursor.getString(cursor.getColumnIndex("ExpectDate"));
 		int Kind=cursor.getInt(cursor.getColumnIndex("Kind"));
-		object.set(Name, ID, ExpectNum, ExpectDate,Kind);
+        int Priority=cursor.getInt(cursor.getColumnIndex("Priority"));
+        String Note=cursor.getString(cursor.getColumnIndex("Note"));
+		object.set(RunnerID,Name, ID,BeginTime,ExpectNum, ExpectDate,Note,Kind,Priority);
 		return object;
 	}
 
@@ -304,7 +370,7 @@ public class FindDb {
 	
 	public Vector<TodayTask> FindTodayTaskByID(Class<TodayTask> list,int ID){
 		Vector<TodayTask> vector=new Vector<TodayTask>();
-		Cursor cursor=db.query("TodayTask",new String[]{"Name","ID","ExpectNum","ExpectDate"},
+		Cursor cursor=db.query("TodayTask",null,
 				"ID=?",new String[]{""+ID},null, null, null);
 		while(cursor.moveToNext()){
 			vector.add(getTodayTaskEntity(cursor, list));
@@ -312,7 +378,7 @@ public class FindDb {
 		return vector;		
 	}
 	private TodayTask getTodayTaskEntity(Cursor cursor, Class<TodayTask> list) {
-		TodayTask object=new TodayTask(this);
+		TodayTask object=new TodayTask();
 		
 		String Name=cursor.getString(cursor.getColumnIndex("Name"));
 		int ID=cursor.getInt(cursor.getColumnIndex("ID"));
@@ -323,19 +389,11 @@ public class FindDb {
 		int OuterInturrptTimes=cursor.getInt(cursor.getColumnIndex("OuterInturrptTimes"));
 		int State=cursor.getInt(cursor.getColumnIndex("State"));
 		int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
-		
-		object.set(ActualNum, InnerInturrptTimes, OuterInturrptTimes, RunnerID, Name, ID, ExpectNum, ExpectDate,State);
+		String Note=cursor.getString(cursor.getColumnIndex("Note"));
+		object.set(ActualNum, InnerInturrptTimes, OuterInturrptTimes, RunnerID, Name, ID, ExpectNum, ExpectDate,State,Note);
 		return object;
 	}
 
-
-
-
-
-
-
-
-	
 
 
 }

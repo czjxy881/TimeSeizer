@@ -1,8 +1,11 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.util.Log;
 
 public class Today {//Set in InnerForUI
 	private int WeekDay;//
@@ -17,11 +20,20 @@ public class Today {//Set in InnerForUI
 	
 	public Today(Context context,FindDb db){
 		ActualNum=0;
-		DailyList dailyList=new DailyList();
+		DailyList dailyList=null;
 		dailyList=db.FindDailyListNew(DailyList.class);
-		setWorkTime(dailyList.getWorkTIme());
-		setRestTime(dailyList.getRestTime());
-		setLongRestTime(dailyList.getLongRestTime());
+        if(dailyList!=null) {
+            setWorkTime(dailyList.getWorkTime());
+            setRestTime(dailyList.getRestTime());
+            setLongRestTime(dailyList.getLongRestTime());
+        }
+        else{
+            Log.e("Today","when null");
+            setWorkTime(25);
+            setRestTime(10);
+            setLongRestTime(30);
+        }
+
 	}
 	
 	public int getWeekDay() {
@@ -94,8 +106,8 @@ public class Today {//Set in InnerForUI
 	public void saveDay(InnerforUI forUI){
 		DailyList list=new DailyList();
 		Date date=forUI.date;
-		list.set(date.getYear()+"-"+date.getMonth()+"-"+date.getDate(), 
-				Summary, ActualNum, RestTime,WorkTime,LongRestTime);
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+		list.set(df.format(date),Summary, ActualNum, RestTime,WorkTime,LongRestTime);
 		forUI.db.updateDailyList(list);
 	}
 	

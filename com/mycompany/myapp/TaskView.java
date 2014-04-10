@@ -1,28 +1,30 @@
-package com.mycompany.myapp;
+package com.myapplication8.app.Back;
 
+import android.content.Context;
+import android.util.Log;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
-import android.content.Context;
+
 
 public class TaskView {
 	private int CurrentID;
-	private FindDb db=null;
 	private int RunnerID;
 	Date date=new Date();
-	/**构造函数
-	 * 
-	 * @param context 由当前上下文
-	 */
-	public TaskView(Context context,FindDb db) {
-		this.db=db;
+    FindDb db=null;
+
+	public TaskView(Context context) {
+        db=new FindDb(context);
 		RunnerID=db.queryRunnerID();
 		CurrentID=db.queryID();
 	}
 	
-	/**根据时间获取Task表//
+	/**????????????Task??//
 	 * 
-	 * @param Day 时间
+	 * @param Day ????
 	 * @return Vector<Task>
 	 */
 	public Vector<Task> getListByDay(String Day){
@@ -32,7 +34,7 @@ public class TaskView {
 	
 	
 	
-	/**根据升序降序类型选择Task表的形式并获取//
+	/**????????????????????Task??????????????//
 	 * 
 	 * @param kind 0-7
 	 * 			0	Name ASC
@@ -50,43 +52,66 @@ public class TaskView {
 		return vector;
 	}
 	
-	/**添加任务到任务列表//
+	/**??????????????????//
 	 * 
-	 * @param a Task实例
+	 * @param a Task????
 	 */
 	public void addTask(Task a){
 		String[] strings=a.get().split(":");
+       // "'"+Name+"',"+ID+",'"+NoteString+"':"+ID+",'"+BeginTime+"',"+ExpectNum+",'"+ExpectDate+"':"+RunnerID+":"+Priority;
 		db.updateIDList(strings[0]);
-		db.updatePlanList(strings[1], RunnerID,0);
+		db.updatePlanList(strings[2]+","+strings[1]+","+strings[3],0);
 		//RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority
 		CurrentID++;
 		RunnerID++;
 	}
 	
-	/**添加周期任务到任务列表//
+	/**??????????????????????//
 	 * 
-	 * @param a 周期任务
+	 * @param a ????????
 	 */
 	public boolean addPeriodTask(PeroidTask a,int kind){
 		String[] strings=a.get().split(":");
 		if(kind==0){//ID new
 			db.updateIDList(strings[0]);
-			db.updatePlanList(strings[1], RunnerID,0);
+			db.updatePlanList(strings[1]+","+strings[3]+","+strings[4],0);
 			db.updatePeroidList(strings[2]);
 			CurrentID++;
 			RunnerID++;
 			return true;
 		}
 		else if(kind==1){//ID exist
-			db.updatePlanList(strings[1], RunnerID,0);
+			db.updatePlanList(strings[1]+","+strings[3]+","+strings[4],0);
 			db.updatePeroidList(strings[2]);
 			RunnerID++;
 			return true;
 		}
 		else return false;
 	}
-	
-	/**获取周期任务的数据库//
+    public void delTask(int RunnerID){
+        PeroidTask peroidTask=db.FindOnePeroidTask(PeroidTask.class,RunnerID);
+        if(peroidTask==null){
+            db.sql("Delete from PlanList where RunnerID="+RunnerID);
+        }
+        else{
+            DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+            Calendar cal= Calendar.getInstance();
+            cal.setTime(new Date());
+            cal.add(Calendar.DATE, peroidTask.getKind());
+            String newDay=df.format(cal.getTime());
+            peroidTask.setExpectDate(newDay);
+            String s= peroidTask.get();
+            String[] spilt=s.split(":");
+            //"'"+Name+"',"+ID+",'"+NoteString+"':"+RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"':"+ID+","+Kind+":'"+BeginTime+"':"+Priority;
+            //RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectDate+"',"+priority+","+State
+            db.sql("replace into PlanList(RunnerID,ID,ExpectNum,ExpectDate,BeginTime,Priority,State) values("+spilt[1]+","+spilt[3]+","+0+")");
+        }
+    }
+
+	public void delPeroid(int ID){
+        db.sql("Delete from PeroidList where ID="+ID);
+    }
+	/**????????????????????//
 	 * 
 	 * @return Vector<PeroidTask>
 	 */
@@ -95,57 +120,62 @@ public class TaskView {
 		return vector;
 	}
 	
-	/**获取下一个新ID//
+	/**????????????ID//
 	 * 
 	 * @return ID
 	 */
 	public int getCurrentID(){
 		return CurrentID;
 	}
-	
-	/**获取今日可用的任务列表//
+	public int getRunnerID(){return RunnerID;}
+	/**??????????????????????//
 	 * 
 	 * @return Vector<Task>
 	 */
 	public Vector<Task> getTodayOptionalTask(){
-		Vector<Task> vector=getListByDay(date.getYear()+"-"+date.getMonth()+"-"+date.getDate());
+        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
+		Vector<Task> vector=getListByDay(df.format(date));
+        Log.e("getTodayOptionalTask", vector.size() + " "+df.format(date));
 		return vector;
 	}
 	
-	/**获取整张任务表//
+	/**??????????????//
 	 * 
 	 * @return Vector<Task>
 	 */
 	public Vector<IDList> getAllList(){
 		return db.FindIDList(IDList.class);
 	}
-	
-	/**获取指定ID对应的任务列表//
+	public IDList getIDListByID(int ID){return db.FindIDListByID(IDList.class,ID);}
+	/**????????ID??????????????//
 	 * 
-	 * @param id 指定ID
+	 * @param id ????ID
 	 * @return Vector<Task>
 	 */
 	public Vector<Task> getTaskById(int id){
 		return db.FindTaskByID(Task.class, id);
 	}
 	
-	/**获取指定ID对应的周期任务列表//
+	/**????????ID??????????????????//
 	 * 
-	 * @param id 指定ID
+	 * @param id ????ID
 	 * @return Vector<Task>
 	 */
 	public Vector<PeroidTask> getPeriodTaskById(int id){
 		return db.FindPeroidTaskByID(PeroidTask.class, id);
 	}
-	
-	/**设置任务列表//
+    public Task getTaskByRunnerId(int RunnerID) {
+        return db.FindTaskByRunnerID(Task.class, RunnerID);
+    }
+	/**????????????//
 	 * 
-	 * @param task 任务
+	 * @param task ????
 	 */
 	public void setTask(Task task){
 		String[] strings=task.get().split(":");	
-		db.updatePlanList(strings[1],RunnerID,0);
+		db.updatePlanList(strings[2]+","+strings[1]+","+strings[3],0);
 		RunnerID++;
 	}
-	
+
+
 }
