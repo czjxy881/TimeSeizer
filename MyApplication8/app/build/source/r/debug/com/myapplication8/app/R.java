@@ -868,7 +868,7 @@ containing a value of this type.
         public static final int action_menu_divider=0x7f080015;
         public static final int action_menu_presenter=0x7f080016;
         public static final int action_mode_close_button=0x7f080024;
-        public static final int action_settings=0x7f08005d;
+        public static final int action_settings=0x7f080061;
         public static final int activity_chooser_view_content=0x7f080025;
         public static final int always=0x7f08000f;
         public static final int beginning=0x7f08000a;
@@ -877,12 +877,15 @@ containing a value of this type.
         public static final int btnadd3=0x7f080045;
         public static final int btnfreeworker=0x7f080042;
         public static final int btnhistory=0x7f080046;
+        public static final int btnlistadd1=0x7f08004c;
+        public static final int btnlistadd2=0x7f08004d;
+        public static final int btnlistadd3=0x7f08004f;
         public static final int btnnowworke=0x7f08004a;
-        public static final int btnpingjia=0x7f080051;
+        public static final int btnpingjia=0x7f080054;
         public static final int btnsettings=0x7f080047;
-        public static final int btntask=0x7f08004c;
         public static final int button_start=0x7f080048;
         public static final int checkbox=0x7f08002d;
+        public static final int checktv_title=0x7f080060;
         public static final int collapseActionView=0x7f080011;
         public static final int container=0x7f08003c;
         public static final int default_activity_button=0x7f080028;
@@ -891,12 +894,12 @@ containing a value of this type.
         public static final int dropdown=0x7f080013;
         public static final int edit_query=0x7f080030;
         public static final int end=0x7f08000c;
-        public static final int etbeizhu=0x7f080056;
-        public static final int etbeizhu2=0x7f08005c;
-        public static final int etfanqie=0x7f080055;
-        public static final int etfanqie2=0x7f08005b;
-        public static final int etworker=0x7f080054;
-        public static final int etworker2=0x7f08005a;
+        public static final int etbeizhu=0x7f080059;
+        public static final int etbeizhu2=0x7f08005f;
+        public static final int etfanqie=0x7f080058;
+        public static final int etfanqie2=0x7f08005e;
+        public static final int etworker=0x7f080057;
+        public static final int etworker2=0x7f08005d;
         public static final int expand_activities_button=0x7f080026;
         public static final int expanded_menu=0x7f08002c;
         public static final int fragment_container=0x7f080040;
@@ -905,6 +908,7 @@ containing a value of this type.
         public static final int icon=0x7f08002a;
         public static final int ifRoom=0x7f08000e;
         public static final int image=0x7f080027;
+        public static final int list3=0x7f08004e;
         public static final int listMode=0x7f080001;
         public static final int list_item=0x7f080029;
         public static final int middle=0x7f08000b;
@@ -916,10 +920,10 @@ containing a value of this type.
         public static final int progress_circular=0x7f080018;
         public static final int progress_horizontal=0x7f080019;
         public static final int radio=0x7f08002f;
-        public static final int rbmyscore=0x7f080050;
-        public static final int rbnjinji=0x7f080059;
-        public static final int rbnzhouqi=0x7f080058;
-        public static final int rgaddworker=0x7f080057;
+        public static final int rbmyscore=0x7f080053;
+        public static final int rbnjinji=0x7f08005c;
+        public static final int rbnzhouqi=0x7f08005b;
+        public static final int rgaddworker=0x7f08005a;
         public static final int search_badge=0x7f080032;
         public static final int search_bar=0x7f080031;
         public static final int search_button=0x7f080033;
@@ -940,14 +944,14 @@ containing a value of this type.
         public static final int tab=0x7f08003e;
         public static final int tabMode=0x7f080002;
         public static final int title=0x7f08002b;
-        public static final int tlfreetimeworker=0x7f080052;
+        public static final int tlfreetimeworker=0x7f080055;
         public static final int tlfreetimeworker2=0x7f08003f;
         public static final int top_action_bar=0x7f080020;
-        public static final int tvddnumber=0x7f08004f;
-        public static final int tvfqnumber=0x7f08004e;
+        public static final int tvddnumber=0x7f080052;
+        public static final int tvfqnumber=0x7f080051;
         public static final int tvnowworke=0x7f08004b;
-        public static final int tvworker=0x7f080053;
-        public static final int tvzjnumber=0x7f08004d;
+        public static final int tvworker=0x7f080056;
+        public static final int tvzjnumber=0x7f080050;
         public static final int up=0x7f080021;
         public static final int useLogo=0x7f080003;
         public static final int withText=0x7f080010;
@@ -988,7 +992,7 @@ containing a value of this type.
         public static final int fragment_list_fragment2=0x7f03001d;
         public static final int fragment_list_fragment3=0x7f03001e;
         public static final int fragment_list_fragment4=0x7f03001f;
-        public static final int fragment_listviewfragment=0x7f030029;
+        public static final int fragment_listviewfragment=0x7f03002a;
         public static final int fragment_main=0x7f030020;
         public static final int fragment_second=0x7f030021;
         public static final int fragment_tab_fragment1=0x7f030022;
@@ -997,7 +1001,8 @@ containing a value of this type.
         public static final int fragment_third=0x7f030025;
         public static final int freetimeworker=0x7f030026;
         public static final int freetimeworker2=0x7f030027;
-        public static final int support_simple_spinner_dropdown_item=0x7f030028;
+        public static final int list_checktextview=0x7f030028;
+        public static final int support_simple_spinner_dropdown_item=0x7f030029;
     }
     public static final class menu {
         public static final int main=0x7f0d0000;

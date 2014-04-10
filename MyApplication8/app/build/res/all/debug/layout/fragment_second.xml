@@ -5,14 +5,7 @@
     android:orientation="vertical"
     tools:context="com.myapplication8.app.MainActivity$PlaceholderFragment">
 
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"/>
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:text="intddent"
-        android:id="@+id/btntask"/>
+
 
 
     </LinearLayout><!-- From: file:/C:/Users/xxx/AndroidStudioProjects/MyApplication8/app/src/main/res/layout/fragment_second.xml -->

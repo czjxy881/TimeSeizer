@@ -21,6 +21,7 @@
         android:layout_weight="1"
         android:textColor="#ffffff"
         android:background="#ff11105e"
+        android:id="@+id/btnlistadd1"
         android:layout_gravity="center_horizontal|bottom" />
 
 

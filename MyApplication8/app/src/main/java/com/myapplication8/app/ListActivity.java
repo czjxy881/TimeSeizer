@@ -133,8 +133,6 @@ public class ListActivity extends ActionBarActivity implements ActionBar.OnNavig
             Integer i=getArguments().getInt(ARG_SECTION_NUMBER);
 
             View rootView = inflater.inflate(R.layout.fragment_list, page, false);
-            TextView textView = (TextView) rootView.findViewById(R.id.section_label1);
-            textView.setText(Integer.toString(getArguments().getInt(ARG_SECTION_NUMBER)));
             return rootView;
         }
     }

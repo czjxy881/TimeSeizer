@@ -27,18 +27,6 @@ public class LeftFragment extends android.support.v4.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_second, container, false);
-        final Button btntask = (Button) v.findViewById(R.id.btntask);
-        //btntask.setFocusable(true);
-
-
-        btntask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent;
-                intent = new Intent(getActivity(),ListActivity.class);
-                startActivity(intent);
-            }
-        });
         return v;
     }
 

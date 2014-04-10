@@ -45,6 +45,7 @@ public class ListFragment1 extends ListFragment {
         //Vector<TodayTask> TodayLi = InnerforUI.getInstance(MainActivity.activity).showTodayList();
         //for(TodayTask s:TodayLi) {
             //presidents.add(s.getName());
+
         }
 
 
@@ -54,18 +55,10 @@ public class ListFragment1 extends ListFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
+
+
         View v = inflater.inflate(R.layout.fragment_list_fragment1, container, false);
-        final Button btnadd = (Button) v.findViewById(R.id.btnadd);
 
-        btnadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent;
-                intent = new Intent(getActivity(),TabActivity.class);
-                startActivity(intent);
-
-            }
-        });
         return v;
     }
     @Override
@@ -126,7 +119,22 @@ public class ListFragment1 extends ListFragment {
                 Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        final Button btnadd = (Button) getActivity().findViewById(R.id.btnadd);
 
+        btnadd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent;
+                intent = new Intent(getActivity(),TabActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+
+            }
+        });
+    }
 
     @Override
     public void onAttach(Activity activity) {
