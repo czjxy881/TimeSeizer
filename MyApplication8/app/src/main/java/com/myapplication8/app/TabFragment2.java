@@ -1,6 +1,7 @@
 package com.myapplication8.app;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -17,9 +18,9 @@ public class TabFragment2 extends ListFragment {
     private int psn;
     private Button btnlistadd2;
     private ListView listView;
-    private HashMap<Integer,Boolean> checkedMap = new HashMap<Integer, Boolean>();
+    private HashMap<Integer,Boolean> checkedMap2 = new HashMap<Integer, Boolean>();
     private static final String[] GENRES2 = new String[]{
-            "Action", "Adventure", "Animation", "Children", "Comedy", "Documentary", "Drama",
+            "a", "b", "c", "e", "d", "Documentary", "Drama",
             "Foreign", "History", "Independent", "Romance", "Sci-Fi", "Television", "Thriller"
     };
 
@@ -39,11 +40,32 @@ public class TabFragment2 extends ListFragment {
 
         return view;
     }
+
+    @Override
+    public void onStart() {
+
+        super.onStart();
+        listView = getListView();
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice, GENRES2);
+        setListAdapter(adapter);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        btnlistadd2=(Button)getActivity().findViewById(R.id.btnlistadd2);
+        btnlistadd2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getActivity(),ListActivity.class);
+                startActivity(intent);
+                getActivity().finish();
+            }
+        });
+
+
+    }
     public void onListItemClick(ListView parent, View v,
                                 int position, long id)
     {
         boolean checked = listView.isItemChecked(position);
-        checkedMap.put(position,checked);
+        checkedMap2.put(position,checked);
 
 
         if(checked==true){
@@ -57,18 +79,5 @@ public class TabFragment2 extends ListFragment {
         }
 
     }
-    @Override
-    public void onStart() {
-
-        super.onStart();
-        listView = getListView();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getBaseContext(), android.R.layout.simple_list_item_multiple_choice, GENRES2);
-        setListAdapter(adapter);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-
-
-
-    }
-
 
 }
