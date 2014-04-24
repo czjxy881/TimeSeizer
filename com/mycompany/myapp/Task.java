@@ -4,11 +4,12 @@ public class Task{
     protected int RunnerID=-1;
 	protected String Name=null;
 	protected int ID=-1;
-    protected String BeginTime=null;
 	protected int ExpectNum=0;
 	protected String ExpectDate=null;
 	protected String NoteString=null;
     protected  int Priority;
+
+    boolean b=false;
 	
 	public String getName() {
 		return Name;
@@ -40,10 +41,9 @@ public class Task{
     }
 	
 	
-	public void set(String Name,int ID,String BeginTime,int ExpectNum,String ExpectDate,String NoteString,int RunnerID,int Priority){
+	public void set(String Name,int ID,int ExpectNum,String ExpectDate,String NoteString,int RunnerID,int Priority){
 		this.Name=Name;	
 		this.ID=ID;
-        this.BeginTime=BeginTime;
 		this.ExpectNum=ExpectNum;
 		this.ExpectDate=ExpectDate;
 		this.NoteString=NoteString;
@@ -52,6 +52,22 @@ public class Task{
 	}
 	
 	public String get(){
-		return "'"+Name+"',"+ID+",'"+NoteString+"':"+ID+",'"+BeginTime+"',"+ExpectNum+",'"+ExpectDate+"':"+RunnerID+":"+Priority;
+		return "'"+Name+"',"+ID+",'"+NoteString+"':"+ID+":"+ExpectNum+",'"+ExpectDate+"':"+RunnerID+":"+Priority;
 	}
+
+    /**
+     * infrom current action(add new task or get existing task)
+     * @param b
+     */
+    public void isNewPlan(boolean b){this.b=b;}
+
+    //null:because ID/RunnerID has autoincrement.
+    public String getForIDList(){
+       return  "'"+Name+"',"+ID+",'"+NoteString+"'";
+    }
+
+    public String getForPlanListNoState(){
+        return (b==true? "null,"+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority
+                : RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority);
+    }
 }

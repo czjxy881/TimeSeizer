@@ -1,181 +1,208 @@
 package com.myapplication8.app.Back;
 
 import android.content.Context;
-import android.util.Log;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
 
 public class TaskView {
+    private static TaskView taskView=null;
 	private int CurrentID;
-	private int RunnerID;
 	Date date=new Date();
-    FindDb db=null;
-
-	public TaskView(Context context) {
-        db=new FindDb(context);
-		RunnerID=db.queryRunnerID();
-		CurrentID=db.queryID();
-	}
-	
-	/**????????????Task??//
-	 * 
-	 * @param Day ????
-	 * @return Vector<Task>
-	 */
-	public Vector<Task> getListByDay(String Day){
-		Vector<Task> vector=db.FindTaskByDay(Task.class,Day);
-		return vector;
-	}
-	
-	
-	
-	/**????????????????????Task??????????????//
-	 * 
-	 * @param kind 0-7
-	 * 			0	Name ASC
-				1	Name DESC
-		 		2	ID ASC
-				3	ID DESC
-				4	ExpectNum ASC
-				5	ExpectNum DESC
-				6	ExpectDate ASC
-				7	ExpectDate DESC
-	 * @return  Vector<Task>
-	 */
-	public Vector<Task> getListByOrder(int kind){
-		Vector<Task> vector=db.FindTaskByStyle(Task.class,kind);
-		return vector;
-	}
-	
-	/**??????????????????//
-	 * 
-	 * @param a Task????
-	 */
-	public void addTask(Task a){
-		String[] strings=a.get().split(":");
-       // "'"+Name+"',"+ID+",'"+NoteString+"':"+ID+",'"+BeginTime+"',"+ExpectNum+",'"+ExpectDate+"':"+RunnerID+":"+Priority;
-		db.updateIDList(strings[0]);
-		db.updatePlanList(strings[2]+","+strings[1]+","+strings[3],0);
-		//RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectTimeString+"',"+priority
-		CurrentID++;
-		RunnerID++;
-	}
-	
-	/**??????????????????????//
-	 * 
-	 * @param a ????????
-	 */
-	public boolean addPeriodTask(PeroidTask a,int kind){
-		String[] strings=a.get().split(":");
-		if(kind==0){//ID new
-			db.updateIDList(strings[0]);
-			db.updatePlanList(strings[1]+","+strings[3]+","+strings[4],0);
-			db.updatePeroidList(strings[2]);
-			CurrentID++;
-			RunnerID++;
-			return true;
-		}
-		else if(kind==1){//ID exist
-			db.updatePlanList(strings[1]+","+strings[3]+","+strings[4],0);
-			db.updatePeroidList(strings[2]);
-			RunnerID++;
-			return true;
-		}
-		else return false;
-	}
-    public void delTask(int RunnerID){
-        PeroidTask peroidTask=db.FindOnePeroidTask(PeroidTask.class,RunnerID);
-        if(peroidTask==null){
-            db.sql("Delete from PlanList where RunnerID="+RunnerID);
+    InitDb db=null;
+    /**
+     *     get single instance,if null ,this method will create the instance ,
+     *     if not ,this method will return the existed instance
+     */
+    public static TaskView getInstance(Context context){
+        if(taskView==null){
+            taskView=new TaskView(context);
+            return taskView;
         }
         else{
-            DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-            Calendar cal= Calendar.getInstance();
-            cal.setTime(new Date());
-            cal.add(Calendar.DATE, peroidTask.getKind());
-            String newDay=df.format(cal.getTime());
-            peroidTask.setExpectDate(newDay);
-            String s= peroidTask.get();
-            String[] spilt=s.split(":");
-            //"'"+Name+"',"+ID+",'"+NoteString+"':"+RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"':"+ID+","+Kind+":'"+BeginTime+"':"+Priority;
-            //RunnerID+","+ID+",'"+BeginTimeString+"',"+ExpectNum+",'"+ExpectDate+"',"+priority+","+State
-            db.sql("replace into PlanList(RunnerID,ID,ExpectNum,ExpectDate,BeginTime,Priority,State) values("+spilt[1]+","+spilt[3]+","+0+")");
+            return taskView;
         }
     }
 
-	public void delPeroid(int ID){
-        db.sql("Delete from PeroidList where ID="+ID);
+    /**
+     * *constructed function*
+     * @param context
+     */
+	private TaskView(Context context) {
+        db= InitDb.getInstance(context);
+		CurrentID=db.queryDb.queryID();
+	}
+
+	/**
+	 * get Task list depend on day
+	 * @param Day centain date
+	 * @return Vector<Task>
+	 */
+
+	public Vector<Task> getListByDay(String Day){return db.queryDb.FindTaskByDay(Day);}
+
+    /**
+     * get today Task list
+     * *
+     * @return
+     */
+    public Vector<Task> getTodayOptionalTask(){ return getListByDay(db.DAY); }
+
+    /**
+     *get the available ID
+     * @return ID
+     */
+    public int getCurrentID(){
+        return CurrentID;
     }
-	/**????????????????????//
-	 * 
+
+
+	/**
+	 *add Task to the sql
+	 */
+	public void addTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Priority){
+        Task task = new Task();
+        int RunnerID=-1;//no need
+        task.set(Name, CurrentID,ExpectNum, ExpectDate, NoteString,RunnerID, Priority);
+        String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
+        task.isNewPlan(true);
+		db.updateDb.updateIDList(task.getForIDList());
+		db.updateDb.updatePlanList(task.getForPlanListNoState()+init,0);
+		CurrentID++;
+	}
+
+    /**
+     * set a task to today list
+     * @param task
+     */
+    public void setTask(Task task){
+        String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
+        task.isNewPlan(true);
+        db.updateDb.updatePlanList(task.getForPlanListNoState()+init, 0);
+    }
+	/**
+	 * Add PeroidTask
+	 * @param
+	 */
+    public PeroidTask addPeroidTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
+            int RunnerID=-1;//no need
+            PeroidTask pTask=new PeroidTask();
+            pTask.isNewPlan(true);
+            pTask.set(RunnerID,Name, CurrentID,ExpectNum, ExpectDate,NoteString, Kind,Priority);
+            addPeriodTaskToLists(pTask);
+            return pTask;
+    }
+
+    /**
+     * Set Task as PeroidTask
+     * @param RunnerID
+     * @param ExpectNum
+     * @param ExpectDate
+     * @param Kind
+     * @param Priority
+     * @param Note
+     * @return
+     */
+    public boolean setPeroidTask(int RunnerID,int ExpectNum,String ExpectDate,long Kind,int Priority,String Note){
+        Task task=db.queryDb.FindTaskByRunnerID(RunnerID);
+        if(task!=null){
+            PeroidTask pTask=new PeroidTask();
+            pTask.set(RunnerID,task.getName(),task.getID(),ExpectNum,ExpectDate,Note,Kind,Priority);
+            sedPeriodTaskToLists(pTask);
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Help to add PeroidTask to sql database
+     * @param a
+     */
+    private void addPeriodTaskToLists(PeroidTask a){
+        String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
+        db.updateDb.updateIDList(a.getForIDList());
+        //1:infrom that Task's ID is a new ID,will be ingored by InitDb.tidePlanTask
+        db.updateDb.updatePlanList(a.getForPlanListNoState()+init,1);
+        db.updateDb.updatePeroidList(a.getForPeroidList());
+        CurrentID++;
+    }
+
+    /**
+     * Help to set Task as PeroidTask to sql database
+     * @param peroidTask
+     */
+    private void sedPeriodTaskToLists(PeroidTask peroidTask){
+        String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
+        db.updateDb.updatePeroidList(peroidTask.getForPeroidList());
+    }
+
+    /**
+     * Delete Task
+     * @param RunnerID
+     * @param ID
+     */
+    public void delTask(int RunnerID,int ID){
+        db.updateDb.delTask(RunnerID,ID);
+    }
+
+    /**
+     * Delete the Peroid feature from Task
+     * @param ID
+     */
+	public void delPeroid(int ID){
+        db.updateDb.delPeroid(ID);
+    }
+
+	/**
+	 *  get the list of PeroidTask
 	 * @return Vector<PeroidTask>
 	 */
-	public Vector<PeroidTask> getPeriodTask(){
-		Vector<PeroidTask> vector=db.FindPeroidTask(PeroidTask.class);
-		return vector;
-	}
-	
-	/**????????????ID//
-	 * 
-	 * @return ID
-	 */
-	public int getCurrentID(){
-		return CurrentID;
-	}
-	public int getRunnerID(){return RunnerID;}
-	/**??????????????????????//
-	 * 
-	 * @return Vector<Task>
-	 */
-	public Vector<Task> getTodayOptionalTask(){
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
-		Vector<Task> vector=getListByDay(df.format(date));
-        Log.e("getTodayOptionalTask", vector.size() + " "+df.format(date));
-		return vector;
-	}
-	
-	/**??????????????//
-	 * 
-	 * @return Vector<Task>
-	 */
-	public Vector<IDList> getAllList(){
-		return db.FindIDList(IDList.class);
-	}
-	public IDList getIDListByID(int ID){return db.FindIDListByID(IDList.class,ID);}
-	/**????????ID??????????????//
-	 * 
+	public Vector<PeroidTask> getPeriodTask(){return db.queryDb.FindPeroidTaskByToday();}
+
+    /**
+     *  get the list of Task order by sort type
+     * @param kind:KindEnum  type:enum
+     *            Name_ASC(0),Name_DESC(1),ID_ASC(2),ID_DESC(3),ExpectNum_ASC(4),
+    ExpectNum_DESC(5),ExpectDate_ASC(6),ExpectDate_DESC(7);
+     * @return
+     */
+    public Vector<Task> getListByOrder(KindEnum kind){ return db.queryDb.FindTaskByStyle(kind);}
+
+    /**
+     * get the list of Task
+     * @param kind
+     * @return
+     */
+    public Vector<Task> getAllList(KindEnum kind){return db.queryDb.FindTaskByStyle(KindEnum.NULL);}
+	/**
+	 *  get the list of Task according to ID
 	 * @param id ????ID
 	 * @return Vector<Task>
 	 */
 	public Vector<Task> getTaskById(int id){
-		return db.FindTaskByID(Task.class, id);
-	}
-	
-	/**????????ID??????????????????//
-	 * 
-	 * @param id ????ID
-	 * @return Vector<Task>
-	 */
-	public Vector<PeroidTask> getPeriodTaskById(int id){
-		return db.FindPeroidTaskByID(PeroidTask.class, id);
-	}
-    public Task getTaskByRunnerId(int RunnerID) {
-        return db.FindTaskByRunnerID(Task.class, RunnerID);
-    }
-	/**????????????//
-	 * 
-	 * @param task ????
-	 */
-	public void setTask(Task task){
-		String[] strings=task.get().split(":");	
-		db.updatePlanList(strings[2]+","+strings[1]+","+strings[3],0);
-		RunnerID++;
+		return db.queryDb.FindTaskByID(id);
 	}
 
+    /**
+     * get Task according to RunnerID
+     * @param RunnerID
+     * @return
+     */
+    public Task getTaskByRunnerId(int RunnerID) { return db.queryDb.FindTaskByRunnerID(RunnerID);}
+	/**
+	 *  get the list of PeroidTask according to ID
+	 * @return Vector<Task>
+	 */
+	public Vector<PeroidTask> getPeriodTaskById(int id){return db.queryDb.FindPeroidTaskByID(id);}
+    /**
+     *  get the list of finish Task according to Day
+     * @return Vector<Task>
+     */
+    public Vector<TodayTask> getFinishTaskByDay(String Day){return db.queryDb.FindFinshTaskByDay(Day);}
+    /**
+     *  get the list of finish Task
+     * @return Vector<Task>
+     */
+    public Vector<TodayTask> getFinishTask(){return db.queryDb.FindFinshTask();}
 
 }

@@ -1,28 +1,25 @@
 package com.myapplication8.app.Back;
 
+import android.content.Context;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Vector;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-
 public class InnerforUI {
-    static InnerforUI in=null;
+    private static InnerforUI in=null;
+    private static InitDb db=null;
     public String DAY=null;
     public String TIME=null;
-    Date date=new Date();
-    TodayList todayList=null;
-    TaskView taskView=null;
-    Today today=null;
-    Timer timer=new Timer();
+    private TodayList todayList=null;
+    private TaskView taskView=null;
+    private Today today=null;
+    private Timer timer=new Timer();
+    private Vector<Task> taskVector;
+    private Vector<TodayTask> todayTaskVector;
+    private Vector<PeroidTask> peroidTaskVector;
+    private static int UNDEFINE=-1;
+    private static int NO_NEED=-2;
 
-    static FindDb db=null;
-    int sign=0;//????todayList??????
-    //??????
+    //get single instance
     public static InnerforUI getInstance(Context context){
         if(in==null){
             in=new InnerforUI(context);
@@ -31,35 +28,25 @@ public class InnerforUI {
             return in;
         }
     }
-	public InnerforUI(Context context){
-        taskView=new TaskView(context);
+	private InnerforUI(Context context){
+        taskView=TaskView.getInstance(context);
         db=taskView.db;
 		todayList=new TodayList(taskView);
-        Log.e("InnerforUI","initialToday");
-		today=initialToday(context,db);
-        DAY=db.day;
+		today=initialToday(context);
+        DAY=db.DAY;
 	}
-	
-	//??????_Today          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	private Today initialToday(Context context,FindDb db) {
-		Today today=new Today(context,db);
-        Log.e("initialToday","new Today()");
-		today.setWeekDay(date.getDay());
-        DateFormat df=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        //YYYY-MM-DD HH:MM:SS
-		//date.getYear()+"-"+date.getMonth()+"-"+date.getDate()+" "+date.getHours()+":"+date.getMinutes()+":"+
-		TIME=df.format(date);
-        Log.e("InnerforUI/initialToday",TIME+" today.getWorkTime--"+today.getWorkTime());
-		today.setStartTime(TIME);
 
-		//????????
+	//initial Today          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	private Today initialToday(Context context) {
+		Today today=new Today(db);
+		TIME=db.TIME;
+		today.setStartTime(TIME);
 		today.setLastingTimes(0);
-		today.setActualNum(0);
 		today.setSummary(null);
 		return today;
 	}
-	
-	
+
+
 	//when set today information..          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 	public void setTodayRestTime(int RestTime){
 		today.setRestTime(RestTime);
@@ -72,173 +59,157 @@ public class InnerforUI {
 	public void setTodayLongRestTime(int LongRestTIme){
 		today.setLongRestTime(LongRestTIme);
 	}
-	//when click add task ..	
+	//when click add task ..
 	//1.new task..    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-	public boolean clickAddTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Priority){
-        if(notExistName(Name)) {
-            int ID = taskView.getCurrentID();
-            int RunnerID = taskView.getRunnerID();
-            if (notExistName(Name)) {
-                Task task = new Task();
-                task.set(Name, ID, null, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
-                taskView.addTask(task);
-                return true;
-            }
-            return false;
-        }
-        else return false;
+
+    /**
+     *task will add into Task list,which include data from ui
+     * @param Name
+     * @param ExpectNum
+     * @param ExpectDate
+     * @param NoteString
+     * @param Priority
+     */
+	public void clickAddTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Priority){
+            int ID =UNDEFINE;
+            int RunnerID =NO_NEED;
+            taskView.addTask(Name,ExpectNum,ExpectDate,NoteString,Priority);
+            todayList.setTodayList();////////////////////
 	}
-	//2.exist ID..         ????????????????????????????????????????????????????????????????????????????????
-	public boolean clickSetTask(int ID,int ExpectNum,String ExpectDate,int Priority){
-		if(noExistTaskID(ID)==false){
-			Task task=new Task();
-            int RunnerID=taskView.getRunnerID();
-			IDList idList=db.FindIDListByID(IDList.class, ID);
-			String[] s=idList.get().split(",");
-			task.set(s[1], ID,null, ExpectNum, ExpectDate, s[2],RunnerID,Priority);
-			taskView.addTask(task);
-			return true;
-		}
-		return false;
-	}                       
-    public boolean clickDeletePeroid(int ID){
-        if(noExistPeroidID(ID)==false){
-            taskView.delPeroid(ID);
-            return true;
-        }
-        return false;
-    }
-    public boolean clickDeleteTask(int RunnerID){
-        if(noExistTaskRunnerID(RunnerID)==false){
-            taskView.delTask(RunnerID);
-            return true;
-        }
-        return false;
+
+    /**
+     * Delete Task from PeroidList
+     * when delete,location infromed by ui
+     * @param location :item's  of peroidTask List
+     */
+    public void clickDeletePeroid(int location){
+        int ID=peroidTaskVector.get(location).getID();
+        taskView.delPeroid(ID);
     }
 
-    private boolean noExistTaskRunnerID(int RunnerID) {
-        Task task=taskView.getTaskByRunnerId(RunnerID);
-        if(task==null)return true;
-        return false;
+    /**
+     * Delete Task from Today list,requiring Task's location in todayTaskVector
+     * @param location
+     */
+    public void clickDeleteTodayTask(int location){
+        int RunnerID=todayTaskVector.get(location).getRunnerID();
+        int ID=todayTaskVector.get(location).getID();
+        taskView.delTask(RunnerID,ID);
+    }
+    /**
+     * Delete Task from Task list,requiring Task's location in taskVector
+     * @param location
+     */
+    public void clickDeleteTask(int location){
+        int RunnerID=taskVector.get(location).getRunnerID();
+        int ID=taskVector.get(location).getID();
+        taskView.delTask(RunnerID,ID);
     }
 
-    //when click add peroidtask ..
-		//1.new task ..
-	public boolean clickAddPeroidNewTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
-		if(notExistName(Name)){
-			int ID=taskView.getCurrentID();
-            int RunnerID=taskView.getRunnerID();
-			PeroidTask pTask=new PeroidTask();
-			pTask.set(RunnerID,Name, ID,null, ExpectNum, ExpectDate,NoteString, Kind,Priority);
-			taskView.addPeriodTask(pTask,0);
-			return true;
-		}
-		return false;
-	}
-
-
-		//2.exist ID ..
-	public boolean clickSetPeroidTask(int ID,int ExpectNum,String ExpectDate,int Kind,int Priority,String Note){
-
-			IDList idList=taskView.getIDListByID(ID);
-        if(idList!=null){
-			PeroidTask pTask=new PeroidTask();
-			pTask.set(taskView.getRunnerID(),idList.getName(),ID,null,ExpectNum,ExpectDate,Note,Kind,Priority);
-			taskView.addPeriodTask(pTask,1);
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean noExistPeroidID(int ID) {
-		Vector<PeroidTask> vector=taskView.getPeriodTaskById(ID);
-		if(vector.isEmpty())return false;
-		return true;
-	}
-    private boolean noExistTaskID(int ID) {
-        Vector<Task> vector=taskView.getTaskById(ID);
-        if(vector.isEmpty())return false;
-        return true;
+    /**
+     *    Add new peroidtask ..
+      */
+	public void clickAddPeroidNewTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
+            PeroidTask peroidTask=taskView.addPeroidTask(Name, ExpectNum, ExpectDate, NoteString, Kind, Priority);
+            peroidTaskVector.add(peroidTask);
     }
-
-	private boolean notExistName(String Name) {
-		if(db.queryNameExist(Name))return false;
-		return true;
-	}
-	
-	//when search IDList/Task/PeroidTask
-	public Vector<IDList> showIDList(){
-		Vector<IDList> vector=taskView.getAllList();
-		return vector;
-	}
-	public Vector<Task> showTaskByOrder(int Kind){
-		Vector<Task> vector=taskView.getListByOrder(Kind);
-		return vector;
+    /**
+     *  Change normal Task to PeroidTask,requiring Task's location in taskVector and the cycle type
+     *   location
+     *   kind
+     */
+	public boolean clickSetPeroidTask(int location,long Kind){
+            Task task=taskVector.get(location);
+			return taskView.setPeroidTask(task.getRunnerID(),task.getExpectNum(), task.getExpectDate(),Kind,1,task.getNoteString());
 	}
 
-	//if you want to getPeroidTask, you can just set ID a negative number 
-	public Vector<PeroidTask> showPeroidTask(int ID){
-		Vector<PeroidTask> vector = null;
-		if(ID<=-1){
-			vector=taskView.getPeriodTask();
-		}
-		else {
-			vector=taskView.getPeriodTaskById(ID);
-		}
-		return vector;
-	}
-	
-	//when search TodayList ..
+    /**
+     * old Task add to Today
+     * @param location
+     */
+    public void clickAddToToday(int location){
+        Task task=taskVector.get(location);
+        task.setExpectDate(DAY);
+        taskView.setTask(task);
+        todayList.setTodayList();
+    }
+    /**
+     * Show Task ,and save in the taskVector at the same time.
+     * @return
+     */
+	public Vector<Task> showTask(){return (taskVector=taskView.getAllList(KindEnum.NULL));}
+
+    /**
+     * Show Task depend on type
+     * KindEnum :Enum
+    Name_ASC(0),Name_DESC(1),ID_ASC(2),ID_DESC(3),ExpectNum_ASC(4),
+    ExpectNum_DESC(5),ExpectDate_ASC(6),ExpectDate_DESC(7);
+    **/
+    public Vector<Task> showTaskByOrder(KindEnum Kind){return (taskVector=taskView.getListByOrder(Kind));}
+
+    /**
+     * Show PeroidTask,and save in the peroidTaskVector at the same time.
+     * @return
+     */
+	public Vector<PeroidTask> showPeroidTask(){return (peroidTaskVector=taskView.getPeriodTask());}
+
+    /**
+     *     Show TodayList ,and save in the todayTaskVector at the same time
+     */
 	public Vector<TodayTask> showTodayList(){
 		TodayList todayList=new TodayList(taskView);
-		setTodayList();
-		return todayList.getTodayList();
+		return (todayTaskVector=todayList.getTodayList());
 	}
 
-	public void setTodayList(){
-		todayList.setTodayList();
-	}
-	
-	//when start,retrun ID,if you want to setNextTask, you can just set ID a negative number 
-	public int start(int ID){
-		setTodayList();
-		TodayTask todayTask=null;
-		if(ID<=-1){
-			todayTask=timer.setNextTask(todayList);			
-		}
-		else if(ID>=0){
-			todayTask=timer.setTaskByID(ID, todayList);
-		}
-			timer.start();
-		if(todayTask!=null){
-			ID=todayTask.getID();
-			return ID;
-		}
-		else{
-			return -1;
-		}
-	}
-	
-	//when abort
-	public void abort(){
-		timer.stop();
-	}
-	
-	
-	//when finish ????not operated by user
-	//1.if all finish(start return -1),set Summary..
-	public void setSummary(String Summary){
-		today.setSummary(Summary);
-		today.saveDay(this);
-	}
-	//2.if not ,get id from start
-	public void writeTodayTask(){
-		timer.finish();
-        today.setActualNum(1);
-		//ActualNum   (+1)
-	}
-	//when show Today Information
-	public Today getToday(){
-		return today;
-	}
+    /**
+     *  show today finish-task list,and save in the todayFinishVector at the same time
+     * @return
+     */
+    public Vector<TodayTask> showTodayFinish(){
+        StateEnum State=StateEnum.FINISH;
+        return todayList.getTaskByState(State);
+    }
+    /**
+     * show finsh-task list depend on definite day,and ave in the
+     */
+    public Vector<TodayTask> showDayFinish(String Day){
+        return taskView.getFinishTaskByDay(Day);
+    }
+    public Vector<TodayTask> showFinish(){
+        return taskView.getFinishTask();
+    }
+
+    /**
+     * set TodayList
+     * @param taskView
+     */
+	public void setTodayList(TaskView taskView){todayList.setTodayList();}
+
+    /**
+     * set next Task
+     */
+    public void setNextTask(){timer.setNextTask(todayList);}
+
+    /**
+     * set definite Task as next one
+     * @param ID
+     */
+    public void setNextTaskByID(int ID){timer.setTaskByID(ID,todayList);}
+
+    /**
+     * start Task
+     * @param ID
+     */
+    public void start(int ID){timer.start();}
+
+    /**
+     * abort current Task
+     */
+	public void abort(){timer.stop();}
+
+    /**
+     *     show Today Information
+     */
+	public Today getToday(){return today;}
+
 }

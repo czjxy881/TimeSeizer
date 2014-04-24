@@ -1,5 +1,6 @@
 package com.myapplication8.app.Back;
 
+
 import java.util.Vector;
 
 
@@ -8,31 +9,41 @@ public class TodayList {
 	private Vector<TodayTask> vector=null;
 	private int taskIndex=0;
 	private int vectorLength=-1;
-	
+
 	public TodayList(TaskView taskView){
-		this.taskView = taskView;
+        this.taskView=taskView;
         vector=new Vector<TodayTask>();
 		setTodayList();
 	}
 	//
 	public TodayTask getNextTask(){
 		TodayTask t=null;
-		if(vector.get(taskIndex).getState()==2)
+		while(vector.get(taskIndex).getState()== StateEnum.FINISH.getNum())
 			taskIndex++;
 		if(vectorLength>0&&taskIndex<vectorLength){
 			t=vector.get(taskIndex);
 		}
 		return t;
 	}
-	//finish?
+
 	public TodayTask getTaskByID(int ID){
 		int i=0;
 		for(;i<vectorLength;i++)
-			if(vector.get(i).getID()==ID&&vector.get(i).getState()==0)
+			if(vector.get(i).getID()==ID&&vector.get(i).getState()== StateEnum.READY.getNum())
 				return vector.get(i);
 		return null;
 	}
-	
+    public Vector<TodayTask> getTaskByState(StateEnum state){
+        Vector<TodayTask> vtemp=new Vector<TodayTask>();
+        TodayTask task=null;
+        int i=0;
+        for(;i<vectorLength;i++) {
+            task = vector.get(i);
+            if (task.getState()==state.getNum())
+                vtemp.add(task);
+        }
+        return vtemp;
+    }
 	//
 	public Vector<TodayTask> getTodayList(){
 		return vector;
@@ -44,7 +55,7 @@ public class TodayList {
 			for(int i=0;i<vtask.size();i++){
 				task=vtask.get(i);
                 todayTask=new TodayTask();
-                todayTask.set(0,0,0,i,task.Name,task.ID, task.ExpectNum, task.ExpectDate,0,task.NoteString);
+                todayTask.set(0,0,0,task.getRunnerID(),task.Name,task.ID, task.ExpectNum, task.ExpectDate,0,task.NoteString);
 				vector.add(todayTask);
 			}
 	}
