@@ -1,0 +1,24 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.app.MainActivity">
+    <com.example.app.Note.DateLine
+        android:textColor="#ffff0000"
+        android:gravity="center"
+        android:id="@+id/editdate"
+        android:layout_width="300.0dip"
+        android:layout_height="30.0dip"
+        android:layout_centerHorizontal="true" />
+    <com.example.app.Note.DrawLine
+        android:textSize="18.0sp"
+        android:textColor="#ff000000"
+        android:gravity="top"
+        android:id="@+id/edittexttwo"
+        android:scrollbars="vertical"
+        android:layout_width="300.0dip"
+        android:layout_height="100.0dip"
+        android:layout_below="@id/editdate"
+        android:layout_centerHorizontal="true"
+        android:lineSpacingExtra="3.0dip" />
+</RelativeLayout>

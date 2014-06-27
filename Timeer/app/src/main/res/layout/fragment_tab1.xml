@@ -1,0 +1,28 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.app.TabFragment1">
+
+
+    <ListView
+        android:id="@id/android:list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:drawSelectorOnTop="false">
+
+    </ListView>
+
+    <Button
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="点我添加"
+        android:layout_weight="1"
+        android:textColor="#ffffff"
+        android:background="#ff11105e"
+        android:id="@+id/btnlistadd1"
+        android:layout_gravity="center_horizontal|bottom" />
+
+
+</FrameLayout>
