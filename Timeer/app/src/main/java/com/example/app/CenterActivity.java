@@ -6,6 +6,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,14 +29,12 @@ import java.util.Date;
  * Created by xxx on 14-6-18.
  */
 public class CenterActivity extends Activity implements View.OnClickListener {
-    private Button btnnowworke;
-    private Button btn_start;
+    private Button ReturnButton;
+    private Button StartButton;
     private Bundle extra;
     private String msg;
-    private TextView tvnowworke;
-    private TextView breakTextView;
+    private TextView CurrentWorkText;
     private CircleProgressBar breakProgressBar;
-    private Button returnbButton;
     private int rest = 0;
     private TimeCount time;
     private int timeSpan;
@@ -57,48 +57,56 @@ public class CenterActivity extends Activity implements View.OnClickListener {
             Bundle extra = getIntent().getExtras();
             msg = extra.getString("Name");
         }catch (Exception e){
-
+            msg="自由";
         }
-
+        GradientDrawable drawable = new GradientDrawable();
+        drawable.setShape(GradientDrawable.RECTANGLE); // 画框
+        drawable.setStroke(1, Color.rgb(185, 185, 185)); // 边框粗细及颜色
 
         setContentView(R.layout.fragment_center);
-        tvnowworke = (TextView) findViewById(R.id.tvnowworke);
-        btn_start = (Button) findViewById(R.id.button_start);
-
+        StartButton = (Button) findViewById(R.id.StartButton);
+        ReturnButton = (Button) findViewById(R.id.ReturnButton);
+        CurrentWorkText=(TextView)findViewById(R.id.CurrentWorkText);
         breakProgressBar = (CircleProgressBar) findViewById(R.id.breakBar);
+       // StartButton.setBackground(drawable);
+       // ReturnButton.setBackground(drawable);
 
-        returnbButton = (Button) findViewById(R.id.ReturnButton);
+
+
         rest = 1;
         timeSpan = rest * 60 * 1000;
         //returnbButton.setOnClickListener(this);
         time = new TimeCount(timeSpan, 50);// 构造CountDownTimer对象
-        tvnowworke.setText("当前任务为" + msg);
+        CurrentWorkText.setText("目标任务:" + msg);
         //设置添加临时任务的弹窗
 
-        btn_start.setOnClickListener(new View.OnClickListener() {
+        StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 time.start();
-                btn_start.setVisibility(View.GONE);
-                returnbButton.setVisibility(View.VISIBLE);
+                StartButton.setVisibility(View.GONE);
+                ReturnButton.setVisibility(View.VISIBLE);
+                getActionBar().hide();
             }
         });
-        returnbButton.setOnClickListener(new View.OnClickListener() {
+        ReturnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 breakProgressBar.setProgress(0);
-                returnbButton.setVisibility(View.GONE);
-                btn_start.setVisibility(View.VISIBLE);
+                ReturnButton.setVisibility(View.GONE);
+                StartButton.setVisibility(View.VISIBLE);
                 time.cancel();
-                finish();
-                //time.onFinish();
-                Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
-
                 if (player != null) {
                     player.stop();
                     player.release();
                 }
+                finish();
+                //time.onFinish();
+                if(ReturnButton.getText()!="返回") {
+                    Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
+                }
+
 
             }
         });
@@ -149,7 +157,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
             percentage = (nowprogress * 100.0) / alltime;
             breakProgressBar.setTextnotRefresh(string);
             breakProgressBar.setProgressNotInUiThread(percentage);
-            tvnowworke.setText("已开始" + new SimpleDateFormat("mm:ss").format(new Date(
+            CurrentWorkText.setText("已开始" + new SimpleDateFormat("mm:ss").format(new Date(
                     nowprogress+1000)) + "秒");
 
         }
@@ -161,9 +169,9 @@ public class CenterActivity extends Activity implements View.OnClickListener {
         @Override
         public void onFinish() {
             // TODO 自动删除,返回停止音乐
-            breakProgressBar.setProgress(0);
-            returnbButton.setVisibility(View.GONE);
-            btn_start.setVisibility(View.VISIBLE);
+           // breakProgressBar.setProgress(0);
+            ReturnButton.setText("返回");
+          //  StartButton.setVisibility(View.VISIBLE);
             if (showShake) {
                 //开启震动
                 vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
@@ -173,26 +181,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
 
             //开启铃声
             player = MediaPlayer.create(CenterActivity.this, R.raw.aa);
-            Uri uri = Uri.parse(showRing);
 
-                /*try {
-                    player.setDataSource(getActivity(), uri);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                final AudioManager audioManager = (AudioManager) getActivity()
-                        .getSystemService(Context.AUDIO_SERVICE);
-                if (audioManager.getStreamVolume(AudioManager.STREAM_RING) != 0) {
-                    player.setAudioStreamType(AudioManager.STREAM_RING);
-                    player.setLooping(false);
-                    try {
-                        player.prepare();
-                    } catch (Exception e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    player.start();
-                }*/
             player.seekTo(0);
             player.start();
         }

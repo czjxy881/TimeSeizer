@@ -65,7 +65,7 @@ public class CircleProgressBar extends View {
         textPaint.setSubpixelText(true);
         textPaint.setTextAlign(Paint.Align.LEFT);
         textPaint.setTextSize(textsize);
-        textPaint.setShadowLayer(5,8,8,Color.rgb(185,185,185));
+        textPaint.setShadowLayer(5,2,2,Color.rgb(185,185,185));
         int R=0,G=0,B=0;
         R=(int)(200 * progress / maxProgress);
         textPaint.setColor(Color.rgb(R,G,B));
