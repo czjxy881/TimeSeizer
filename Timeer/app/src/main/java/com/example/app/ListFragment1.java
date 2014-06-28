@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,7 +37,7 @@ import java.util.Vector;
 /**
  * Created by xxx on 14-4-25.
  */
-public class ListFragment1 extends ListFragment {
+public class ListFragment1 extends Fragment {
     public ArrayList<Map<String, Object>> itemList;
     private Button numberButton;
     private View mMainView;

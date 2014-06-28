@@ -3,10 +3,8 @@ package com.example.app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,7 +26,7 @@ import java.util.Vector;
 /**
  * Created by xxx on 14-6-27.
  */
-public class TFragment extends Fragment {
+public class TFragment extends Fragment  {
     private Button btnadd;
     private Button numberButton;
     private View mMainView;
@@ -40,6 +38,7 @@ public class TFragment extends Fragment {
     RelativeLayout layout ;
     TextView textView ;
     EditText editText ;
+    EditText beizhutext;
     Date getDate ;
     String date ;
 
@@ -59,7 +58,8 @@ public TFragment(){
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mMainView = inflater.inflate(R.layout.listfragment_one, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
-
+        this.editText=((EditText)mMainView.findViewById(R.id.edittext));
+        this.beizhutext=((EditText)mMainView.findViewById(R.id.beizhutext));
         this.numberButton = ((Button) mMainView.findViewById(R.id.numberbtn));
         this.listView = ((ListView) mMainView.findViewById(R.id.listview));
         this.adapter = new NotepadAdapter(getActivity(),tFragment,presidents);
@@ -73,19 +73,22 @@ public TFragment(){
                 getDate = new Date();
                 date = getDate.getDate();
                 textView.setText(date);
-                presidents.add(date);
+
                 new AlertDialog.Builder(getActivity()).setView(layout).setPositiveButton("保存", new DialogInterface.OnClickListener() {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Notepad localNotepad = new Notepad();
-                        String strContent = editText.getText().toString();
-                        if (strContent.equals("")) {
+                        String Name = editText.getText().toString();
+                        if (Name.equals("")) {
                             Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
+                            presidents.add("请输入内容");
                         }
-                        localNotepad.setContent(strContent);
-                        localNotepad.setdata(date);
-
+                        //localNotepad.setContent(strContent);
+                        //localNotepad.setdata(date);
+                        else {
+                            presidents.add(Name);
+                        }
                         showUpdate();
                     }
                 }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -110,6 +113,9 @@ public TFragment(){
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            Intent intent = new Intent(getActivity(),CenterActivity.class);
+            intent.putExtra("Name", presidents.get(i));
+            startActivity(intent);
 
         }
     }
@@ -135,7 +141,7 @@ public TFragment(){
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),TabActivity.class);
                 startActivity(intent);
-                getActivity().finish();
+
             }
         });
     }
@@ -144,6 +150,7 @@ public TFragment(){
         this.adapter = new NotepadAdapter(getActivity(),tFragment,presidents);
         this.listView.setAdapter(this.adapter);
     }
+
 
 
 }

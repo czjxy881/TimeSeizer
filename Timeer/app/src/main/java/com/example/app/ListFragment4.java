@@ -2,17 +2,29 @@ package com.example.app;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
-public class ListFragment4 extends ListFragment {
-    private Button btnadd4;
+import com.example.app.Note.NotepadAdapter2;
+import com.example.app.Note.NotepadAdapter4;
+
+import java.util.Vector;
+
+public class ListFragment4 extends Fragment {
+    private View mMainView;
+    public NotepadAdapter4 adapter4;
+    Vector<String> presidents = new Vector<String>();
+    public ListView listView4;
+    RelativeLayout layout ;
 
     private static ListFragment4 listFragment4 = null;
     public static ListFragment4 getInstance(){
@@ -21,25 +33,17 @@ public class ListFragment4 extends ListFragment {
             return listFragment4;
         }else return listFragment4;
     }
-    String[] presidents = {
-            "Dwight D. Eisenhower",
-            "John F. Kennedy",
-            "Lyndon B. Johnson",
-            "Richard Nixon",
-            "Gerald Ford",
-            "Jimmy Carter",
-            "Ronald Reagan",
-            "George H. W. Bush",
-            "Bill Clinton",
-            "George W. Bush",
-            "Barack Obama"
-    };
+    public ListFragment4(){
+        presidents.add("123");
+        presidents.add("222223");
+        presidents.add("nininini你");
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listfragment_four, container, false);
-        return v;
+
+        return mMainView;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -49,17 +53,24 @@ public class ListFragment4 extends ListFragment {
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, presidents));
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        mMainView = inflater.inflate(R.layout.listfragment_four, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
+
+        this.listView4 = ((ListView) mMainView.findViewById(R.id.listview4));
+        this.adapter4 = new NotepadAdapter4(getActivity(),listFragment4,presidents);
+        this.listView4.setAdapter(this.adapter4);
+
+        this.listView4.setDivider(null);
+        this.listView4.setOnItemClickListener(new ItemClick());
+    }
+    class ItemClick implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        }
     }
 
-    public void onListItemClick(ListView parent, View v,
-                                int position, long id)
-    {
-        Toast.makeText(getActivity(),
-                "You have selected " + presidents[position],
-                Toast.LENGTH_SHORT).show();
-    }
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);

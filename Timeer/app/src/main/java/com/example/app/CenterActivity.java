@@ -27,7 +27,8 @@ import java.util.Date;
 public class CenterActivity extends Activity implements View.OnClickListener {
     private Button btnnowworke;
     private Button btn_start;
-
+    private Bundle extra;
+    private String msg;
     private TextView tvnowworke;
     private TextView breakTextView;
     private CircleProgressBar breakProgressBar;
@@ -42,8 +43,6 @@ public class CenterActivity extends Activity implements View.OnClickListener {
 
     private boolean showShake = true;// 震动
 
-    String[] presidents = {
-            "a","v","cc","aaa","ss","a","v","cc","aaa","ss","a","v","cc","aaa","ss"    };
     //单实例化
     private static CenterFragment centerFragment=null;
     public static CenterFragment getInstance(){
@@ -56,38 +55,23 @@ public class CenterActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Bundle extra=getIntent().getExtras();
+        msg=extra.getString("Name");
+
         setContentView(R.layout.fragment_center);
-        btnnowworke = (Button)findViewById(R.id.btnnowworke);
         tvnowworke = (TextView)findViewById(R.id.tvnowworke);
         btn_start = (Button)findViewById(R.id.button_start);
 
         breakProgressBar = (CircleProgressBar)findViewById(R.id.breakBar);
-        breakTextView = (TextView)findViewById(R.id.breakTxtView);
+
         returnbButton = (Button)findViewById(R.id.ReturnButton);
         rest=1;
         timeSpan = rest*60*1000;
         //returnbButton.setOnClickListener(this);
         time = new TimeCount(timeSpan, 100);// 构造CountDownTimer对象
-
+        tvnowworke.setText("当前任务为"+msg);
         //设置添加临时任务的弹窗
-        btnnowworke.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(CenterActivity.this);
-                        builder.setTitle("添加当前任务");
-                        final TableLayout centerdialog = (TableLayout) getLayoutInflater().inflate(R.layout.centerdialog, null);
-                        builder.setView(centerdialog);
-                        builder.setItems(presidents,new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //TODO::将添加的临时任务信息发送到后台
-                                tvnowworke.setText(presidents[i]);
-                            }
-                        });
-                        builder.create().show();
-                    }
-                }
-        );
+
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,9 +88,10 @@ public class CenterActivity extends Activity implements View.OnClickListener {
                 returnbButton.setVisibility(View.GONE);
                 btn_start.setVisibility(View.VISIBLE);
                 time.cancel();
+                finish();
                 //time.onFinish();
                 Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
-                tvnowworke.setText("任务有待开始");
+
                 if(player!=null){
                     player.stop();
                     player.release();
@@ -141,8 +126,8 @@ public class CenterActivity extends Activity implements View.OnClickListener {
                     millisUntilFinished));
             tvnowworke.setText(string);
             nowprogress = (int)(rest*60-millisUntilFinished/1000);
-            percentage = (nowprogress*100)/(rest*60);
-            breakProgressBar.setProgress((int) percentage);
+            percentage = (nowprogress*100.0)/(rest*60.0);
+            breakProgressBar.setProgress(percentage);
             tvnowworke.setText("请等待" + nowprogress + "秒");
 
         }
@@ -179,7 +164,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
                     try {
                         player.prepare();
                     } catch (Exception e) {
-                        // TODO Auto-generated catch block
+
                         e.printStackTrace();
                     }
                     player.start();

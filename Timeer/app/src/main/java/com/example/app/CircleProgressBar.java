@@ -11,8 +11,8 @@ import android.view.View;
 
 public class CircleProgressBar extends View {
     private int maxProgress = 100;//最大进度
-    private int progress = 0;//当前进度
-    private int progressStrokeWidth = 6;//线宽
+    private double progress = 0;//当前进度
+    private int progressStrokeWidth = 15;//线宽
     // 画圆所在的矩形区域
     RectF oval;
     Paint paint;
@@ -60,7 +60,8 @@ public class CircleProgressBar extends View {
                 + radius, centre + radius);  //用于定义的圆弧的形状和大小的界限
 
         paint.setStyle(Paint.Style.STROKE);
-        canvas.drawArc(oval, -90, 360 * progress / maxProgress, false, paint);  //根据进度画圆弧  绘制白色圆圈，即进度条背景
+        canvas.drawArc(oval, -90, (float)(360 * progress / maxProgress), false, paint);
+        //根据进度画圆弧  绘制白色圆圈，即进度条背景
     }
 
     public int getMaxProgress(){
@@ -71,7 +72,7 @@ public class CircleProgressBar extends View {
         this.maxProgress = maxProgress;
     }
 
-    public void setProgress(int progress){
+    public void setProgress(double progress){
         this.progress = progress;
         this.invalidate();
     }

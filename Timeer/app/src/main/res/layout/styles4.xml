@@ -22,20 +22,4 @@
         android:layout_below="@+id/changedateview"
         android:layout_centerHorizontal="true"
         android:lineSpacingExtra="6.0dip" />
-    <Button android:id="@+id/stylebutton1"
-        android:focusable="false"
-        android:layout_width="30.0dip"
-        android:layout_height="30.0dip"
-        android:layout_marginLeft="50.0dip"
-        android:layout_marginBottom="5.0dip"
-        android:layout_above="@+id/changecontentview"
-        android:layout_alignLeft="@id/changecontentview" />
-    <Button android:id="@+id/stylebutton2"
-        android:focusable="false"
-        android:layout_width="30.0dip"
-        android:layout_height="30.0dip"
-        android:layout_marginRight="10.0dip"
-        android:layout_marginBottom="5.0dip"
-        android:layout_above="@id/changecontentview"
-        android:layout_alignRight="@id/changecontentview" />
-    </RelativeLayout>
+</RelativeLayout>

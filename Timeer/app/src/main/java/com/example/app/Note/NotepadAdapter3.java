@@ -1,11 +1,7 @@
 package com.example.app.Note;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,36 +11,32 @@ import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.example.app.CenterActivity;
+import com.example.app.ListFragment2;
+import com.example.app.ListFragment3;
+import com.example.app.ListFragment4;
 import com.example.app.R;
-import android.app.AlertDialog.Builder;
-import com.example.app.TFragment;
-import java.util.ArrayList;
-import java.util.Map;
+
 import java.util.Vector;
 
-import static android.support.v4.app.ActivityCompat.startActivity;
-
 /**
- * Created by xxx on 14-6-23.
+ * Created by xxx on 14-6-28.
  */
-public class NotepadAdapter extends BaseAdapter {
-
+public class NotepadAdapter3 extends BaseAdapter{
     public Context context;
     public Context context1;
     public Activity activity;
     public LayoutInflater inflater;
     public Vector<String> list;
-    public TFragment tFragment;
+    public ListFragment3 listFragment3;
     public NotepadAdapter adapter;
 
-    public NotepadAdapter(Context context,TFragment tFragment,
-                          Vector<String> list) {
+    public NotepadAdapter3(Context context,ListFragment3 listFragment3,
+                           Vector<String> list) {
 
         this.context = activity;
         this.context1=context;
         this.list = list;
-        this.tFragment=tFragment;
+        this.listFragment3=listFragment3;
         inflater = LayoutInflater.from(context);
     }
 
@@ -90,7 +82,6 @@ public class NotepadAdapter extends BaseAdapter {
         setShow.styleButtonDelete
                 .setOnClickListener(new DeleteButtonListener(arg0));
 
-
         return arg1;
     }
 
@@ -100,8 +91,8 @@ public class NotepadAdapter extends BaseAdapter {
         private int position;
 
         public WriteButtonListener(int position) {
-            this.position = position; 
-            
+            this.position = position;
+
         }
 
 
@@ -135,25 +126,16 @@ public class NotepadAdapter extends BaseAdapter {
 
     }
 
+
     class SetShow {
         public TextViewLine cContentView;
         public TextView cDateView;
         public Button styleButtonWrite;
         public Button styleButtonDelete;
-        public Button styleButtonStart;
+
 
     }
 
-    class SetEdit {
-        public RelativeLayout layout;
-        public Button cancelButton;
-        public String content;
-        public String date;
-        public Date dateNow;
-        public EditText editText;
-        public String id;
-        public Button sureButton;
-        public TextView textView;
-    }
 
 }
+

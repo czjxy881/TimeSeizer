@@ -1,10 +1,7 @@
 package com.example.app.Note;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,35 +13,31 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.app.CenterActivity;
+import com.example.app.ListFragment2;
 import com.example.app.R;
-import android.app.AlertDialog.Builder;
 import com.example.app.TFragment;
-import java.util.ArrayList;
-import java.util.Map;
+
 import java.util.Vector;
 
-import static android.support.v4.app.ActivityCompat.startActivity;
-
 /**
- * Created by xxx on 14-6-23.
+ * Created by xxx on 14-6-28.
  */
-public class NotepadAdapter extends BaseAdapter {
-
+public class NotepadAdapter2 extends BaseAdapter{
     public Context context;
     public Context context1;
     public Activity activity;
     public LayoutInflater inflater;
     public Vector<String> list;
-    public TFragment tFragment;
+    public ListFragment2 listFragment2;
     public NotepadAdapter adapter;
 
-    public NotepadAdapter(Context context,TFragment tFragment,
+    public NotepadAdapter2(Context context,ListFragment2 listFragment2,
                           Vector<String> list) {
 
         this.context = activity;
         this.context1=context;
         this.list = list;
-        this.tFragment=tFragment;
+        this.listFragment2=listFragment2;
         inflater = LayoutInflater.from(context);
     }
 
@@ -100,8 +93,8 @@ public class NotepadAdapter extends BaseAdapter {
         private int position;
 
         public WriteButtonListener(int position) {
-            this.position = position; 
-            
+            this.position = position;
+
         }
 
 
@@ -140,7 +133,6 @@ public class NotepadAdapter extends BaseAdapter {
         public TextView cDateView;
         public Button styleButtonWrite;
         public Button styleButtonDelete;
-        public Button styleButtonStart;
 
     }
 
@@ -155,5 +147,4 @@ public class NotepadAdapter extends BaseAdapter {
         public Button sureButton;
         public TextView textView;
     }
-
 }

@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -8,91 +8,60 @@
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.app.MainActivity$PlaceholderFragment">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
 
             <DigitalClock
                 android:id="@+id/myClock"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_margin="10dp"
                 android:textSize="30sp"
-                android:layout_gravity="center_horizontal" />
+                android:layout_gravity="center_horizontal"
+                android:layout_alignParentTop="true"
+                android:layout_alignLeft="@+id/button_start"
+                android:layout_alignStart="@+id/button_start" />
 
-            <LinearLayout
-               android:layout_width="wrap_content"
-               android:layout_height="wrap_content"
-               android:orientation="horizontal">
-
-
-            </LinearLayout>
-
-            <LinearLayout
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="当前任务"
-                    android:id="@+id/btnnowworke"/>
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="请选择任务"
-                    android:id="@+id/tvnowworke"
-                    android:textSize="18dp"/>
-                <Button
-                    android:id="@+id/button_start"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="true"
-                    android:gravity="center"
-                    android:padding="10dp"
-                    android:text="开始"
-                    android:textSize="30sp" />
-                <Button
-                    android:id="@+id/ReturnButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="结束"
-                    android:layout_alignParentBottom="true"
-                    android:layout_centerHorizontal="true"
-                    android:visibility="invisible"  />
-                </LinearLayout>
-
-        </LinearLayout>
+                android:text="当前任务"
+                android:id="@+id/tvnowworke"
+                android:textSize="18dp"
+                android:layout_below="@+id/myClock"
+                android:layout_centerHorizontal="true" />
 
 
-        <LinearLayout
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <com.example.app.CircleProgressBar
                 android:id="@+id/breakBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_centerHorizontal="true" />
-            <TextView android:id="@+id/breakTxtView" android:layout_width="wrap_content"
-                android:layout_height="wrap_content" android:text="aaaaaa"
-                android:textSize="20sp"
-                android:layout_above="@id/breakBar" android:layout_centerHorizontal="true" />
+                android:layout_height="348dp"
+                android:layout_above="@+id/button_start"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/tvnowworke" />
 
+    <Button
+        android:id="@+id/ReturnButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="结束"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible"  />
 
-
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
-</FrameLayout>
+    <Button
+        android:id="@+id/button_start"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="开始"
+        android:textSize="30sp"
+        android:layout_gravity="center_horizontal|bottom"
+        android:layout_alignBottom="@+id/ReturnButton"
+        android:layout_alignRight="@+id/ReturnButton"
+        android:layout_alignEnd="@+id/ReturnButton" />
+</RelativeLayout>

@@ -73,36 +73,17 @@ public class CenterFragment extends Fragment implements View.OnClickListener{
 
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnnowworke = (Button)getActivity().findViewById(R.id.btnnowworke);
         tvnowworke = (TextView)getActivity().findViewById(R.id.tvnowworke);
         btn_start = (Button)getActivity().findViewById(R.id.button_start);
         breakProgressBar = (CircleProgressBar)getActivity().findViewById(R.id.breakBar);
-        breakTextView = (TextView)getActivity().findViewById(R.id.breakTxtView);
+
         returnbButton = (Button)getActivity().findViewById(R.id.ReturnButton);
         rest=1;
         timeSpan = rest*60*1000;
         //returnbButton.setOnClickListener(this);
         time = new TimeCount(timeSpan, 100);// 构造CountDownTimer对象
 
-        //设置添加临时任务的弹窗
-        btnnowworke.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setTitle("添加当前任务");
-                        final TableLayout centerdialog = (TableLayout) getLayoutInflater(null).inflate(R.layout.centerdialog, null);
-                        builder.setView(centerdialog);
-                        builder.setItems(presidents,new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //TODO::将添加的临时任务信息发送到后台
-                                tvnowworke.setText(presidents[i]);
-                            }
-                        });
-                        builder.create().show();
-                    }
-                }
-        );
+
         btn_start.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

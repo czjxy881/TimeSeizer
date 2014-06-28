@@ -1,27 +1,25 @@
 package com.example.app;
 
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.TableLayout;
 import android.widget.Toast;
+import com.example.app.Note.NotepadAdapter3;
 
-public class ListFragment3 extends ListFragment {
-    private Button btnadd3;
-    private EditText etworker;
-    private EditText etfanqie;
-    private EditText etbeizhu;
+import java.util.Vector;
 
+public class ListFragment3 extends Fragment {
+    private Button numberButton3;
+    private View mMainView;
+    public NotepadAdapter3 adapter3;
+    Vector<String> presidents = new Vector<String>();
+    public ListView listView3;
     private static ListFragment3 listFragment3 = null;
     public static ListFragment3 getInstance(){
         if (listFragment3==null){
@@ -29,71 +27,48 @@ public class ListFragment3 extends ListFragment {
             return listFragment3;
         }else return listFragment3;
     }
-    String[] presidents = {
-            "a","v","cc","aaa","ss","a","v","cc","aaa","ss","a","v","cc","aaa","ss"
-    };
+    public ListFragment3(){
+        presidents.add("123");
+        presidents.add("222223");
+    }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, final Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.listfragment_three, container, false);
-        return v;
+        return mMainView;
     }
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        btnadd3 = (Button) getActivity().findViewById(R.id.btnadd3);
-        btnadd3.setOnClickListener(
-                new Button.OnClickListener() {
-                    public void onClick(View v) {
-                        builder.setTitle("添加任务");
-                        final TableLayout freework = (TableLayout) getLayoutInflater(null).inflate(R.layout.alertdialog_freetimework2, null);
-                        builder.setView(freework);
-                        builder.setPositiveButton("添加", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                 etworker = (EditText)freework.findViewById(R.id.etworker2);
-                                 etfanqie = (EditText)freework.findViewById(R.id.etfanqie2);
-                                 etbeizhu = (EditText)freework.findViewById(R.id.etbeizhu2);
-                                String a = etworker.getText().toString();
-                                String b = etfanqie.getText().toString();
-                                String c = etbeizhu.getText().toString();
-                                Toast.makeText(getActivity(), a + "+" + b + "+" + c, Toast.LENGTH_SHORT).show();
-                                //添加
-                            }
-                        });
-                        builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //取消
-                            }
-                        });
-                        builder.create().show();
-                    }
 
-
-                }
-        );
     }
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setListAdapter(new ArrayAdapter<String>(getActivity(),
-                android.R.layout.simple_list_item_1, presidents));
+        LayoutInflater inflater = getActivity().getLayoutInflater();
+        mMainView = inflater.inflate(R.layout.listfragment_three, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
+
+        this.numberButton3 = ((Button) mMainView.findViewById(R.id.numberbtn3));
+        this.listView3 = ((ListView) mMainView.findViewById(R.id.listview3));
+        this.adapter3 = new NotepadAdapter3(getActivity(),listFragment3,presidents);
+        this.listView3.setAdapter(this.adapter3);
+        numberButton3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
+            }
+        });
+        this.listView3.setDivider(null);
+        this.listView3.setOnItemClickListener(new ItemClick());
     }
 
-    public void onListItemClick(ListView parent, View v,
-                                int position, long id)
-    {
-        Toast.makeText(getActivity(),
-                "You have selected " + presidents[position],
-                Toast.LENGTH_SHORT).show();
-    }
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    class ItemClick implements AdapterView.OnItemClickListener {
 
+        @Override
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+        }
     }
+
 
 }
