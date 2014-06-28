@@ -36,13 +36,14 @@
                 android:id="@+id/breakBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="wrap_content"
-                android:layout_height="348dp"
+                android:layout_height="wrap_content"
                 android:layout_above="@+id/button_start"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
 
 
-                android:layout_below="@+id/tvnowworke" />
+                android:layout_below="@+id/tvnowworke"
+                android:layout_marginTop="15dp" />
 
     <Button
         android:id="@+id/ReturnButton"
