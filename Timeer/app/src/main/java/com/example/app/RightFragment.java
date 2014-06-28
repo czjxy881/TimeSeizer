@@ -3,6 +3,8 @@ package com.example.app;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,11 +26,9 @@ public class RightFragment extends android.support.v4.app.Fragment  {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         actionBar=((MainActivity)this.getActivity()).getMyActionBar();
-
         // Set up the action bar to show a dropdown list.
 
     }
-
 
 
 
@@ -53,7 +53,6 @@ public class RightFragment extends android.support.v4.app.Fragment  {
                                 getString(R.string.title_section4),
                         }),
                 (ActionBar.OnNavigationListener) getActivity());
-
         return inflater.inflate(R.layout.fragment_right, container, false);
 
     }
