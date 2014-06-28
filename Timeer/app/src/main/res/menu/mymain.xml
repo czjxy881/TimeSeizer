@@ -10,8 +10,14 @@
     <item
         android:id="@+id/menu_setting"
         android:icon="@android:drawable/ic_menu_manage"
-        android:orderInCategory="1"
+        android:orderInCategory="3"
         android:showAsAction="ifRoom|withText"
         android:title="设置"/>
+    <item
+        android:id="@+id/menu_listadd"
+        android:orderInCategory="2"
+        android:icon="@drawable/listadd"
+        android:showAsAction="always|withText"
+        android:title="列表添加"/>
 
 </menu>

@@ -6,9 +6,11 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -29,7 +31,7 @@ import static android.support.v4.app.ActivityCompat.startActivity;
  * Created by xxx on 14-6-23.
  */
 public class NotepadAdapter extends BaseAdapter {
-
+    public int textsize ;
     public Context context;
     public Context context1;
     public Activity activity;
@@ -68,10 +70,7 @@ public class NotepadAdapter extends BaseAdapter {
 
     @Override
     public View getView(int arg0, View arg1, ViewGroup arg2) {
-
         SetShow setShow = new SetShow();
-
-
         arg1 = inflater.inflate(R.layout.styles, arg2, false);
         setShow.cContentView = (TextViewLine) arg1
                 .findViewById(R.id.changecontentview);
@@ -89,7 +88,7 @@ public class NotepadAdapter extends BaseAdapter {
                 .setOnClickListener(new WriteButtonListener(arg0));
         setShow.styleButtonDelete
                 .setOnClickListener(new DeleteButtonListener(arg0));
-
+        setShow.cContentView.setTextSize(getFontSize(context1,18));
 
         return arg1;
     }
@@ -133,6 +132,17 @@ public class NotepadAdapter extends BaseAdapter {
             notifyDataSetInvalidated();
         }
 
+    }
+    public static int getFontSize(Context context, int textSize) {
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        int screenHeight = dm.heightPixels;
+        // screenWidth = screenWidth > screenHeight ? screenWidth :
+        // screenHeight;
+        int rate = (int) (textSize * (float) screenHeight / 1280);
+        return rate;
     }
 
     class SetShow {

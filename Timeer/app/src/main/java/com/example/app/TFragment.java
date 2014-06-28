@@ -78,14 +78,11 @@ public TFragment(){
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Notepad localNotepad = new Notepad();
                         String Name = editText.getText().toString();
                         if (Name.equals("")) {
                             Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
                             presidents.add("请输入内容");
                         }
-                        //localNotepad.setContent(strContent);
-                        //localNotepad.setdata(date);
                         else {
                             presidents.add(Name);
                         }
@@ -125,6 +122,7 @@ public TFragment(){
     public void onResume() {
         super.onResume();
 
+
     }
 
     @Override
@@ -141,6 +139,7 @@ public TFragment(){
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),TabActivity.class);
+                //intent.putExtra('bundle',savedInstanceState)
                 startActivity(intent);
 
             }
