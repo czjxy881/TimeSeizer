@@ -4,15 +4,20 @@ package com.example.app;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.RadialGradient;
 import android.graphics.RectF;
+import android.graphics.Shader;
+import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class CircleProgressBar extends View {
     private double maxProgress = 100;//最大进度
     private double progress = 0;//当前进度
-    private int progressStrokeWidth = 15;//线宽
+    private int progressStrokeWidth = 45;//线宽
     private String remind="";
     // 画圆所在的矩形区域
     RectF oval;
@@ -43,11 +48,14 @@ public class CircleProgressBar extends View {
          * 画最外层的大圆环
          */
         float centre = getWidth()/2; //获取圆心的x坐标
+        paint = new Paint();
         int radius = (int) (centre - progressStrokeWidth/2); //圆环的半径
         paint.setColor(Color.WHITE);//(roundColor); //设置圆环的颜色
         paint.setStyle(Paint.Style.STROKE); //设置空心
         paint.setStrokeWidth(progressStrokeWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
+
+
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
 
         float textsize=radius-200;
@@ -61,19 +69,30 @@ public class CircleProgressBar extends View {
         float textHeight =  textPaint.measureText(remind)/8;
         float stringSizeWidth = textPaint.measureText(remind)/2;
         canvas.drawText(remind,(float)centre-stringSizeWidth,(float)centre+textHeight,textPaint);
-
+        int R=255,G=0,B=255;
+        G=(int)(180 * progress / maxProgress);
         /**
          * 画圆弧 ，画圆环的进度
          */
 
-        //设置进度是实心还是空心
+
+        SweepGradient sweepGradient = new SweepGradient(centre,centre,Color.MAGENTA,Color.WHITE);
+        Matrix m=new Matrix();
+        m.setRotate(270, centre, centre);
+        sweepGradient.setLocalMatrix(m);
+
         paint.setStrokeWidth(progressStrokeWidth); //设置圆环的宽度
-        paint.setColor(Color.rgb(0x57, 0x87, 0xb6));  //设置进度的颜色
+        //paint.setColor(Color.rgb(R, G, B));  //设置进度的颜色
+        paint.setShader(sweepGradient);
         RectF oval = new RectF(centre - radius, centre - radius, centre
                 + radius, centre + radius);  //用于定义的圆弧的形状和大小的界限
 
         paint.setStyle(Paint.Style.STROKE);
+        paint.setShadowLayer(5,5,5,0xB9B9B9);
+
         canvas.drawArc(oval, -90, (float)(360 * progress / maxProgress), false, paint);
+
+
         //根据进度画圆弧  绘制白色圆圈，即进度条背景
     }
 

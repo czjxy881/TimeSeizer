@@ -53,9 +53,13 @@ public class CenterActivity extends Activity implements View.OnClickListener {
         ActionBar actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        try {
+            Bundle extra = getIntent().getExtras();
+            msg = extra.getString("Name");
+        }catch (Exception e){
 
-        Bundle extra = getIntent().getExtras();
-        msg = extra.getString("Name");
+        }
+
 
         setContentView(R.layout.fragment_center);
         tvnowworke = (TextView) findViewById(R.id.tvnowworke);
