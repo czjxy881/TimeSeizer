@@ -1,5 +1,6 @@
 package com.example.app;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -11,6 +12,7 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,43 +35,40 @@ public class CenterActivity extends Activity implements View.OnClickListener {
     private TextView breakTextView;
     private CircleProgressBar breakProgressBar;
     private Button returnbButton;
-    private int rest=0;
+    private int rest = 0;
     private TimeCount time;
     private int timeSpan;
     private long exitTime = 0;
     private Vibrator vibrator;
-    MediaPlayer player=null;
-    private String showRing="aa";// 铃声
-
+    MediaPlayer player = null;
+    private String showRing = "aa";// 铃声
+    private ActionBar actionBar;
     private boolean showShake = true;// 震动
 
     //单实例化
-    private static CenterFragment centerFragment=null;
-    public static CenterFragment getInstance(){
-        if (centerFragment==null){
-            centerFragment=new CenterFragment();
-            return centerFragment;
-        }else return centerFragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Bundle extra=getIntent().getExtras();
-        msg=extra.getString("Name");
+        ActionBar actionBar = getActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+
+
+        Bundle extra = getIntent().getExtras();
+        msg = extra.getString("Name");
 
         setContentView(R.layout.fragment_center);
-        tvnowworke = (TextView)findViewById(R.id.tvnowworke);
-        btn_start = (Button)findViewById(R.id.button_start);
+        tvnowworke = (TextView) findViewById(R.id.tvnowworke);
+        btn_start = (Button) findViewById(R.id.button_start);
 
-        breakProgressBar = (CircleProgressBar)findViewById(R.id.breakBar);
+        breakProgressBar = (CircleProgressBar) findViewById(R.id.breakBar);
 
-        returnbButton = (Button)findViewById(R.id.ReturnButton);
-        rest=1;
-        timeSpan = rest*60*1000;
+        returnbButton = (Button) findViewById(R.id.ReturnButton);
+        rest = 1;
+        timeSpan = rest * 60 * 1000;
         //returnbButton.setOnClickListener(this);
         time = new TimeCount(timeSpan, 100);// 构造CountDownTimer对象
-        tvnowworke.setText("当前任务为"+msg);
+        tvnowworke.setText("当前任务为" + msg);
         //设置添加临时任务的弹窗
 
         btn_start.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +91,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
                 //time.onFinish();
                 Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
 
-                if(player!=null){
+                if (player != null) {
                     player.stop();
                     player.release();
                 }
@@ -103,34 +102,54 @@ public class CenterActivity extends Activity implements View.OnClickListener {
 
     }
 
+    public void onClick(View v) {
+        finish();
+    }
 
+  @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                Intent intent=new Intent();
+                intent.setClass(this,MainActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
 
-
-
-
-
+        }
+    }
 
     class TimeCount extends CountDownTimer {
+        private double alltime;
+
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
+            alltime = millisInFuture;
         }
+
         /**
          * 计时过程显示
          */
         @Override
         public void onTick(long millisUntilFinished) {
             // TODO 自动生成的方法存根
-            int nowprogress;
+            double nowprogress;
             double percentage;
             String string = new SimpleDateFormat("mm:ss").format(new Date(
                     millisUntilFinished));
             tvnowworke.setText(string);
-            nowprogress = (int)(rest*60-millisUntilFinished/1000);
-            percentage = (nowprogress*100.0)/(rest*60.0);
+            nowprogress = (double) (alltime - millisUntilFinished);
+            percentage = (nowprogress * 100.0) / alltime;
             breakProgressBar.setProgress(percentage);
-            tvnowworke.setText("请等待" + nowprogress + "秒");
+            tvnowworke.setText("等待" + nowprogress + "秒");
 
         }
+
+
         /**
          * 计时完毕时触发
          */
@@ -142,13 +161,13 @@ public class CenterActivity extends Activity implements View.OnClickListener {
             btn_start.setVisibility(View.VISIBLE);
             if (showShake) {
                 //开启震动
-                vibrator =(Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
-                long [] pattern = {200,500,200,500};   // 停止 开启 停止 开启
-                vibrator.vibrate(pattern,-1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+                long[] pattern = {200, 500, 200, 500};   // 停止 开启 停止 开启
+                vibrator.vibrate(pattern, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
             }
 
             //开启铃声
-            player =  MediaPlayer.create(CenterActivity.this,R.raw.aa);
+            player = MediaPlayer.create(CenterActivity.this, R.raw.aa);
             Uri uri = Uri.parse(showRing);
 
                 /*try {
@@ -164,7 +183,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
                     try {
                         player.prepare();
                     } catch (Exception e) {
-
+                        // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                     player.start();
@@ -173,10 +192,6 @@ public class CenterActivity extends Activity implements View.OnClickListener {
             player.start();
         }
 
-
-    }
-    public void onClick(View v) {
-        finish();
     }
 }
 

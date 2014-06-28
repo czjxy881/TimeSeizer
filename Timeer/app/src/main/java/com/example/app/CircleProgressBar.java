@@ -10,7 +10,7 @@ import android.util.AttributeSet;
 import android.view.View;
 
 public class CircleProgressBar extends View {
-    private int maxProgress = 100;//最大进度
+    private double maxProgress = 100;//最大进度
     private double progress = 0;//当前进度
     private int progressStrokeWidth = 15;//线宽
     // 画圆所在的矩形区域
@@ -64,7 +64,7 @@ public class CircleProgressBar extends View {
         //根据进度画圆弧  绘制白色圆圈，即进度条背景
     }
 
-    public int getMaxProgress(){
+    public double getMaxProgress(){
         return maxProgress;
     }
 

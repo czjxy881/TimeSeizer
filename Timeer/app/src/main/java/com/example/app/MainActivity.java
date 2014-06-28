@@ -163,7 +163,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             Fragment f=null;
             switch (position){
                 case 0:f=LeftFragment.getInstance();break;
-                //case 2:f=CenterFragment.getInstance();break;
                 case 1:f=RightFragment.getInstance();break;
             }
             return f;

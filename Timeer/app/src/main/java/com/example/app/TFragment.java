@@ -113,7 +113,8 @@ public TFragment(){
 
         @Override
         public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent(getActivity(),CenterActivity.class);
+            Intent intent = new Intent();
+            intent.setClass(getActivity(),CenterActivity.class);
             intent.putExtra("Name", presidents.get(i));
             startActivity(intent);
 
