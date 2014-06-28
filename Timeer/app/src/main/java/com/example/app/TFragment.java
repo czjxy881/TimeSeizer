@@ -27,8 +27,7 @@ import java.util.Vector;
  * Created by xxx on 14-6-27.
  */
 public class TFragment extends Fragment  {
-    private Button btnadd;
-    private Button numberButton;
+
     private View mMainView;
     public NotepadAdapter adapter;
     Vector<String> presidents = new Vector<String>();
@@ -60,44 +59,10 @@ public TFragment(){
         mMainView = inflater.inflate(R.layout.listfragment_one, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
         this.editText=((EditText)mMainView.findViewById(R.id.edittext));
         this.beizhutext=((EditText)mMainView.findViewById(R.id.beizhutext));
-        this.numberButton = ((Button) mMainView.findViewById(R.id.numberbtn));
         this.listView = ((ListView) mMainView.findViewById(R.id.listview));
         this.adapter = new NotepadAdapter(getActivity(),tFragment,presidents);
         this.listView.setAdapter(this.adapter);
-        numberButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                layout = (RelativeLayout)(getActivity().getLayoutInflater().inflate(R.layout.writedown, null));
-                textView = ((TextView)layout.findViewById(R.id.writedate));
-                editText = ((DrawLine)layout.findViewById(R.id.edittext));
-                getDate = new Date();
-                date = getDate.getDate();
-                textView.setText(date);
 
-                new AlertDialog.Builder(getActivity()).setView(layout).setPositiveButton("保存", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        String Name = editText.getText().toString();
-                        if (Name.equals("")) {
-                            Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
-                            presidents.add("请输入内容");
-                        }
-                        else {
-                            presidents.add(Name);
-                        }
-                        showUpdate();
-                    }
-                }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-
-                    }
-                }).show();
-            }
-        });
 
 
         this.listView.setDivider(null);
@@ -134,16 +99,9 @@ public TFragment(){
     }
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnadd=(Button)getActivity().findViewById(R.id.btnadd);
-        btnadd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TabActivity.class);
-                //intent.putExtra('bundle',savedInstanceState)
-                startActivity(intent);
 
-            }
-        });
+
+
     }
 
     public void showUpdate() {
@@ -151,6 +109,38 @@ public TFragment(){
         this.listView.setAdapter(this.adapter);
     }
 
+    public void TaskAdd(){
+        layout = (RelativeLayout)(getActivity().getLayoutInflater().inflate(R.layout.writedown, null));
+        textView = ((TextView)layout.findViewById(R.id.writedate));
+        editText = ((DrawLine)layout.findViewById(R.id.edittext));
+        getDate = new Date();
+        date = getDate.getDate();
+        textView.setText(date);
 
+        new AlertDialog.Builder(getActivity()).setView(layout).setPositiveButton("保存", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String Name = editText.getText().toString();
+                if (Name.equals("")) {
+                    Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
+                    presidents.add("请输入内容");
+                }
+                else {
+                    presidents.add(Name);
+                }
+                showUpdate();
+            }
+        }).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+
+            }
+        }).show();
+
+
+    }
 
 }

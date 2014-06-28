@@ -3,11 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.app.MainActivity"
-    android:background="@drawable/big"    >
+    android:background="#ffffff"    >
     <com.example.app.Note.DateLine
         android:textColor="#ffff0000"
         android:gravity="center"
-
+        android:layout_margin="10dp"
         android:id="@id/changedateview"
         android:layout_width="match_parent"
         android:layout_height="27.0dip"
@@ -21,14 +21,15 @@
         android:minHeight="68.0dip"
         android:layout_below="@+id/changedateview"
         android:layout_centerHorizontal="true"
-        android:lineSpacingExtra="6.0dip" />
+        android:lineSpacingExtra="6.0dip"
+        />
     <Button android:id="@+id/stylebutton1"
         android:focusable="false"
         android:background="@drawable/starter"
         android:layout_width="30.0dip"
         android:layout_height="30.0dip"
         android:layout_marginLeft="40.0dip"
-        android:layout_marginBottom="5.0dip"
+        android:layout_marginBottom="15.0dip"
         android:layout_above="@+id/changecontentview"
         android:layout_alignLeft="@id/changecontentview" />
     <Button android:id="@+id/stylebutton2"
@@ -37,7 +38,7 @@
         android:layout_width="30.0dip"
         android:layout_height="30.0dip"
         android:layout_marginRight="20.0dip"
-        android:layout_marginBottom="5.0dip"
+        android:layout_marginBottom="15.0dip"
         android:layout_above="@id/changecontentview"
         android:layout_alignRight="@id/changecontentview" />
     </RelativeLayout>

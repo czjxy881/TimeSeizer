@@ -7,7 +7,10 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -49,6 +52,7 @@ public class ListFragment2 extends Fragment {
     }
 
     public ListFragment2(){
+
         presidents.add("123");
         presidents.add("222223");
     }
@@ -63,10 +67,17 @@ public class ListFragment2 extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-
-
-
+    }
+    Menu mMenu;
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        mMenu=menu;
+        getActivity().getMenuInflater().inflate(R.menu.mymain, menu);
+        MenuItemCompat.setShowAsAction(menu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_ALWAYS | MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(menu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        mMenu.findItem(R.id.menu_listadd).setVisible(false);
 
     }
 

@@ -9,33 +9,16 @@
 
 
   <ListView
-        android:layout_width="wrap_content"
-        android:layout_height="454dp"
-        android:id="@+id/listview"
-        android:layout_gravity="right|bottom"
+      android:layout_width="wrap_content"
+      android:background="#eeeeee"
+      android:layout_height="454dp"
+      android:id="@+id/listview"
+      android:layout_gravity="right|bottom"
       android:layout_weight="1.38">
 
     </ListView>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/add1"
-            android:id="@+id/btnadd" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/numberbtn"
-            android:layout_gravity="left|bottom"
-            android:text="临时添加" />
-
-        </LinearLayout>
 
 
 
