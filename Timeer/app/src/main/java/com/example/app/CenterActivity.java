@@ -67,7 +67,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
         rest = 1;
         timeSpan = rest * 60 * 1000;
         //returnbButton.setOnClickListener(this);
-        time = new TimeCount(timeSpan, 100);// 构造CountDownTimer对象
+        time = new TimeCount(timeSpan, 50);// 构造CountDownTimer对象
         tvnowworke.setText("当前任务为" + msg);
         //设置添加临时任务的弹窗
 
@@ -124,11 +124,12 @@ public class CenterActivity extends Activity implements View.OnClickListener {
     }
 
     class TimeCount extends CountDownTimer {
-        private double alltime;
-
+        private long alltime;
         public TimeCount(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
             alltime = millisInFuture;
+            breakProgressBar.setText(new SimpleDateFormat("mm:ss").format(new Date(
+                    millisInFuture)));
         }
 
         /**
@@ -136,16 +137,16 @@ public class CenterActivity extends Activity implements View.OnClickListener {
          */
         @Override
         public void onTick(long millisUntilFinished) {
-            // TODO 自动生成的方法存根
-            double nowprogress;
+            long nowprogress;
             double percentage;
             String string = new SimpleDateFormat("mm:ss").format(new Date(
                     millisUntilFinished));
-            tvnowworke.setText(string);
-            nowprogress = (double) (alltime - millisUntilFinished);
+            nowprogress =  (alltime - millisUntilFinished);
             percentage = (nowprogress * 100.0) / alltime;
-            breakProgressBar.setProgress(percentage);
-            tvnowworke.setText("等待" + nowprogress + "秒");
+            breakProgressBar.setTextnotRefresh(string);
+            breakProgressBar.setProgressNotInUiThread(percentage);
+            tvnowworke.setText("已开始" + new SimpleDateFormat("mm:ss").format(new Date(
+                    nowprogress+1000)) + "秒");
 
         }
 
@@ -155,7 +156,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
          */
         @Override
         public void onFinish() {
-            // TODO 自动生成的方法存
+            // TODO 自动删除,返回停止音乐
             breakProgressBar.setProgress(0);
             returnbButton.setVisibility(View.GONE);
             btn_start.setVisibility(View.VISIBLE);
