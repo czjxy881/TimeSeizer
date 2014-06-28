@@ -32,7 +32,7 @@ import com.example.app.Note.NotepadAdapter2;
 import java.util.Vector;
 
 public class ListFragment2 extends Fragment {
-    private Button numberButton2;
+
     private View mMainView;
     public NotepadAdapter2 adapter2;
     Vector<String> presidents = new Vector<String>();
@@ -86,17 +86,9 @@ public class ListFragment2 extends Fragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mMainView = inflater.inflate(R.layout.listfragment_two, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
 
-        this.numberButton2 = ((Button) mMainView.findViewById(R.id.numberbtn2));
         this.listView2 = ((ListView) mMainView.findViewById(R.id.listview2));
         this.adapter2 = new NotepadAdapter2(getActivity(),listFragment2,presidents);
         this.listView2.setAdapter(this.adapter2);
-        numberButton2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               Toast.makeText(getActivity(),"1",Toast.LENGTH_SHORT).show();
-                   showUpdate();
-            }
-        });
         this.listView2.setDivider(null);
         this.listView2.setOnItemClickListener(new ItemClick());
     }

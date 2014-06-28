@@ -4,23 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context="com.example.app.RightFragment">
-
-    <LinearLayout
+    <ListView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/numberbtn2"/>
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/listview2">
+        android:id="@+id/listview2">
 
-        </ListView>
-
-
-    </LinearLayout>
+    </ListView>
 
 </LinearLayout>

@@ -3,7 +3,11 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.app.MainActivity"
-    android:background="#ffffff"    >
+    android:background="@drawable/bigg"
+    android:shadowColor="@color/Shadow"
+    android:shadowDx="0"
+    android:shadowDy="5"
+    android:shadowRadius="5">
     <com.example.app.Note.DateLine
         android:textColor="#ffff0000"
         android:gravity="center"
@@ -12,7 +16,9 @@
         android:layout_width="match_parent"
         android:layout_height="27.0dip"
         android:layout_marginTop="8.0dip"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+
+        />
     <com.example.app.Note.TextViewLine
         android:id="@+id/changecontentview"
         android:typeface="serif"
@@ -22,6 +28,10 @@
         android:layout_below="@+id/changedateview"
         android:layout_centerHorizontal="true"
         android:lineSpacingExtra="6.0dip"
+        android:shadowColor="@color/Shadow"
+        android:shadowDx="0"
+        android:shadowDy="5"
+        android:shadowRadius="5"
         />
     <Button android:id="@+id/stylebutton1"
         android:focusable="false"
