@@ -2,5 +2,4 @@ TimeSeizer
 ==========
 
 
-Time Seizer是一款用于辅助番茄工作法的Android应用，现在仍在开发中
-本项目采用GPLv3许可证
+MainActivity中有使用方法的伪代码。。如需要封装我再改改。。
