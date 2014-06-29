@@ -244,7 +244,7 @@ public class CenterActivity extends Activity  {
         private void initNotification(){
             notification=new Notification();
             //TODO:改图标
-            notification.icon=R.drawable.launch_icon;
+            notification.icon=R.drawable.ic_launcher;
 
             notification.defaults=Notification.DEFAULT_ALL;
             notification.flags |= notification.FLAG_INSISTENT; //重复
