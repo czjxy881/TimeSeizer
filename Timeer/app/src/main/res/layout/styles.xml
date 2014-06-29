@@ -1,53 +1,97 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+    android:layout_width="fill_parent"
     android:layout_height="match_parent"
     tools:context="com.example.app.MainActivity"
-
-    android:background="@drawable/card">
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
+    >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@drawable/listcard"
+        android:focusable="false"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
             >
 
-            <Button android:id="@+id/stylebutton1"
-                android:background="@drawable/starter"
+            <ImageButton android:id="@+id/EditButton"
+
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:src="@android:drawable/ic_menu_edit"
+                android:background="@android:color/transparent" />
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/changedateview"
-                android:layout_weight="3"
+                android:id="@+id/DataText"
+                android:layout_weight="2"
                 android:gravity="center"
-                android:layout_gravity="center" />
-            <Button android:id="@+id/stylebutton2"
-                android:background="@drawable/delete"
+                android:layout_gravity="center"
+
+
+                />
+            <ImageButton android:id="@+id/DelButton"
+                android:src="@android:drawable/ic_menu_delete"
+                android:background="@android:color/transparent"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:layout_gravity="center" />
         </LinearLayout>
         <View android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="#FF909090"/>
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:id="@+id/changecontentview"
-            android:layout_weight="2"
+            android:layout_height="1dp"
+            android:background="#FF909090"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="2dp"
+
             />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="3"
+        android:orientation="vertical"
+        android:id="@+id/layout"
+        >
+        <TextView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:id="@+id/TitleText"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:text="test"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:shadowColor="@color/Shadow"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="5.0"
+            android:gravity="center_vertical" />
+
         <View android:layout_width="fill_parent"
-            android:layout_height="1dip"
-            android:background="#FF909090"/>
-
-
+            android:layout_height="1dp"
+            android:background="#FF909090"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="2dp"
+            />
+        <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+            android:id="@+id/ContentText"
+        android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:gravity="center_vertical"
+            android:textSize="12sp"
+           />
     </LinearLayout>
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
