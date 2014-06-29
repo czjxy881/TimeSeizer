@@ -149,7 +149,6 @@ public class NotepadAdapter extends BaseAdapter {
         public TextView cDateView;
         public Button styleButtonWrite;
         public Button styleButtonDelete;
-        public Button styleButtonStart;
 
     }
 
