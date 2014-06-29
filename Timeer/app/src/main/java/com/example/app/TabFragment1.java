@@ -71,8 +71,7 @@ public class TabFragment1 extends ListFragment{
             @Override
             public void onClick(View view) {
                 int a=0;
-                //Intent intent = new Intent();
-                //intent.setClass(getActivity(),TFragment.class);
+                Intent intent = new Intent(getActivity(),TFragment.class);
                 for(int psn:checkedMap.keySet())
                     if (checkedMap.get(psn) == true) {
                         keys[a] = (psn);
@@ -80,10 +79,8 @@ public class TabFragment1 extends ListFragment{
 
                     }
                 Toast.makeText(getActivity(),String.valueOf(checkedMap.keySet().size()),Toast.LENGTH_SHORT).show();
-
-                getActivity().finish();
-
-
+                startActivity(intent);
+                //getActivity().finish();
             }
         });
 
