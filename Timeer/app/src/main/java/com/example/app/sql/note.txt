@@ -1,0 +1,11 @@
+to do:
+
+1.Task -->	private int LastingTimes;//finish-->update? or thread->-update?
+
+2.(from 3)finish -->周期？ --》更新PeroidTask中的expectDate
+
+3.peroidTask-->judgeRun necessary?<--for judge run can -- update Task.expectDate; 
+
+4.for date<nowDate should move to FinishList (ActualNum=0,summary=D)
+
+5.无优先级

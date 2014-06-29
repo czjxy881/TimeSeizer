@@ -89,6 +89,7 @@ public class NotepadAdapter extends BaseAdapter {
                 .setOnClickListener(new WriteButtonListener(arg0));
         setShow.styleButtonDelete
                 .setOnClickListener(new DeleteButtonListener(arg0));
+        setShow.cContentView.setTextSize(getFontSize(context1,20));
 
         return arg1;
     }
@@ -133,15 +134,14 @@ public class NotepadAdapter extends BaseAdapter {
         }
 
     }
-    public static int getFontSize(Context context) {
+    public static int getFontSize(Context context, int textSize) {
         DisplayMetrics dm = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context
                 .getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(dm);
         int screenHeight = dm.heightPixels;
-        int height=(int)(screenHeight/25.6);
-       // int rate = (int) (textSize * (float) screenHeight / 1280);
-        return height;
+        int rate = (int) (textSize * (float) screenHeight / 1280);
+        return rate;
     }
 
     class SetShow {
