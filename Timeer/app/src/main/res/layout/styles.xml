@@ -3,43 +3,51 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.app.MainActivity"
-    android:background="@drawable/bigg">
-    <com.example.app.Note.DateLine
-        android:textColor="#ffff0000"
-        android:gravity="center"
-        android:layout_margin="10dp"
-        android:id="@id/changedateview"
-        android:layout_width="match_parent"
-        android:layout_height="27.0dip"
-        android:layout_marginTop="8.0dip"
-        android:layout_centerHorizontal="true"
 
-        />
-    <com.example.app.Note.TextViewLine
-        android:id="@+id/changecontentview"
-        android:typeface="serif"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/changedateview"
-        android:layout_centerHorizontal="true"
-        android:lineSpacingExtra="6.0dip"
-        />
-    <Button android:id="@+id/stylebutton1"
-        android:focusable="false"
-        android:background="@drawable/starter"
-        android:layout_width="30.0dip"
-        android:layout_height="30.0dip"
-        android:layout_marginLeft="40.0dip"
-        android:layout_marginBottom="10.0dip"
-        android:layout_above="@+id/changecontentview"
-        android:layout_alignLeft="@id/changecontentview" />
-    <Button android:id="@+id/stylebutton2"
-        android:background="@drawable/delete"
-        android:focusable="false"
-        android:layout_width="30.0dip"
-        android:layout_height="30.0dip"
-        android:layout_marginRight="40.0dip"
-        android:layout_marginBottom="10.0dip"
-        android:layout_above="@id/changecontentview"
-        android:layout_alignRight="@id/changecontentview" />
-    </RelativeLayout>
+    android:background="@drawable/card">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+
+            <Button android:id="@+id/stylebutton1"
+                android:background="@drawable/starter"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:id="@+id/changedateview"
+                android:layout_weight="3"
+                android:gravity="center"
+                android:layout_gravity="center" />
+            <Button android:id="@+id/stylebutton2"
+                android:background="@drawable/delete"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center" />
+        </LinearLayout>
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#FF909090"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:id="@+id/changecontentview"
+            android:layout_weight="2"
+            />
+        <View android:layout_width="fill_parent"
+            android:layout_height="1dip"
+            android:background="#FF909090"/>
+
+
+    </LinearLayout>
+</RelativeLayout>

@@ -71,6 +71,7 @@ public class NotepadAdapter extends BaseAdapter {
     @Override
     public View getView(int arg0, View arg1, ViewGroup arg2) {
         SetShow setShow = new SetShow();
+
         arg1 = inflater.inflate(R.layout.styles, arg2, false);
         setShow.cContentView = (TextViewLine) arg1
                 .findViewById(R.id.changecontentview);
