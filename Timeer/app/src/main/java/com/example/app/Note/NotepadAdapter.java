@@ -73,7 +73,7 @@ public class NotepadAdapter extends BaseAdapter {
         SetShow setShow = new SetShow();
 
         arg1 = inflater.inflate(R.layout.styles, arg2, false);
-        setShow.cContentView = (TextViewLine) arg1
+        setShow.cContentView = (TextView) arg1
                 .findViewById(R.id.changecontentview);
         setShow.cDateView = (TextView) arg1
                 .findViewById(R.id.changedateview);
@@ -145,7 +145,7 @@ public class NotepadAdapter extends BaseAdapter {
     }
 
     class SetShow {
-        public TextViewLine cContentView;
+        public TextView cContentView;
         public TextView cDateView;
         public Button styleButtonWrite;
         public Button styleButtonDelete;
