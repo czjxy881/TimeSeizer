@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/listFragmentone"
+    tools:context="com.example.app.RightFragment"
+    android:weightSum="1">
+
+
+  <ListView
+      android:layout_width="wrap_content"
+      android:background="@color/Grey"
+      android:layout_height="454dp"
+      android:id="@+id/listview"
+      android:layout_gravity="right|bottom"
+      android:layout_weight="1.38">
+
+    </ListView>
+
+
+
+
+
+
+</LinearLayout>
