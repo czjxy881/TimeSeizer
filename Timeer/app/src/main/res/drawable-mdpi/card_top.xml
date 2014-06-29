@@ -11,7 +11,8 @@
         </shape>
     </item>
     <item android:right="5dp" >
-        <shape>
+        <shape >
+           <solid android:color="@color/White"/>
             <stroke android:dashGap="10dp" android:dashWidth="15dp"
                 android:width="@dimen/split_size"
                 android:color="@android:color/black"/>
