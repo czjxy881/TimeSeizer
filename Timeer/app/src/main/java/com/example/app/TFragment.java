@@ -66,7 +66,7 @@ public TFragment(){
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mMainView = inflater.inflate(R.layout.listfragment_one, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
         this.editText=((EditText)mMainView.findViewById(R.id.edittext));
-        this.beizhutext=((EditText)mMainView.findViewById(R.id.beizhutext));
+       
         this.listView = ((ListView) mMainView.findViewById(R.id.listview));
         this.adapter = new NotepadAdapter(getActivity(),tFragment,presidents);
         this.listView.setAdapter(this.adapter);
