@@ -6,13 +6,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
 public class LeftFragment extends Fragment {
     private Button btnpingjia;
     private RatingBar rbmysocre;
+    private TextView tvfqnumber;
+    private TextView tvddnumber;
+    private EditText etsummary;
     private static LeftFragment leftFragment=null;
 
 
@@ -35,6 +40,9 @@ public class LeftFragment extends Fragment {
 
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
+            etsummary=(EditText)getActivity().findViewById(R.id.etsummary);
+            tvfqnumber=(TextView)getActivity().findViewById(R.id.tvfqnumber);
+            tvddnumber=(TextView)getActivity().findViewById(R.id.tvddnumber);
             rbmysocre = (RatingBar)getActivity().findViewById(R.id.rbmyscore);
             btnpingjia = (Button)getActivity().findViewById(R.id.btnpingjia);
 
