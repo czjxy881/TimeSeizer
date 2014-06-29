@@ -68,7 +68,27 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
     public ActionBar getMyActionBar(){
         return actionBar;
     }
+    public void hideBarSetting(){
+        if(mMenu==null)return;
+        mMenu.setGroupVisible(0,false);
+        //mMenu.clear();
+      //  MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_NEVER);
+     //   MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_NEVER);
+      //  MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_NEVER);
+    }
+    public void showBarSetting(){
+        if(mMenu==null)return;
+        mMenu.setGroupVisible(0,true);
 
+        //mMenu.add(0,R.id.menu_add,0,"添加")
+     //   MenuItem s;
+
+      //  mMenu.add(R.id.menu_listadd);
+      //  mMenu.add(R.id.menu_setting);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -110,9 +130,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         mMenu=menu;
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mymain, menu);
-        MenuItemCompat.setShowAsAction(menu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(menu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        showBarSetting();
         //  menu.findItem(R.id.menu_add).setVisible(true);
 
         return true;
@@ -185,8 +203,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             // Return a PlaceholderFragment (defined as a static inner class below).
             Fragment f=null;
             switch (position){
-                case 0:f=LeftFragment.getInstance();break;
-                case 1:f=RightFragment.getInstance();break;
+                case 0:
+                    f=LeftFragment.getInstance();
+                    break;
+                case 1:
+
+                    f=RightFragment.getInstance();
+
+                    break;
             }
             return f;
 

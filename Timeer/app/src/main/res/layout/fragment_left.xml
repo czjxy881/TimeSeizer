@@ -14,14 +14,15 @@
             android:textSize="45dp"
             android:gravity="center"
 
-            android:layout_weight="2"
-            android:id="@+id/tvzjnumber"/>
+            android:layout_weight="0.372"
+            android:id="@+id/tvzjnumber"
+            android:textStyle="bold" />
 
 <LinearLayout
 
     android:layout_width="fill_parent"
     android:layout_height="0dp"
-    android:layout_weight="4"
+    android:layout_weight="0.618"
     >
 
     <LinearLayout
@@ -89,7 +90,7 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="4"
+        android:layout_weight="0.418"
         android:layout_marginTop="2dp">
         <TextView
             android:layout_width="fill_parent"
@@ -110,38 +111,38 @@
             android:mirrorForRtl="false"
             android:layout_marginBottom="5dp" />
 
-        <FrameLayout
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:background="@drawable/card"
-            android:layout_weight="2"
-            android:layout_gravity="center">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/etsummary"
-                android:hint="一句话评价自己吧"
-                android:layout_gravity="center"
-                android:gravity="center" />
-        </FrameLayout>
-
 
     </LinearLayout>
-    <Button
-        android:layout_weight="1"
+
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_gravity="center"
-        android:id="@+id/btnpingjia"
-        android:textSize="16dp"
-        android:text="完成评价"
-        android:background="@drawable/buttonselector"
-        android:shadowColor="@color/Shadow"
-        android:shadowDx="2.0"
-        android:shadowDy="2.0"
-        android:shadowRadius="5.0"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp" />
+        android:layout_weight="0.253"
+        android:layout_gravity="center">
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/Summary"
+            android:textSize="16dp"
+            android:text="说点什么"
+            android:background="@drawable/buttonselector"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp" />
+        <Button
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/btnpingjia"
+            android:textSize="16dp"
+            android:text="完成评价"
+            android:background="@drawable/buttonselector"
+            android:layout_marginBottom="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="20dp" />
+    </LinearLayout>
 </LinearLayout>
 

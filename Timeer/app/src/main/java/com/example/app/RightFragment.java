@@ -36,8 +36,8 @@ public class RightFragment extends android.support.v4.app.Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // actionBar=getFragmentManager().
-        actionBar.setDisplayShowTitleEnabled(false);
-        actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+       // actionBar.setDisplayShowTitleEnabled(false);
+        //actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
         // Set up the dropdown list navigation in the action bar.
         actionBar.setListNavigationCallbacks(
@@ -57,7 +57,15 @@ public class RightFragment extends android.support.v4.app.Fragment  {
         return inflater.inflate(R.layout.fragment_right, container, false);
 
     }
-
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            actionBar.setDisplayShowTitleEnabled(false);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
+            ((MainActivity)this.getActivity()).showBarSetting();
+        }
+    }
 
 }
 
