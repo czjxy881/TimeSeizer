@@ -7,17 +7,25 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     tools:context="com.example.app.MainActivity$PlaceholderFragment"
+
     android:background="@color/Grey"
     >
-    <DigitalClock
+    <com.example.app.MyDigitalClock
+        android:id="@+id/Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/Clock_Size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        />
+    <com.example.app.MyDigitalClock
         android:id="@+id/myClock"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="@dimen/Clock_Size"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-
-        />
+     />
 
     <TextView
         android:layout_width="wrap_content"
@@ -51,7 +59,7 @@
                 android:textSize="@dimen/CurrentTaskFontSize"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/InterruptTimes"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="15dp"
         android:shadowColor="@color/Shadow"
         android:shadowDx="2.0"
         android:shadowDy="2.0"
@@ -62,48 +70,90 @@
             <com.example.app.CircleProgressBar
                 android:id="@+id/breakBar"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/CurrentWorkText"
                 android:layout_marginTop="10dp"
-                android:layout_above="@+id/StopButton" />
-
+                android:layout_above="@+id/linelayout" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/linelayout"
+        android:baselineAligned="false"
+        android:gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true">
     <Button
         android:id="@+id/StopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="结束"
         android:textSize="@dimen/Clock_Size"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
         android:background="@drawable/buttonselector"
         android:textColor="@android:color/holo_red_dark"
         android:shadowColor="@color/Shadow"
+        android:drawableLeft="@drawable/ic_media_stop"
         android:shadowDx="2.0"
         android:shadowDy="2.0"
         android:shadowRadius="5.0"
-        android:visibility="invisible"
-        android:layout_marginTop="5dp" />
-
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
     <Button
-        android:id="@+id/StartButton"
+        android:id="@+id/InterruptButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="开始"
+        android:text="中断"
         android:textSize="@dimen/Clock_Size"
+        android:background="@drawable/buttonselector"
+        android:shadowColor="@color/Shadow"
+        android:drawableLeft="@android:drawable/ic_media_pause"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="5.0"
+        android:visibility="gone"
+        android:layout_weight="1"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
+        <Button
+            android:id="@+id/StartButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始"
 
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
+            android:textSize="@dimen/Clock_Size"
+            android:drawableLeft="@android:drawable/ic_media_play"
+            android:background="@drawable/buttonselector"
+            android:shadowColor="@color/Shadow"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="5.0"
+            android:gravity="center"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+        <Button
+        android:id="@+id/BackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="返回"
+        android:textSize="@dimen/Clock_Size"
+        android:drawableLeft="@android:drawable/ic_menu_revert"
         android:background="@drawable/buttonselector"
         android:shadowColor="@color/Shadow"
         android:shadowDx="2.0"
         android:shadowDy="2.0"
         android:shadowRadius="5.0"
+            android:visibility="gone"
+        android:layout_weight="1"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
 
-        android:layout_marginTop="5dp" />
 
-
+    </LinearLayout>
 
 </RelativeLayout>

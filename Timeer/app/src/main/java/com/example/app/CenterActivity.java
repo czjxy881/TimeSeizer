@@ -2,10 +2,10 @@ package com.example.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.content.Context;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
@@ -22,17 +22,26 @@ import java.util.Date;
 /**
  * Created by xxx on 14-6-18.
  */
-public class CenterActivity extends Activity implements View.OnClickListener {
-    private Button ReturnButton;
-    private Button StartButton;
+public class CenterActivity extends Activity  {
+    private Button StopButton,StartButton,BackButton,InterruptButton;
     private Bundle extra;
-    private String msg;
-    private TextView CurrentWorkText;
+    private TextView CurrentWorkText,InterruptTimes,GoneTime;
     private CircleProgressBar breakProgressBar;
-    private int rest = 0;
-    private TimeCount time;
+    private MyDigitalClock DateC,ClockC;
+
+    private int WORK=1;
+    private int REST = 5;
+
+    private String Title;
+    private int AimTomato;
+
+    private int NowTomato;
+    private int ContinueWork;
+    private int CurrentState; //0未开始,1执行中,2休息中
+    private int Interrupt;
+
+    private TimeCount time=null;
     private int timeSpan;
-    private long exitTime = 0;
     private Vibrator vibrator;
     MediaPlayer player = null;
     private String showRing = "aa";// 铃声
@@ -44,75 +53,165 @@ public class CenterActivity extends Activity implements View.OnClickListener {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar actionBar = getActionBar();
+        actionBar = getActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         try {
-            Bundle extra = getIntent().getExtras();
-            msg = extra.getString("Name");
+            extra = getIntent().getExtras();
+            Title = extra.getString("Name");
+            AimTomato=extra.getInt("Aim");
         }catch (Exception e){
-            msg="自由";
+            Title="自由";
+            AimTomato=2;
         }
-        GradientDrawable drawable = new GradientDrawable();
-        drawable.setShape(GradientDrawable.RECTANGLE); // 画框
-        drawable.setStroke(1, Color.rgb(185, 185, 185)); // 边框粗细及颜色
-
+        NowTomato=ContinueWork=CurrentState=Interrupt=0;
+        Interrupt--;
         setContentView(R.layout.fragment_center);
         StartButton = (Button) findViewById(R.id.StartButton);
-        ReturnButton = (Button) findViewById(R.id.StopButton);
+        StopButton = (Button) findViewById(R.id.StopButton);
+        InterruptButton= (Button) findViewById(R.id.InterruptButton);
+        BackButton = (Button) findViewById(R.id.BackButton);
+
+        GoneTime=(TextView)findViewById(R.id.GoneTime);
+        InterruptTimes=(TextView)findViewById(R.id.InterruptTimes);
         CurrentWorkText=(TextView)findViewById(R.id.CurrentWorkText);
+
         breakProgressBar = (CircleProgressBar) findViewById(R.id.breakBar);
-       // StartButton.setBackground(drawable);
-       // ReturnButton.setBackground(drawable);
 
+        DateC=(MyDigitalClock)findViewById(R.id.Date);
+        ClockC=(MyDigitalClock)findViewById(R.id.myClock);
 
+        DateC.setFormat(00);
+        ClockC.setFormat(24);
 
-        rest = 1;
-        timeSpan = rest * 60 * 1000;
-        //returnbButton.setOnClickListener(this);
-        time = new TimeCount(timeSpan, 50);// 构造CountDownTimer对象
-        CurrentWorkText.setText("目标任务:" + msg);
+        CurrentWorkText.setText("目标任务:" + Title);
         //设置添加临时任务的弹窗
 
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                time.start();
-                StartButton.setVisibility(View.GONE);
-                ReturnButton.setVisibility(View.VISIBLE);
-                getActionBar().hide();
+                startTask();
             }
         });
-        ReturnButton.setOnClickListener(new View.OnClickListener() {
+
+        StopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                breakProgressBar.setProgress(0);
-                ReturnButton.setVisibility(View.GONE);
-                StartButton.setVisibility(View.VISIBLE);
                 time.cancel();
-                if (player != null) {
-                    player.stop();
-                    player.release();
-                }
-                finish();
-                //time.onFinish();
-                if(ReturnButton.getText()!="返回") {
-                    Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
-                }
-
-
+                breakWhenWork();
             }
         });
 
+        InterruptButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onInterrupt();
+            }
+        });
+
+        BackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackButton();
+            }
+        });
 
     }
 
-    public void onClick(View v) {
+    /**
+     * 开始任务
+     */
+    private void startTask(){
+        CurrentState=1;
+        ContinueWork++;
+        NowTomato++;
+        //TODO:actionBar.Hide();
+        actionBar.setDisplayHomeAsUpEnabled(false);
+        DateC.setVisibility(View.INVISIBLE);
+        ClockC.setVisibility(View.INVISIBLE);
+        GoneTime.setVisibility(View.VISIBLE);
+        InterruptTimes.setVisibility(View.VISIBLE);
+        InterruptButton.setVisibility(View.VISIBLE);
+        StopButton.setVisibility(View.VISIBLE);
+        StartButton.setVisibility(View.GONE);
+        BackButton.setVisibility(View.GONE);
+
+        CurrentWorkText.setText("当前任务:"+Title);
+        CurrentWorkText.setTextSize(35);
+
+        GoneTime.setText("当前番茄:"+String.valueOf(NowTomato)+"/"+String.valueOf(AimTomato));
+        InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
+        timeSpan = WORK * 60 * 1000;
+        time = new TimeCount(timeSpan, 50,CurrentState);
+        time.start();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        if(time!=null)time.cancel();
         finish();
     }
 
-  @Override
+    private void onInterrupt(){
+        Interrupt++;
+        InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
+    }
+
+    private void breakWhenWork(){
+        DateC.setVisibility(View.VISIBLE);
+        ClockC.setVisibility(View.VISIBLE);
+        GoneTime.setVisibility(View.INVISIBLE);
+        InterruptTimes.setVisibility(View.INVISIBLE);
+        InterruptButton.setVisibility(View.GONE);
+        StopButton.setVisibility(View.GONE);
+        StartButton.setVisibility(View.VISIBLE);
+        BackButton.setVisibility(View.GONE);
+        finish();
+        Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
+    }
+
+    private void onBackButton(){
+        //TODO:数据库
+        time.cancel();
+        finish();
+        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.cancel(110203);
+    }
+    private void finishTask(){
+        //TODO:
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        InterruptButton.setVisibility(View.GONE);
+        StopButton.setVisibility(View.GONE);
+        BackButton.setVisibility(View.VISIBLE);
+    }
+    private void toRest(){
+        //TODO:
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        CurrentState=2;
+        DateC.setVisibility(View.INVISIBLE);
+        ClockC.setVisibility(View.VISIBLE);
+        GoneTime.setVisibility(View.VISIBLE);
+        InterruptTimes.setVisibility(View.INVISIBLE);
+        InterruptButton.setVisibility(View.GONE);
+        StartButton.setVisibility(View.VISIBLE);
+        BackButton.setVisibility(View.VISIBLE);
+        StopButton.setVisibility(View.GONE);
+        GoneTime.setText("当前任务:"+Title);
+        CurrentWorkText.setText("休息中");
+        timeSpan = WORK * 60 * 1000;
+        time = new TimeCount(timeSpan, 50,CurrentState);
+        time.start();
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        onInterrupt();
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
@@ -131,13 +230,30 @@ public class CenterActivity extends Activity implements View.OnClickListener {
 
     class TimeCount extends CountDownTimer {
         private long alltime;
-        public TimeCount(long millisInFuture, long countDownInterval) {
+        private int CurrentState;
+        Notification notification;
+        PendingIntent pd;
+        public TimeCount(long millisInFuture, long countDownInterval,int Currentstate) {
             super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
             alltime = millisInFuture;
             breakProgressBar.setText(new SimpleDateFormat("mm:ss").format(new Date(
                     millisInFuture)));
+            CurrentState=Currentstate;
+            initNotification();
         }
+        private void initNotification(){
+            notification=new Notification();
+            //TODO:改图标
+            notification.icon=R.drawable.launch_icon;
 
+            notification.defaults=Notification.DEFAULT_ALL;
+            notification.flags |= notification.FLAG_INSISTENT; //重复
+            notification.flags|=Notification.FLAG_AUTO_CANCEL;
+            Intent intent = new Intent();
+            intent.setClass(CenterActivity.this, CenterActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //加载已有Activity
+            pd = PendingIntent.getActivity(CenterActivity.this, 0, intent, 0);
+        }
         /**
          * 计时过程显示
          */
@@ -151,8 +267,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
             percentage = (nowprogress * 100.0) / alltime;
             breakProgressBar.setTextnotRefresh(string);
             breakProgressBar.setProgressNotInUiThread(percentage);
-            CurrentWorkText.setText("已开始" + new SimpleDateFormat("mm:ss").format(new Date(
-                    nowprogress+1000)) + "秒");
+
 
         }
 
@@ -162,22 +277,29 @@ public class CenterActivity extends Activity implements View.OnClickListener {
          */
         @Override
         public void onFinish() {
-            // TODO 自动删除,返回停止音乐
-           // breakProgressBar.setProgress(0);
-            ReturnButton.setText("返回");
-          //  StartButton.setVisibility(View.VISIBLE);
-            if (showShake) {
-                //开启震动
-                vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-                long[] pattern = {200, 500, 200, 500};   // 停止 开启 停止 开启
-                vibrator.vibrate(pattern, -1);           //重复两次上面的pattern 如果只想震动一次，index设为-1
+            String title="",content="";
+            if(CurrentState==1){
+                if(AimTomato<=NowTomato){ //任务已完成
+                    finishTask();
+                    title="任务完成";content="恭喜恭喜";
+                }else{
+                    toRest();
+                    title="休息啦";content="好好休息";
+                }
+            }else if(CurrentState==2){
+                startTask();
+                title="学习啦";content="好好学习";
             }
 
-            //开启铃声
-            player = MediaPlayer.create(CenterActivity.this, R.raw.aa);
 
-            player.seekTo(0);
-            player.start();
+            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            notification.tickerText=title;
+            notification.when=System.currentTimeMillis();
+            notification.setLatestEventInfo(CenterActivity.this, title, content, pd);
+            notificationManager.notify(110203,notification);
+            //Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
+            cancel();
+
         }
 
     }
