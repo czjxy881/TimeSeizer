@@ -132,14 +132,6 @@ public class NotepadAdapter extends BaseAdapter {
         return rate;
     }
 
-<<<<<<< HEAD
-    class SetShow {
-        public TextView cContentView;
-        public TextView cDateView;
-        public Button styleButtonWrite;
-        public Button styleButtonDelete;
-=======
->>>>>>> origin/UI
 
 
 }
