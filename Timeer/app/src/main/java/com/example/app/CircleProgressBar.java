@@ -47,18 +47,18 @@ public class CircleProgressBar extends View {
         /**
          * 画最外层的大圆环
          */
-        float centre = getWidth()/2; //获取圆心的x坐标
+        float centre = (float)(getWidth()/2.0); //获取圆心的x坐标
         paint = new Paint();
         int radius = (int) (centre - progressStrokeWidth/2); //圆环的半径
         paint.setColor(Color.WHITE);//(roundColor); //设置圆环的颜色
         paint.setStyle(Paint.Style.STROKE); //设置空心
         paint.setStrokeWidth(progressStrokeWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
-        paint.setShadowLayer(5,10,10,Color.GRAY);
+        paint.setShadowLayer(5,5,5,Color.GRAY);
 
         canvas.drawCircle(centre, centre, radius, paint); //画出圆环
 
-        float textsize=radius-200;
+        float textsize=(float)(radius*0.6);
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
         textPaint.setFakeBoldText(true);
