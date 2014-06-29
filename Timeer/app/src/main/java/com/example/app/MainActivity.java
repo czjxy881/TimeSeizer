@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -135,7 +136,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             return true;
         }
         if (id==R.id.menu_add){
-            TFragment.getInstance().TaskAdd();
+            Dialog dialog = new Dialog(MainActivity.this, R.style.mydialog);
+            //设置它的ContentView
+            dialog.setContentView(R.layout.alertdialog_freetimework);
+            dialog.show();
                    }
         return super.onOptionsItemSelected(item);
     }

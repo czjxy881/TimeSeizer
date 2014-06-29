@@ -1,95 +1,169 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context="com.example.app.ListActivityt"
     android:id="@+id/tlfreetimeworker"
-    android:background="@drawable/abig">
+    >
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+   
+        >
+
         <TextView
+            android:layout_weight="1"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:text="添加任务"
             android:textSize="30dp"
-            android:gravity="center"/>
-    </LinearLayout>
-    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:shadowColor="@color/Shadow"
+            android:shadowDx="2.0"
+            android:shadowDy="2.0"
+            android:shadowRadius="5.0"
+
+
+            />
+        <View android:layout_width="fill_parent"
+            android:layout_height="2dip"
+            android:background="#FF909090"/>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-        <TableRow>
+        android:orientation="vertical"
+        android:layout_weight="4"
+        >
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp">
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="   任务名称"
-                android:textSize="10pt"
+                android:text="任务名称:"
+                android:textSize="16sp"
                 android:id="@+id/tvworker"
-                android:typeface="sans"/>
+                android:layout_weight="0.372"
+                android:gravity="center" />
             <EditText
-                android:layout_width="fill_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入任务名称"
                 android:id="@+id/etworker"
                 android:selectAllOnFocus="true"
-                android:typeface="sans"/>
+                android:typeface="sans"
+                android:layout_weight="0.618"
+                android:gravity="center_vertical" />
 
-        </TableRow>
-        <TableRow>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp">
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_weight="0.372"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="   预计番茄数"
-                android:textSize="10pt"
-                android:typeface="serif"/>
+                android:text="番茄数:"
+                android:gravity="center"
+                android:textSize="16sp" />
             <EditText
-                android:layout_width="fill_parent"
+                android:layout_weight="0.618"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入预计番茄数"
                 android:id="@+id/etfanqie"
                 android:selectAllOnFocus="true"
-                android:typeface="serif"/>
-        </TableRow>
-        <TableRow>
+                android:typeface="serif"
+                android:gravity="center_vertical"
+                android:inputType="number" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_height="0dp"
+            android:layout_width="fill_parent"
+            android:layout_weight="1"
+            android:layout_margin="3dp">
             <TextView
-                android:layout_width="fill_parent"
+                android:layout_weight="0.372"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="   备注"
-                android:textSize="10pt"
-                android:typeface="monospace"/>
+                android:text="备注:"
+                android:textSize="16sp"
+                android:gravity="center" />
             <EditText
-                android:layout_width="fill_parent"
+                android:layout_weight="0.618"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入备注"
                 android:id="@+id/etbeizhu"
                 android:selectAllOnFocus="true"
-                android:typeface="monospace"/>
-        </TableRow>
-    </TableLayout>
+                android:typeface="monospace"
+                android:gravity="center_vertical" />
+        </LinearLayout>
+    </LinearLayout>
     <LinearLayout
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="5dp">
         <RadioGroup
+            android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rgaddworker"
-            android:layout_marginLeft="20.0dip">
+            >
             <RadioButton
-                android:layout_width="fill_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:text="周期性任务"
                 android:textSize="15dp"
                 android:id="@+id/rbnzhouqi"
-                />
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_marginLeft="5dp" />
             <RadioButton
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
                 android:text="紧急任务"
                 android:textSize="15dp"
-                android:id="@+id/rbnjinji"/>
+                android:id="@+id/rbnjinji"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:layout_marginRight="5dp" />
         </RadioGroup>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:layout_gravity="center">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_save"
+            android:background="@drawable/buttonselector"
+            android:text="保存"
+            android:id="@+id/SaveButton"
+            android:layout_margin="15dp"
+            android:layout_marginRight="15dp" />
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
+            android:background="@drawable/buttonselector"
+            android:text="取消"
+            android:id="@+id/CancelButton"
+            android:layout_margin="15dp"
+            android:layout_marginLeft="15dp" />
+        </LinearLayout>
     </LinearLayout>
 </TableLayout>
 
