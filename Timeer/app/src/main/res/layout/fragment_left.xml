@@ -16,46 +16,51 @@
             android:layout_marginEnd="10px"
             android:id="@+id/tvzjnumber"/>
     </LinearLayout>
+<TableLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-    <LinearLayout
+    <TableRow
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="fill_parent">
+
         <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="今日完成的番茄数"
+            android:text="今日完成"
             android:textSize="30dp"
             android:gravity="center"
-            android:layout_margin="8dp"/>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvfqnumber"
-            android:text="27"
-            android:textSize="70dp"
-            android:gravity="center"
-            android:layout_margin="8dp"/>
-    </LinearLayout>
-    <LinearLayout
+            android:layout_margin="8dp"
+            android:layout_weight="1.08"
+            android:layout_column="8" />
+    </TableRow>
+
+    <TextView
+        android:layout_width="125dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/tvfqnumber"
+        android:text="27"
+        android:textSize="70dp"
+        android:gravity="center"
+        android:layout_margin="8dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="被打断次数"
+        android:textSize="30dp"
+        android:gravity="center"
+        android:layout_margin="8dp"
+        android:layout_weight="1.06" />
+    <TextView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="被打断次数"
-            android:textSize="30dp"
-            android:gravity="center"
-            android:layout_margin="8dp"/>
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/tvddnumber"
-            android:text="5"
-            android:textSize="70dp"
-            android:gravity="center"/>
-    </LinearLayout>
+        android:id="@+id/tvddnumber"
+        android:text="5"
+        android:textSize="70dp"
+        android:gravity="center"/>
+    </TableLayout>
+
     <LinearLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"

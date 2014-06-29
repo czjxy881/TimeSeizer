@@ -22,6 +22,7 @@ public class DrawLine extends EditText {
         // rect=new Rect();
         ePaint.setColor(Color.BLACK);
         ePaint.setStyle(Paint.Style.STROKE);
+        ePaint.setStrokeWidth((float)2.0);
 
     }
 

@@ -78,7 +78,7 @@ public class NotepadAdapter extends BaseAdapter {
                 .findViewById(R.id.changedateview);
         String str = list.get(arg0);
         String dateStr = list.get(arg0);
-        setShow.cContentView.setText("    任务名称"+"\n" + "    "+str);
+        setShow.cContentView.setText("    任务名称:"+str+"\n" + "    任务备注"+str);
         setShow.cDateView.setText(dateStr);
         setShow.styleButtonWrite = (Button) arg1
                 .findViewById(R.id.stylebutton1);

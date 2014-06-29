@@ -3,6 +3,7 @@ package com.example.app;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +34,10 @@ public class TFragment extends Fragment  {
     public NotepadAdapter adapter;
     Vector<String> presidents = new Vector<String>();
     public ListView listView;
+    private EditText etworker;
     private static TFragment tFragment=null;
 
-    RelativeLayout layout ;
+    TableLayout layout ;
     TextView textView ;
     EditText editText ;
     EditText beizhutext;
@@ -54,6 +57,7 @@ public TFragment(){
     }
     @Override
     public void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         mMainView = inflater.inflate(R.layout.listfragment_one, (ViewGroup)getActivity().findViewById(R.id.main_viewpager), false);
@@ -107,21 +111,22 @@ public TFragment(){
     public void showUpdate() {
         this.adapter = new NotepadAdapter(getActivity(),tFragment,presidents);
         this.listView.setAdapter(this.adapter);
+        this.listView.setDivider(null);
     }
 
     public void TaskAdd(){
-        layout = (RelativeLayout)(getActivity().getLayoutInflater().inflate(R.layout.writedown, null));
-        textView = ((TextView)layout.findViewById(R.id.writedate));
-        editText = ((DrawLine)layout.findViewById(R.id.edittext));
+        layout = (TableLayout)(getActivity().getLayoutInflater().inflate(R.layout.alertdialog_freetimework, null));
+        textView = ((TextView)layout.findViewById(R.id.tvworker));
+        //editText = ((DrawLine)layout.findViewById(R.id.edittext));
+        etworker =((EditText)layout.findViewById(R.id.etworker));
         getDate = new Date();
         date = getDate.getDate();
-        textView.setText(date);
-
+        //textView.setText(date);
         new AlertDialog.Builder(getActivity()).setView(layout).setPositiveButton("保存", new DialogInterface.OnClickListener() {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String Name = editText.getText().toString();
+                String Name = etworker.getText().toString();
                 if (Name.equals("")) {
                     Toast.makeText(getActivity(), "请输入内容", Toast.LENGTH_SHORT).show();
                     presidents.add("请输入内容");
