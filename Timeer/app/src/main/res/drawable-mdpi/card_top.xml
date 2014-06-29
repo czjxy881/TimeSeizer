@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="@color/Shadow"/>
+        </shape>
+    </item>
+    <item android:right="@dimen/ShadowSize">
+        <shape>
+            <solid android:color="@color/White"/>
+        </shape>
+    </item>
+    <item android:right="5dp" >
+        <shape>
+            <stroke android:dashGap="10dp" android:dashWidth="15dp"
+                android:width="@dimen/split_size"
+                android:color="@android:color/black"/>
+        </shape>
+
+    </item>
+    <item android:right="@dimen/ShadowSize" android:bottom="@dimen/split_size">
+        <shape xmlns:android="http://schemas.android.com/apk/res/android">
+            <solid android:color="@color/White"/>
+            <padding android:bottom="5dp" android:top="5dp" android:left="5sp" android:right="5sp"/>
+
+        </shape>
+    </item>
+</layer-list>
