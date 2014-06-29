@@ -18,7 +18,7 @@ public class CircleProgressBar extends View {
     private double maxProgress = 100;//最大进度
     private double progress = 0;//当前进度
     private int progressStrokeWidth = 60;//线宽
-    private String remind="";
+    private String remind="25:00";
     // 画圆所在的矩形区域
     RectF oval;
     Paint paint;

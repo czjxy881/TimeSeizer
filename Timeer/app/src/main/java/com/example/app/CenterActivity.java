@@ -2,23 +2,17 @@ package com.example.app;
 
 import android.app.ActionBar;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -65,7 +59,7 @@ public class CenterActivity extends Activity implements View.OnClickListener {
 
         setContentView(R.layout.fragment_center);
         StartButton = (Button) findViewById(R.id.StartButton);
-        ReturnButton = (Button) findViewById(R.id.ReturnButton);
+        ReturnButton = (Button) findViewById(R.id.StopButton);
         CurrentWorkText=(TextView)findViewById(R.id.CurrentWorkText);
         breakProgressBar = (CircleProgressBar) findViewById(R.id.breakBar);
        // StartButton.setBackground(drawable);

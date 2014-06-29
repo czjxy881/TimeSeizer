@@ -9,27 +9,54 @@
     tools:context="com.example.app.MainActivity$PlaceholderFragment"
     android:background="@color/Grey"
     >
-     <DigitalClock
-           android:id="@+id/myClock"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:textSize="@dimen/Clock_Size"
-           android:layout_gravity="center_horizontal"
-           android:layout_alignParentTop="true"
-           android:layout_centerHorizontal="true"
-           android:shadowColor="@color/Shadow"
-           android:shadowDx="2.0"
-           android:shadowDy="2.0"
-           android:shadowRadius="5.0"
-         />
-            <TextView
+    <DigitalClock
+        android:id="@+id/myClock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/Clock_Size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已进行:00:20"
+
+        android:id="@+id/GoneTime"
+        android:textSize="@dimen/Clock_Size"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="已中断:0次"
+
+        android:id="@+id/InterruptTimes"
+        android:textSize="@dimen/Clock_Size"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:visibility="invisible"
+        />
+    <TextView
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="当前任务"
+                android:text="目标任务:测试"
+
                 android:id="@+id/CurrentWorkText"
                 android:textSize="@dimen/CurrentTaskFontSize"
-                android:layout_below="@+id/myClock"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/InterruptTimes"
+        android:layout_marginTop="20dp"
+        android:shadowColor="@color/Shadow"
+        android:shadowDx="2.0"
+        android:shadowDy="2.0"
+        android:shadowRadius="5.0"
+        />
 
 
             <com.example.app.CircleProgressBar
@@ -40,10 +67,11 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/CurrentWorkText"
-                android:layout_marginTop="15dp" />
+                android:layout_marginTop="10dp"
+                android:layout_above="@+id/StopButton" />
 
     <Button
-        android:id="@+id/ReturnButton"
+        android:id="@+id/StopButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="结束"
@@ -57,7 +85,7 @@
         android:shadowDy="2.0"
         android:shadowRadius="5.0"
         android:visibility="invisible"
-          />
+        android:layout_marginTop="5dp" />
 
     <Button
         android:id="@+id/StartButton"
@@ -74,6 +102,8 @@
         android:shadowDy="2.0"
         android:shadowRadius="5.0"
 
-        />
+        android:layout_marginTop="5dp" />
+
+
 
 </RelativeLayout>
