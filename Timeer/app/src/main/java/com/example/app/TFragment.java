@@ -72,24 +72,11 @@ public TFragment(){
         this.listView.setAdapter(this.adapter);
 
 
-
         this.listView.setDivider(null);
-        this.listView.setOnItemClickListener(new ItemClick());
 
 
     }
 
-    class ItemClick implements AdapterView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            Intent intent = new Intent();
-            intent.setClass(getActivity(),CenterActivity.class);
-            intent.putExtra("Name", presidents.get(i));
-            startActivity(intent);
-
-        }
-    }
     Menu mMenu;
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
