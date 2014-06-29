@@ -10,7 +10,7 @@
 
         android:id="@id/changedateview"
         android:layout_width="300.0dip"
-        android:layout_height="27.0dip"
+        android:layout_height="wrap_content"
         android:layout_marginTop="8.0dip"
         android:layout_centerHorizontal="true" />
     <com.example.app.Note.TextViewLine

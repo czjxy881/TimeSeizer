@@ -1,5 +1,6 @@
 package com.example.app.Note;
 
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -12,9 +13,10 @@ import android.widget.TextView;
  */
 public class DateLine extends TextView {
 
-    private Paint ePaint = new Paint();
 
+    private Paint ePaint = new Paint();
     public DateLine(Context context) {
+
         super(context);
         // TODO 自动生成的构造函数存根
     }
@@ -28,10 +30,12 @@ public class DateLine extends TextView {
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
+    public void onDraw(Canvas canvas) {
+
         // TODO 自动生成的方法存根
         canvas.drawLine(0.0F, 50.0F, getWidth(), 50.0F, this.ePaint);
         super.onDraw(canvas);
     }
+
 
 }

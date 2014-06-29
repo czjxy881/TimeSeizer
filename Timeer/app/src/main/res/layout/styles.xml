@@ -10,17 +10,15 @@
         android:layout_margin="10dp"
         android:id="@id/changedateview"
         android:layout_width="match_parent"
-        android:layout_height="27.0dip"
-        android:layout_marginTop="8.0dip"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5.0dip"
         android:layout_centerHorizontal="true"
-
         />
     <com.example.app.Note.TextViewLine
         android:id="@+id/changecontentview"
         android:typeface="serif"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:minHeight="68.0dip"
         android:layout_below="@+id/changedateview"
         android:layout_centerHorizontal="true"
         android:lineSpacingExtra="6.0dip"
