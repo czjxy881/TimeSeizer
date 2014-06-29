@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.app.MainActivity"
-    android:background="@drawable/big" >
+    android:background="@drawable/bigg" >
     <com.example.app.Note.DateLine
         android:textColor="#ffff0000"
         android:gravity="center"
