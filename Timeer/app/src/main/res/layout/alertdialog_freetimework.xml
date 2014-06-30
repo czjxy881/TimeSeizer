@@ -111,23 +111,23 @@
             android:orientation="horizontal"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/rgaddworker"
+            android:id="@+id/DialogRadioGroup"
             >
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="周期性任务"
+                android:text="周期任务"
                 android:textSize="15dp"
-                android:id="@+id/rbnzhouqi"
+                android:id="@+id/DialogRadioPeriod"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:layout_marginLeft="5dp" />
             <RadioButton
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
-                android:text="紧急任务"
+                android:text="单次任务"
                 android:textSize="15dp"
-                android:id="@+id/rbnjinji"
+                android:id="@+id/DialogRadioOnce"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:layout_marginRight="5dp" />

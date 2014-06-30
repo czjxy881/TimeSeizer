@@ -34,6 +34,7 @@ public class TaskListFragment extends Fragment {
         return presidents;
     }
     public void showUpdate(){
+        if(adapter==null)return;
         adapter.notifyDataSetChanged();
     }
     public View.OnClickListener getEditClickListener(int i){

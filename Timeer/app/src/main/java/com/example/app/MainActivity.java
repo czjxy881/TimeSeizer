@@ -31,11 +31,13 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.example.app.TaskListControllor.ListKind;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -47,19 +49,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
     private ActionBar actionBar;
     private Dialog dialog;
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    private Menu mMenu;
     SectionsPagerAdapter mSectionsPagerAdapter;
+
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-    /**
-     * The {@link android.support.v4.view.ViewPager} that will host the section contents.
-     */
+
     ViewPager mViewPager;
 
     public MainActivity() {
@@ -67,26 +61,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
     public ActionBar getMyActionBar(){
         return actionBar;
     }
+
     public void hideBarSetting(){
         if(mMenu==null)return;
         mMenu.setGroupVisible(0,false);
-        //mMenu.clear();
-      //  MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_NEVER);
-     //   MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_NEVER);
-      //  MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_NEVER);
     }
     public void showBarSetting(){
         if(mMenu==null)return;
         mMenu.setGroupVisible(0,true);
 
-        //mMenu.add(0,R.id.menu_add,0,"添加")
-     //   MenuItem s;
-
-      //  mMenu.add(R.id.menu_listadd);
-      //  mMenu.add(R.id.menu_setting);
-        MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
     }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,7 +86,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
-        initDialog();
 
     }
 
@@ -123,26 +105,54 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
                 getSupportActionBar().getSelectedNavigationIndex());
     }
-    Menu mMenu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mMenu=menu;
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mymain, menu);
-        showBarSetting();
-        //  menu.findItem(R.id.menu_add).setVisible(true);
-
+        MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
+
+    /**
+     * 生成添加弹窗,根据现在列表完成动态布局
+     */
     private void initDialog(){
         dialog = new Dialog(MainActivity.this, R.style.mydialog);
         dialog.setContentView(R.layout.alertdialog_freetimework);
+
+        final TextView TitleView=((TextView)dialog.findViewById(R.id.TitleAddText));
+        TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
+        TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
+        TitleView.clearComposingText();
+        ContentView.clearComposingText();
+        TomatoView.clearComposingText();
+        final ListKind listKind=turnIndex2ListKind(actionBar.getSelectedNavigationIndex());
+        final RadioGroup radioGroup=(RadioGroup)dialog.findViewById(R.id.DialogRadioGroup);
+        if(listKind== ListKind.AllList){
+            radioGroup.setVisibility(View.VISIBLE);
+        }else{
+            radioGroup.setVisibility(View.GONE);
+            radioGroup.clearCheck();
+        }
+        //((RadioButton)findViewById(R.id.))
         dialog.findViewById(R.id.DialogSaveButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String Name = ((TextView)dialog.findViewById(R.id.TitleAddText)).getText().toString();
-                TaskListFragment listFragment=TaskListControllor.getInstance(actionBar.getSelectedNavigationIndex());
                 //TODO:数据库更新
+                String Name = TitleView.getText().toString();
+                TaskListFragment listFragment;
+                if(listKind==ListKind.TodayList||radioGroup.getCheckedRadioButtonId()==R.id.DialogRadioOnce){
+                    listFragment=TaskListControllor.getInstance(ListKind.TodayList);
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }else{
+                    listFragment=TaskListControllor.getInstance(ListKind.PeriodList);
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }
+                listFragment=TaskListControllor.getInstance(ListKind.AllList);
                 listFragment.add(Name);
                 listFragment.showUpdate();
                 dialog.cancel();
@@ -154,6 +164,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 dialog.cancel();
             }
         });
+        dialog.show();
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -172,7 +183,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             return true;
         }
         if (id==R.id.menu_add){
-            dialog.show();
+            initDialog();
+
                    }
         return super.onOptionsItemSelected(item);
     }
@@ -184,19 +196,19 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         Fragment s=null;
 
         switch (position){
-            case 0:s=TaskListControllor.getInstance(TaskListControllor.ListKind.TodayList);
+            case 0:s=TaskListControllor.getInstance(ListKind.TodayList);
                 mMenu.findItem(R.id.menu_listadd).setVisible(true);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 1:s=TaskListControllor.getInstance(TaskListControllor.ListKind.PeriodList);
+            case 1:s=TaskListControllor.getInstance(ListKind.PeriodList);
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 2:s=TaskListControllor.getInstance(TaskListControllor.ListKind.AllList);
+            case 2:s=TaskListControllor.getInstance(ListKind.AllList);
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 3:s=TaskListControllor.getInstance(TaskListControllor.ListKind.DoneList);
+            case 3:s=TaskListControllor.getInstance(ListKind.DoneList);
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(false);
                 break;
@@ -209,7 +221,21 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
         return true;
     }
-
+    /**
+     * 获取Navigation对应position的ListKind
+     * @param i List的序号
+     * @return ListKind
+     */
+    public static ListKind turnIndex2ListKind(int i){
+        ListKind listKind=null;
+        switch (i){
+            case 0:listKind=ListKind.TodayList;break;
+            case 1:listKind=ListKind.PeriodList;break;
+            case 2:listKind=ListKind.AllList;break;
+            case 3:listKind=ListKind.DoneList;break;
+        }
+        return listKind;
+    }
 
     /**
      * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to

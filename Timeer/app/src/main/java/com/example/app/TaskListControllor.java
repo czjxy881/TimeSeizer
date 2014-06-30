@@ -20,19 +20,5 @@ public class TaskListControllor {
         }
         return list[i.ordinal()];
     }
-    /**
-     * 获取相应实例
-     * @param i List的序号
-     * @return TaskListFragment单例
-     */
-    public static TaskListFragment getInstance(int i){
-        ListKind listKind=null;
-        switch (i){
-                case 0:listKind=ListKind.TodayList;break;
-                case 1:listKind=ListKind.PeriodList;break;
-                case 2:listKind=ListKind.AllList;break;
-                case 3:listKind=ListKind.DoneList;break;
-        }
-        return getInstance(listKind);
-    }
+
 }
