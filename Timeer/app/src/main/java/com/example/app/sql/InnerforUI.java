@@ -20,6 +20,10 @@ public class InnerforUI {
     private static int NO_NEED=-2;
 
     //get single instance
+    public static InnerforUI getInstance(){
+        return in;
+    }
+
     public static InnerforUI getInstance(Context context){
         if(in==null){
             in=new InnerforUI(context);
