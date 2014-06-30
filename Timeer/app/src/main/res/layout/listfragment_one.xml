@@ -18,15 +18,21 @@
             android:drawSelectorOnTop="false"
             android:layout_marginBottom="45dp"/>
 
-        <Button
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal|bottom"
-            android:id="@+id/btntanadd"
-            android:textSize="16dp"
-            android:text="完成添加"
-            android:background="@drawable/buttonselector" />
+            android:background="@color/Grey"
+            android:orientation="vertical">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/btntanadd"
+                android:textSize="16dp"
+                android:text="完成添加"
+                android:layout_gravity="center_horizontal|bottom"
+                android:background="@drawable/buttonselector" />
+            </LinearLayout>
 
     </FrameLayout>
 

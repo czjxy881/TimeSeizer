@@ -74,6 +74,7 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
     }
 
 
@@ -95,6 +96,7 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_settings:
                 return true;
