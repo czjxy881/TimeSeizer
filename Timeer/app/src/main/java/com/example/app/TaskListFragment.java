@@ -82,6 +82,7 @@ public class TaskListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         view=inflater.inflate(android.R.layout.list_content,container,false);
         ListView listView = ((ListView) view.findViewById(android.R.id.list));
         adapter = new TaskListAdapter(getActivity(),this);
