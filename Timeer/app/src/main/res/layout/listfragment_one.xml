@@ -25,7 +25,7 @@
             android:layout_gravity="center_horizontal|bottom"
             android:id="@+id/btntanadd"
             android:textSize="16dp"
-            android:text="完成评价"
+            android:text="完成添加"
             android:background="@drawable/buttonselector" />
 
     </FrameLayout>

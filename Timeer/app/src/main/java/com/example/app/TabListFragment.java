@@ -10,6 +10,8 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Vector;
 
 /**
@@ -23,6 +25,17 @@ public class TabListFragment extends Fragment {
     TabListAdapter adapter;
     CheckBox checkBox;
     TabListControllor.TabListKind ListKind;
+
+    Map<Integer, Boolean> isCheckMap =  new HashMap<Integer, Boolean>();
+
+    public boolean isChecked(int i){
+        if(isCheckMap.containsKey(i)==false){
+            isCheckMap.put(i,false);
+        }
+        return  isCheckMap.get(i);
+    }
+
+
     public TabListFragment(TabListControllor.TabListKind listKind){
         //TODO 根据listKind生成
         ListKind=listKind;
@@ -36,11 +49,26 @@ public class TabListFragment extends Fragment {
         presidents.add("222223");
         presidents.add("123");
         presidents.add("222223");
+        isCheckMap.clear();
     }
     public Vector<String> getList(){
         return presidents;
     }
+    public View.OnClickListener getClickListener(final int i,final View sview) {
 
+
+        View.OnClickListener now=new View.OnClickListener() {
+
+
+            @Override
+            public void onClick(View view) {
+                checkBox = (CheckBox) sview.findViewById(R.id.TabCheck);
+                checkBox.setChecked(!checkBox.isChecked());
+                isCheckMap.put(i, checkBox.isChecked());
+            }
+        };
+        return now;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

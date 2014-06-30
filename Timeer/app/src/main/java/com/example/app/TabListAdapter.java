@@ -25,8 +25,7 @@ public class TabListAdapter extends BaseAdapter {
     private TextView TitleText;
     private CheckBox checkBox;
     TabListFragment ListFragment;
-    HashMap<Integer, Boolean> state = null;
-    Map<Integer, Boolean> isCheckMap =  new HashMap<Integer, Boolean>();
+
 
 
     /**
@@ -61,41 +60,22 @@ public class TabListAdapter extends BaseAdapter {
         view=inflater.inflate(R.layout.tabstyles,viewGroup,false);
         checkBox=(CheckBox)view.findViewById(R.id.TabCheck);
         TitleText=(TextView) view.findViewById(R.id.TabTitleText);
-        LinearLayout layout=(LinearLayout)view.findViewById(R.id.Tablayout);
-
+        final LinearLayout layout=(LinearLayout)view.findViewById(R.id.Tablayout);
+        checkBox.setChecked(ListFragment.isChecked(i));
         String Title = list.get(i);
         TitleText.setText("任务名称:"+Title);
-        layout.setOnClickListener(getClickListener(i, view));
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                layout.performClick();
+                layout.performClick();
+            }
+        });
+        layout.setOnClickListener(ListFragment.getClickListener(i, view));
 
         return view;
     }
-    public View.OnClickListener getClickListener(final int i,final View sview) {
 
-
-        View.OnClickListener now=new View.OnClickListener() {
-
-
-            @Override
-            public void onClick(View view) {
-                checkBox=(CheckBox)sview.findViewById(R.id.TabCheck);
-                boolean ischecked=checkBox.isChecked();
-                isCheckMap.put(i,checkBox.isChecked());
-
-                checkBox.setChecked(!checkBox.isChecked());
-                if(ischecked)
-                {
-                    //将选中的放入hashmap中
-                    isCheckMap.put(i, ischecked);
-                }
-                else
-                {
-                    //取消选中的则剔除
-                    isCheckMap.remove(i);
-                }
-            }
-        };
-        return now;
-    }
 
 
 }
