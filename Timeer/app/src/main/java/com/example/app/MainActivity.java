@@ -54,12 +54,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
 
-    ViewPager mViewPager;
+    private ViewPager mViewPager;
 
     public MainActivity() {
     }
     public ActionBar getMyActionBar(){
         return actionBar;
+    }
+
+    public void setFragment(int i){
+
+        mViewPager.setCurrentItem(i);
     }
 
     public void hideBarSetting(){
@@ -83,12 +88,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
         //TODO:ViewPager
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
-
+        mViewPager.setOffscreenPageLimit(2); //缓存1+2页
     }
 
 
@@ -217,10 +223,14 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
         }
 
+
+        if(s!=null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fgtright,s).commit();
+        /*
         if(s!=null)getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fgtright, s)
                 .commit();
-
+        */
         return true;
     }
     /**
@@ -248,6 +258,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         public SectionsPagerAdapter(FragmentManager fm) {
 
             super(fm);
+
         }
 
         @Override
@@ -261,6 +272,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                     break;
                 case 1:
 
+                    f=CenterFragment.getInstance();
+                    break;
+                case 2:
+
                     f=RightFragment.getInstance();
 
                     break;
@@ -272,7 +287,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
     }
 

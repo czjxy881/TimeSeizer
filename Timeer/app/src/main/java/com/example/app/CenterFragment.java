@@ -1,7 +1,8 @@
 package com.example.app;
 
-import android.app.ActionBar;
+
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -10,10 +11,15 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,7 +30,7 @@ import java.util.Date;
 /**
  * Created by xxx on 14-6-18.
  */
-public class CenterActivity extends Activity  {
+public class CenterFragment extends Fragment {
     private Button StopButton,StartButton,BackButton,InterruptButton;
     private Bundle extra;
     private TextView CurrentWorkText,InterruptTimes,GoneTime;
@@ -44,50 +50,59 @@ public class CenterActivity extends Activity  {
 
     private TimeCount time=null;
     private int timeSpan;
-    private Vibrator vibrator;
-    MediaPlayer player = null;
-    private String showRing = "aa";// 铃声
     private ActionBar actionBar;
-    private boolean showShake = true;// 震动
 
-    //单实例化
+    private boolean inPractise;
+    private Bundle bundle=null;
+    private boolean Viewed=false;
+    public void setInfo(Bundle bundle){
+        this.bundle=bundle;
+    }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        actionBar = getActionBar();
-        actionBar.setDisplayHomeAsUpEnabled(true);
-
-        try {
-            extra = getIntent().getExtras();
-            Title = extra.getString("Name");
-            AimTomato=extra.getInt("Aim");
-        }catch (Exception e){
-            Title="自由";
-            AimTomato=2;
+    private static CenterFragment centerFragment;
+    public static CenterFragment getInstance(){
+        if (centerFragment==null){
+            centerFragment=new CenterFragment();
         }
-        NowTomato=ContinueWork=CurrentState=Interrupt=0;
-        Interrupt--;
-        setContentView(R.layout.fragment_center);
-        StartButton = (Button) findViewById(R.id.StartButton);
-        StopButton = (Button) findViewById(R.id.StopButton);
-        InterruptButton= (Button) findViewById(R.id.InterruptButton);
-        BackButton = (Button) findViewById(R.id.BackButton);
+        return centerFragment;
+    }
 
-        GoneTime=(TextView)findViewById(R.id.GoneTime);
-        InterruptTimes=(TextView)findViewById(R.id.InterruptTimes);
-        CurrentWorkText=(TextView)findViewById(R.id.CurrentWorkText);
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if(isVisibleToUser){
+            actionBar=((MainActivity)this.getActivity()).getMyActionBar();
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            ((MainActivity)this.getActivity()).hideBarSetting();
+            if(Viewed){
+                tryRead();
+            }
 
-        breakProgressBar = (CircleProgressBar) findViewById(R.id.breakBar);
+        }
+    }
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_center, container, false);
+        actionBar=((MainActivity)this.getActivity()).getMyActionBar();
 
-        DateC=(MyDigitalClock)findViewById(R.id.Date);
-        ClockC=(MyDigitalClock)findViewById(R.id.myClock);
+        StartButton = (Button) view.findViewById(R.id.StartButton);
+        StopButton = (Button) view.findViewById(R.id.StopButton);
+        InterruptButton= (Button) view.findViewById(R.id.InterruptButton);
+        BackButton = (Button) view.findViewById(R.id.BackButton);
+
+        GoneTime=(TextView)view.findViewById(R.id.GoneTime);
+        InterruptTimes=(TextView)view.findViewById(R.id.InterruptTimes);
+        CurrentWorkText=(TextView)view.findViewById(R.id.CurrentWorkText);
+
+        breakProgressBar = (CircleProgressBar) view.findViewById(R.id.breakBar);
+
+        DateC=(MyDigitalClock)view.findViewById(R.id.Date);
+        ClockC=(MyDigitalClock)view.findViewById(R.id.myClock);
 
         DateC.setFormat(00);
         ClockC.setFormat(24);
 
-        CurrentWorkText.setText("目标任务:" + Title);
-        //设置添加临时任务的弹窗
+        tryRead();
 
         StartButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,8 +132,40 @@ public class CenterActivity extends Activity  {
                 onBackButton();
             }
         });
+        Viewed=true;
+        return view;
+    }
+
+    private void tryRead(){
+        try {
+            Title = bundle.getString("Name");
+
+            AimTomato=bundle.getInt("Num");
+            inPractise=false;
+            bundle=null;
+        }catch (Exception e){
+            inPractise=true;
+
+        }
+        NowTomato=ContinueWork=CurrentState=Interrupt=0;
+       // Interrupt--;
+
+
+        if(inPractise==false) {
+            CurrentWorkText.setText("目标任务:" + Title);
+        }else{
+            CurrentWorkText.setText("练习模式");
+        }
+    }
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
 
     }
+
+
+
 
     /**
      * 开始任务
@@ -137,30 +184,29 @@ public class CenterActivity extends Activity  {
         StopButton.setVisibility(View.VISIBLE);
         StartButton.setVisibility(View.GONE);
         BackButton.setVisibility(View.GONE);
+        if(inPractise==false) {
+            CurrentWorkText.setText("当前任务:" + Title);
+            GoneTime.setText("当前番茄:"+String.valueOf(NowTomato)+"/"+String.valueOf(AimTomato));
+        }else{
+            CurrentWorkText.setText("工作中");
+            GoneTime.setText("当前番茄:"+String.valueOf(NowTomato));
+        }
 
-        CurrentWorkText.setText("当前任务:"+Title);
-        CurrentWorkText.setTextSize(35);
 
-        GoneTime.setText("当前番茄:"+String.valueOf(NowTomato)+"/"+String.valueOf(AimTomato));
         InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
         timeSpan = WORK * 60 * 1000;
         time = new TimeCount(timeSpan, 50,CurrentState);
         time.start();
     }
 
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-        if(time!=null)time.cancel();
-        finish();
-    }
-
     private void onInterrupt(){
         Interrupt++;
         InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
     }
+    private void ready(){
+        breakProgressBar.setTimenotRefresh(WORK*60*1000);
+        breakProgressBar.setProgress(0);
 
-    private void breakWhenWork(){
         DateC.setVisibility(View.VISIBLE);
         ClockC.setVisibility(View.VISIBLE);
         GoneTime.setVisibility(View.INVISIBLE);
@@ -169,19 +215,27 @@ public class CenterActivity extends Activity  {
         StopButton.setVisibility(View.GONE);
         StartButton.setVisibility(View.VISIBLE);
         BackButton.setVisibility(View.GONE);
-        finish();
-        Toast.makeText(CenterActivity.this, "此次任务失败了", Toast.LENGTH_SHORT).show();
+    }
+    private void breakWhenWork(){
+        ready();
+        if(inPractise==false) {
+            ((MainActivity)getActivity()).setFragment(2);
+            Toast.makeText(getActivity(), "此次任务失败了", Toast.LENGTH_SHORT).show();
+        }else{
+            CurrentWorkText.setText("练习模式");
+        }
     }
 
     private void onBackButton(){
         //TODO:数据库
         time.cancel();
-        finish();
-        NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        ready();
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
         notificationManager.cancel(110203);
     }
     private void finishTask(){
         //TODO:
+        CurrentWorkText.setText("任务完成");
         actionBar.setDisplayHomeAsUpEnabled(true);
         InterruptButton.setVisibility(View.GONE);
         StopButton.setVisibility(View.GONE);
@@ -201,41 +255,18 @@ public class CenterActivity extends Activity  {
         StopButton.setVisibility(View.GONE);
         GoneTime.setText("当前任务:"+Title);
         CurrentWorkText.setText("休息中");
-        timeSpan = WORK * 60 * 1000;
+        timeSpan = REST * 60 * 1000;
         time = new TimeCount(timeSpan, 50,CurrentState);
         time.start();
     }
 
 
     @Override
-    protected void onResume() {
+    public void onResume() {
         super.onResume();
         onInterrupt();
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
-        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        return true;
-    }
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent=new Intent();
-        switch (item.getItemId()) {
-            case android.R.id.home:
 
-                intent.setClass(this,MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
-                return true;
-            case R.id.action_settings:
-                intent.setClass(this,Settings.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-
-        }
-    }
 
     class TimeCount extends CountDownTimer {
         private long alltime;
@@ -245,8 +276,8 @@ public class CenterActivity extends Activity  {
         public TimeCount(long millisInFuture, long countDownInterval,int Currentstate) {
             super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
             alltime = millisInFuture;
-            breakProgressBar.setText(new SimpleDateFormat("mm:ss").format(new Date(
-                    millisInFuture)));
+            breakProgressBar.setTimenotRefresh(millisInFuture);
+            breakProgressBar.setProgress(0);
             CurrentState=Currentstate;
             initNotification();
         }
@@ -259,9 +290,9 @@ public class CenterActivity extends Activity  {
             notification.flags |= notification.FLAG_INSISTENT; //重复
             notification.flags|=Notification.FLAG_AUTO_CANCEL;
             Intent intent = new Intent();
-            intent.setClass(CenterActivity.this, CenterActivity.class);
+            intent.setClass(getActivity(), MainActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //加载已有Activity
-            pd = PendingIntent.getActivity(CenterActivity.this, 0, intent, 0);
+            pd = PendingIntent.getActivity(getActivity(), 0, intent, 0);
         }
         /**
          * 计时过程显示
@@ -288,7 +319,7 @@ public class CenterActivity extends Activity  {
         public void onFinish() {
             String title="",content="";
             if(CurrentState==1){
-                if(AimTomato<=NowTomato){ //任务已完成
+                if(inPractise==false&&AimTomato<=NowTomato){ //任务已完成
                     finishTask();
                     title="任务完成";content="恭喜恭喜";
                 }else{
@@ -301,10 +332,10 @@ public class CenterActivity extends Activity  {
             }
 
 
-            NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
             notification.tickerText=title;
             notification.when=System.currentTimeMillis();
-            notification.setLatestEventInfo(CenterActivity.this, title, content, pd);
+            notification.setLatestEventInfo(getActivity(), title, content, pd);
             notificationManager.notify(110203,notification);
             //Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
             cancel();

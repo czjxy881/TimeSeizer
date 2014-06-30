@@ -140,7 +140,7 @@
         android:id="@+id/BackButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="返回"
+        android:text="确定"
         android:textSize="@dimen/Clock_Size"
         android:drawableLeft="@android:drawable/ic_menu_revert"
         android:background="@drawable/buttonselector"
