@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -30,12 +31,13 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.example.app.Note.DrawLine;
+import com.example.app.TaskListControllor.ListKind;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -45,22 +47,14 @@ import java.util.Vector;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener  {
 
-    public ActionBar actionBar;
-
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link android.support.v4.app.FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
+    private ActionBar actionBar;
+    private Dialog dialog;
+    private Menu mMenu;
     SectionsPagerAdapter mSectionsPagerAdapter;
+
     private static final String STATE_SELECTED_NAVIGATION_ITEM = "selected_navigation_item";
-    /**
-     * The {@link android.support.v4.view.ViewPager} that will host the section contents.
-     */
-    ViewPager mViewPager;
+
+    private ViewPager mViewPager;
 
     public MainActivity() {
     }
@@ -68,6 +62,22 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         return actionBar;
     }
 
+    public void setFragment(int i){
+
+        mViewPager.setCurrentItem(i);
+    }
+
+    public void hideBarSetting(){
+        if(mMenu==null)return;
+        mMenu.findItem(R.id.menu_listadd).setVisible(false);
+        mMenu.findItem(R.id.menu_add).setVisible(false);
+    }
+    public void showBarSetting(){
+        if(mMenu==null)return;
+        mMenu.findItem(R.id.menu_listadd).setVisible(true);
+        mMenu.findItem(R.id.menu_add).setVisible(true);
+
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,13 +88,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());
+
         //TODO:ViewPager
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
-
-
+        mViewPager.setOffscreenPageLimit(2); //缓存1+2页
     }
 
 
@@ -103,20 +113,68 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         outState.putInt(STATE_SELECTED_NAVIGATION_ITEM,
                 getSupportActionBar().getSelectedNavigationIndex());
     }
-    Menu mMenu;
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         mMenu=menu;
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.mymain, menu);
-        MenuItemCompat.setShowAsAction(menu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(menu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        //  menu.findItem(R.id.menu_add).setVisible(true);
-
+        hideBarSetting();
+        MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
 
+    /**
+     * 生成添加弹窗,根据现在列表完成动态布局
+     */
+    private void initDialog(){
+        dialog = new Dialog(MainActivity.this, R.style.mydialog);
+        dialog.setContentView(R.layout.alertdialog_freetimework);
+
+        final TextView TitleView=((TextView)dialog.findViewById(R.id.TitleAddText));
+        TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
+        TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
+        TitleView.clearComposingText();
+        ContentView.clearComposingText();
+        TomatoView.clearComposingText();
+        final ListKind listKind=turnIndex2ListKind(actionBar.getSelectedNavigationIndex());
+        final RadioGroup radioGroup=(RadioGroup)dialog.findViewById(R.id.DialogRadioGroup);
+        if(listKind== ListKind.AllList){
+            radioGroup.setVisibility(View.VISIBLE);
+        }else{
+            radioGroup.setVisibility(View.GONE);
+            radioGroup.clearCheck();
+        }
+        //((RadioButton)findViewById(R.id.))
+        dialog.findViewById(R.id.DialogSaveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO:数据库更新
+                String Name = TitleView.getText().toString();
+                TaskListFragment listFragment;
+                if(listKind==ListKind.TodayList||radioGroup.getCheckedRadioButtonId()==R.id.DialogRadioOnce){
+                    listFragment=TaskListControllor.getInstance(ListKind.TodayList);
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }else{
+                    listFragment=TaskListControllor.getInstance(ListKind.PeriodList);
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }
+                listFragment=TaskListControllor.getInstance(ListKind.AllList);
+                listFragment.add(Name);
+                listFragment.showUpdate();
+                dialog.cancel();
+            }
+        });
+        dialog.findViewById(R.id.DialogCancelButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+        dialog.show();
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -126,7 +184,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         if (id == R.id.menu_setting) {
             Intent intent = new Intent(MainActivity.this,Settings.class);
             startActivity(intent);
-            //this.finish();
             return true;
         }
         if(id==R.id.menu_listadd){
@@ -135,7 +192,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             return true;
         }
         if (id==R.id.menu_add){
-            TFragment.getInstance().TaskAdd();
+            initDialog();
+
                    }
         return super.onOptionsItemSelected(item);
     }
@@ -147,22 +205,50 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         Fragment s=null;
 
         switch (position){
-            case 0:s=TFragment.getInstance();break;
-            case 1:s=ListFragment2.getInstance();break;
-            case 2:s=ListFragment3.getInstance();break;
-            case 3:s=ListFragment4.getInstance();break;
+            case 0:s=TaskListControllor.getInstance(ListKind.TodayList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(true);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 1:s=TaskListControllor.getInstance(ListKind.PeriodList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 2:s=TaskListControllor.getInstance(ListKind.AllList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 3:s=TaskListControllor.getInstance(ListKind.DoneList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(false);
+                break;
 
         }
 
 
-        //TODO: replace
+        if(s!=null)
+            getSupportFragmentManager().beginTransaction().replace(R.id.fgtright,s).commit();
+        /*
         if(s!=null)getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fgtright, s)
                 .commit();
-
+        */
         return true;
     }
-
+    /**
+     * 获取Navigation对应position的ListKind
+     * @param i List的序号
+     * @return ListKind
+     */
+    public static ListKind turnIndex2ListKind(int i){
+        ListKind listKind=null;
+        switch (i){
+            case 0:listKind=ListKind.TodayList;break;
+            case 1:listKind=ListKind.PeriodList;break;
+            case 2:listKind=ListKind.AllList;break;
+            case 3:listKind=ListKind.DoneList;break;
+        }
+        return listKind;
+    }
 
     /**
      * A {@link android.support.v4.app.FragmentPagerAdapter} that returns a fragment corresponding to
@@ -173,6 +259,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         public SectionsPagerAdapter(FragmentManager fm) {
 
             super(fm);
+
         }
 
         @Override
@@ -181,8 +268,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             // Return a PlaceholderFragment (defined as a static inner class below).
             Fragment f=null;
             switch (position){
-                case 0:f=LeftFragment.getInstance();break;
-                case 1:f=RightFragment.getInstance();break;
+                case 0:
+                    f=LeftFragment.getInstance();
+                    break;
+                case 1:
+
+                    f=CenterFragment.getInstance();
+                    break;
+                case 2:
+
+                    f=RightFragment.getInstance();
+
+                    break;
             }
             return f;
 
@@ -191,7 +288,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return 2;
+            return 3;
         }
     }
 

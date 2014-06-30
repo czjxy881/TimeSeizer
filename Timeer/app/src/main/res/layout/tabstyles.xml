@@ -1,0 +1,53 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.app.MainActivity"
+    android:paddingBottom="1dp"
+    android:paddingTop="1dp"
+    android:paddingLeft="3dp"
+    android:paddingRight="3dp"
+    >
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:background="@drawable/tablistcard"
+        android:focusable="false"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp"
+        android:layout_margin="0dp">
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="3"
+            android:orientation="vertical"
+            android:id="@+id/Tablayout"
+            >
+           <LinearLayout
+               android:layout_width="fill_parent"
+               android:orientation="horizontal"
+               android:layout_height="wrap_content"
+               >
+               <TextView
+                   android:layout_width="fill_parent"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/TabTitleText"
+                   android:layout_weight="1"
+                   android:layout_margin="10dp"
+                   android:text="test"
+                   android:textSize="16sp"
+                   android:textStyle="bold"
+                   android:gravity="center_vertical" />
+               <CheckBox
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:id="@+id/TabCheck"
+                   android:layout_gravity="center"
+
+                   />
+
+               </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

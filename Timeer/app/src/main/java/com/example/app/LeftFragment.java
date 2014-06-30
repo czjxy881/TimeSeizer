@@ -2,6 +2,7 @@ package com.example.app;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,9 @@ public class LeftFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+
+
         return inflater.inflate(R.layout.fragment_left, container, false);
     }
     @Override
@@ -40,7 +44,11 @@ public class LeftFragment extends Fragment {
 
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
-            etsummary=(EditText)getActivity().findViewById(R.id.etsummary);
+            ActionBar actionBar=((MainActivity)this.getActivity()).getMyActionBar();
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            ((MainActivity)this.getActivity()).hideBarSetting();
+           // etsummary=(EditText)getActivity().findViewById(R.id.etsummary);
             tvfqnumber=(TextView)getActivity().findViewById(R.id.tvfqnumber);
             tvddnumber=(TextView)getActivity().findViewById(R.id.tvddnumber);
             rbmysocre = (RatingBar)getActivity().findViewById(R.id.rbmyscore);

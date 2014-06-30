@@ -74,6 +74,7 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
                             .setTabListener(this));
         }
+
     }
 
 
@@ -95,6 +96,7 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
                 Intent intent = new Intent(this, MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.action_settings:
                 return true;
@@ -133,9 +135,9 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
         public Fragment getItem(int position) {
             Fragment f=null;
             switch (position){
-                case 0:f=TabFragment1.getInstance();break;
-                case 1:f=TabFragment2.getInstance();break;
-                case 2:f=TabFragment3.getInstance();break;
+                case 0:f=TabListControllor.getInstance(TabListControllor.TabListKind.TAbperiodList);break;
+                case 1:f=TabListControllor.getInstance(TabListControllor.TabListKind.TaballList);break;
+                case 2:f=TabListControllor.getInstance(TabListControllor.TabListKind.TabdoneList);break;
 
             }
             return f;
