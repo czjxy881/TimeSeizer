@@ -38,6 +38,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.app.TaskListControllor.ListKind;
+import com.example.app.sql.InnerforUI;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -57,7 +58,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
     private ViewPager mViewPager;
 
     public MainActivity() {
+
     }
+
     public ActionBar getMyActionBar(){
         return actionBar;
     }
@@ -84,7 +87,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         setContentView(R.layout.activity_main);
         actionBar=getSupportActionBar();
 
-
+        InnerforUI.getInstance(this);
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

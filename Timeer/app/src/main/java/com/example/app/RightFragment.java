@@ -2,10 +2,13 @@ package com.example.app;
 
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+
+import com.example.app.sql.InnerforUI;
 
 
 public class RightFragment extends android.support.v4.app.Fragment  {
@@ -15,7 +18,9 @@ public class RightFragment extends android.support.v4.app.Fragment  {
             return rightFragment;
         }else return rightFragment;
     }
+    public RightFragment(){
 
+    }
     private static RightFragment rightFragment=null;
 
     private ActionBar actionBar;

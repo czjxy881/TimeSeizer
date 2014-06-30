@@ -28,12 +28,11 @@ public class TaskListFragment extends Fragment {
     public TaskListFragment(TaskListControllor.ListKind listKind){
         //TODO 根据listKind生成
 
-        presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTodayList();
-        InnerforUI.getInstance(getActivity()).clickAddTask("test",5,"2014-7-10","test1",0);
+
+        InnerforUI.getInstance(getActivity()).clickAddTask("test",5,"2014-7-1","test1",0);
 
         ListKind=listKind;
-       // presidents.add("123");
-       // presidents.add("222223");
+        showUpdate();
 
     }
     //TODO: 测试用
@@ -44,6 +43,8 @@ public class TaskListFragment extends Fragment {
         return presidents;
     }
     public void showUpdate(){
+        //TODO:根据listKind
+        presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTodayList();
         if(adapter==null)return;
         adapter.notifyDataSetChanged();
     }
@@ -63,7 +64,9 @@ public class TaskListFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 //TODO:ListKind
-                presidents.remove(i);
+                InnerforUI.getInstance().clickDeleteTodayTask(i);
+                //presidents.remove(i);
+                
                 showUpdate();
             }
         };

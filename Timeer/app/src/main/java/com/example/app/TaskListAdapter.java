@@ -20,8 +20,6 @@ import java.util.Vector;
  * Created by jxy on 14-6-30.
  */
 public class TaskListAdapter extends BaseAdapter {
-    //TODO:改成Task类
-    Vector<Task> list=null;
     LayoutInflater inflater;
     private ImageButton DelButton,EditButton;
     private TextView DataText,TitleText,ContentText;
@@ -34,19 +32,18 @@ public class TaskListAdapter extends BaseAdapter {
     public TaskListAdapter(Context context,TaskListFragment taskListFragment){
         inflater=LayoutInflater.from(context);
         ListFragment=taskListFragment;
-        list=taskListFragment.getList();
     }
 
     @Override
     public int getCount() {
-        if(list==null)return 0;
-        return list.size();
+        if(ListFragment.getList()==null)return 0;
+        return ListFragment.getList().size();
     }
 
     @Override
     public Object getItem(int i) {
-        if(list==null)return null;
-        return list.get(i);
+        if(ListFragment.getList()==null)return null;
+        return ListFragment.getList().get(i);
     }
 
     @Override
@@ -68,13 +65,13 @@ public class TaskListAdapter extends BaseAdapter {
         if(ListFragment.getEditClickListener(i)==null)EditButton.setVisibility(View.INVISIBLE);
         if(ListFragment.getDelClickListener(i)==null)DelButton.setVisibility(View.INVISIBLE);
 
-        Task now=list.get(i);
+        Task now=ListFragment.getList().get(i);
         //TODO: 获取任务时间
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd   hh:mm:ss");
         String  DateInfo = sDateFormat.format(new java.util.Date());
 
         TitleText.setText("任务名称:"+now.getName()+"    番茄数:"+now.getExpectNum());
-        ContentText.setText("备注:"+now.getNoteString());
+        ContentText.setText("备注:"+now.getNoteString()+"\nRun:"+now.getRunnerID()+" ID:"+now.getID());
         DataText.setText(DateInfo);
 
 

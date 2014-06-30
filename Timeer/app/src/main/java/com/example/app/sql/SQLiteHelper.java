@@ -17,14 +17,13 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	{
 		super(context, name,null,1);
 	}
-	
-	@Override
-	public void onCreate(SQLiteDatabase db)
-	{
-		Log.i("Database", "success");
-	}
+    @Override
+    public void onCreate(SQLiteDatabase db)
+    {
+        Log.i("Database", "success");
+    }
 
-	@Override
+    @Override
 	public void onUpgrade(SQLiteDatabase p1, int p2, int p3)
 	{
 		// TODO: Implement this method
