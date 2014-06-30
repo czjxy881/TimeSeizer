@@ -38,7 +38,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.example.app.TaskListControllor.ListKind;
+<<<<<<< HEAD
 import com.example.app.sql.InnerforUI;
+=======
+>>>>>>> origin/UI
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -157,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 TaskListFragment listFragment;
                 if(listKind==ListKind.TodayList||radioGroup.getCheckedRadioButtonId()==R.id.DialogRadioOnce){
                     listFragment=TaskListControllor.getInstance(ListKind.TodayList);
+<<<<<<< HEAD
                 //    listFragment.add(Name);
                     listFragment.showUpdate();
                 }else{
@@ -166,6 +170,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 }
                 listFragment=TaskListControllor.getInstance(ListKind.AllList);
                // listFragment.add(Name);
+=======
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }else{
+                    listFragment=TaskListControllor.getInstance(ListKind.PeriodList);
+                    listFragment.add(Name);
+                    listFragment.showUpdate();
+                }
+                listFragment=TaskListControllor.getInstance(ListKind.AllList);
+                listFragment.add(Name);
+>>>>>>> origin/UI
                 listFragment.showUpdate();
                 dialog.cancel();
             }

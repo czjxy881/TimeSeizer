@@ -41,7 +41,11 @@ public class InitDb {
      * @param context
      */
     private InitDb(Context context){
+<<<<<<< HEAD
         sql=new SQLiteHelper(context, "Timmer");
+=======
+        sql=new SQLiteHelper(context, "sqlite");
+>>>>>>> origin/UI
         db=sql.getWritableDatabase();
         DateFormat df=new SimpleDateFormat("yyyy-MM-dd");
         DateFormat dfTime=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
