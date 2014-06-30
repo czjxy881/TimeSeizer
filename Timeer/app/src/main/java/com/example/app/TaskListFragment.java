@@ -64,10 +64,17 @@ public class TaskListFragment extends Fragment {
         View.OnClickListener now=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent();
-                intent.setClass(getActivity(),CenterActivity.class);
-                intent.putExtra("Name", presidents.get(i));
-                startActivity(intent);
+               // Intent intent = new Intent();
+               // intent.setClass(getActivity(),CenterActivity.class);
+               //
+                Bundle bundle=new Bundle();
+                bundle.putString("Name", presidents.get(i));
+
+                bundle.putString("Content","软工大作业");
+                bundle.putInt("Num",10);
+                CenterFragment.getInstance().setInfo(bundle);
+                ((MainActivity)getActivity()).setFragment(1);
+                //startActivity(intent);
             }
         };
         return now;
@@ -82,4 +89,5 @@ public class TaskListFragment extends Fragment {
         listView.setDivider(null);
         return view;
     }
+
 }

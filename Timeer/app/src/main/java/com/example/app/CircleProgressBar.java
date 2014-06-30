@@ -14,6 +14,9 @@ import android.graphics.SweepGradient;
 import android.util.AttributeSet;
 import android.view.View;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class CircleProgressBar extends View {
     private double maxProgress = 100;//最大进度
     private double progress = 0;//当前进度
@@ -112,7 +115,14 @@ public class CircleProgressBar extends View {
     public void setTextnotRefresh(String s){
         remind=s;
     }
-
+    public void setTime(long millisInFuture){
+        setText(new SimpleDateFormat("mm:ss").format(new Date(
+                millisInFuture)));
+    }
+    public void setTimenotRefresh(long m){
+        setTextnotRefresh(new SimpleDateFormat("mm:ss").format(new Date(
+                m)));
+    }
     public void setProgressNotInUiThread(double progress){
         this.progress = progress;
         this.postInvalidate();

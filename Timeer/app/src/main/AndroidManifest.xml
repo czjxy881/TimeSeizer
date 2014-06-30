@@ -27,9 +27,9 @@
         <activity android:name=".Settings" android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light"
             ></activity>
-        <activity android:name=".CenterActivity" android:launchMode="singleInstance"
+        <!--activity android:name=".CenterActivity" android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light"
-            ></activity>
+            ></activity-->
 
     </application>
     <uses-permission android:name="android.permission.VIBRATE" />
