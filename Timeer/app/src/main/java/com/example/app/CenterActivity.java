@@ -10,6 +10,8 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
+import android.support.v4.view.MenuItemCompat;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -210,17 +212,24 @@ public class CenterActivity extends Activity  {
         super.onResume();
         onInterrupt();
     }
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        MenuItemCompat.setShowAsAction(menu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        return true;
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent=new Intent();
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent=new Intent();
+
                 intent.setClass(this,MainActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 return true;
             case R.id.action_settings:
+                intent.setClass(this,Settings.class);
+                startActivity(intent);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

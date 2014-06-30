@@ -64,11 +64,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
     public void hideBarSetting(){
         if(mMenu==null)return;
-        mMenu.setGroupVisible(0,false);
+        mMenu.findItem(R.id.menu_listadd).setVisible(false);
+        mMenu.findItem(R.id.menu_add).setVisible(false);
     }
     public void showBarSetting(){
         if(mMenu==null)return;
-        mMenu.setGroupVisible(0,true);
+        mMenu.findItem(R.id.menu_listadd).setVisible(true);
+        mMenu.findItem(R.id.menu_add).setVisible(true);
 
     }
     @Override
@@ -111,7 +113,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         getMenuInflater().inflate(R.menu.mymain, menu);
         MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
-        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_ALWAYS|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
+        MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         return true;
     }
 
