@@ -1,15 +1,10 @@
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    tools:context="com.example.app.ListActivityt"
-    android:id="@+id/tlfreetimeworker"
-    >
-    <LinearLayout
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-   
+        tools:context="com.example.app.ListActivityt"
         >
 
         <TextView
@@ -24,9 +19,8 @@
             android:shadowDx="2.0"
             android:shadowDy="2.0"
             android:shadowRadius="5.0"
-
-
             />
+
         <View android:layout_width="fill_parent"
             android:layout_height="2dip"
             android:background="#FF909090"/>
@@ -37,6 +31,7 @@
         android:orientation="vertical"
         android:layout_weight="4"
         >
+
         <LinearLayout
             android:layout_height="0dp"
             android:layout_width="fill_parent"
@@ -54,7 +49,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入任务名称"
-                android:id="@+id/etworker"
+                android:id="@+id/TitleAddText"
                 android:selectAllOnFocus="true"
                 android:typeface="sans"
                 android:layout_weight="0.618"
@@ -78,7 +73,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入预计番茄数"
-                android:id="@+id/etfanqie"
+                android:id="@+id/TomatoAddText"
                 android:selectAllOnFocus="true"
                 android:typeface="serif"
                 android:gravity="center_vertical"
@@ -101,7 +96,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="请输入备注"
-                android:id="@+id/etbeizhu"
+                android:id="@+id/ContentAddText"
                 android:selectAllOnFocus="true"
                 android:typeface="monospace"
                 android:gravity="center_vertical" />
@@ -150,7 +145,7 @@
             android:drawableLeft="@android:drawable/ic_menu_save"
             android:background="@drawable/buttonselector"
             android:text="保存"
-            android:id="@+id/SaveButton"
+            android:id="@+id/DialogSaveButton"
             android:layout_margin="15dp"
             android:layout_marginRight="15dp" />
         <Button
@@ -160,11 +155,10 @@
             android:drawableLeft="@android:drawable/ic_menu_close_clear_cancel"
             android:background="@drawable/buttonselector"
             android:text="取消"
-            android:id="@+id/CancelButton"
+            android:id="@+id/DialogCancelButton"
             android:layout_margin="15dp"
             android:layout_marginLeft="15dp" />
         </LinearLayout>
-    </LinearLayout>
-</TableLayout>
+</LinearLayout>
 
 

@@ -58,7 +58,7 @@ public class TabFragment3 extends ListFragment {
         btnlistadd3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TFragment.class);
+                Intent intent = new Intent(getActivity(),MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }

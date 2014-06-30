@@ -36,7 +36,6 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.app.Note.DrawLine;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -46,8 +45,8 @@ import java.util.Vector;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener  {
 
-    public ActionBar actionBar;
-
+    private ActionBar actionBar;
+    private Dialog dialog;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -104,7 +103,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
         mViewPager.setCurrentItem(1);
-
+        initDialog();
 
     }
 
@@ -135,7 +134,27 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
         return true;
     }
-
+    private void initDialog(){
+        dialog = new Dialog(MainActivity.this, R.style.mydialog);
+        dialog.setContentView(R.layout.alertdialog_freetimework);
+        dialog.findViewById(R.id.DialogSaveButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String Name = ((TextView)dialog.findViewById(R.id.TitleAddText)).getText().toString();
+                TaskListFragment listFragment=TaskListControllor.getInstance(actionBar.getSelectedNavigationIndex());
+                //TODO:数据库更新
+                listFragment.add(Name);
+                listFragment.showUpdate();
+                dialog.cancel();
+            }
+        });
+        dialog.findViewById(R.id.DialogCancelButton).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
+    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -145,7 +164,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         if (id == R.id.menu_setting) {
             Intent intent = new Intent(MainActivity.this,Settings.class);
             startActivity(intent);
-            //this.finish();
             return true;
         }
         if(id==R.id.menu_listadd){
@@ -154,9 +172,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             return true;
         }
         if (id==R.id.menu_add){
-            Dialog dialog = new Dialog(MainActivity.this, R.style.mydialog);
-            //设置它的ContentView
-            dialog.setContentView(R.layout.alertdialog_freetimework);
             dialog.show();
                    }
         return super.onOptionsItemSelected(item);
@@ -169,15 +184,25 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         Fragment s=null;
 
         switch (position){
-            case 0:s=TFragment.getInstance();break;
-            case 1:s=ListFragment2.getInstance();break;
-            case 2:s=ListFragment3.getInstance();break;
-            case 3:s=ListFragment4.getInstance();break;
+            case 0:s=TaskListControllor.getInstance(TaskListControllor.ListKind.TodayList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(true);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 1:s=TaskListControllor.getInstance(TaskListControllor.ListKind.PeriodList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 2:s=TaskListControllor.getInstance(TaskListControllor.ListKind.AllList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(true);
+                break;
+            case 3:s=TaskListControllor.getInstance(TaskListControllor.ListKind.DoneList);
+                mMenu.findItem(R.id.menu_listadd).setVisible(false);
+                mMenu.findItem(R.id.menu_add).setVisible(false);
+                break;
 
         }
 
-
-        //TODO: replace
         if(s!=null)getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fgtright, s)
                 .commit();

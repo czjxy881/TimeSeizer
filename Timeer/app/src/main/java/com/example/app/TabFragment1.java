@@ -71,7 +71,7 @@ public class TabFragment1 extends ListFragment{
             @Override
             public void onClick(View view) {
                 int a=0;
-                Intent intent = new Intent(getActivity(),TFragment.class);
+                Intent intent = new Intent(getActivity(),MainActivity.class);
                 for(int psn:checkedMap.keySet())
                     if (checkedMap.get(psn) == true) {
                         keys[a] = (psn);

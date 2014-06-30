@@ -53,7 +53,7 @@ public class TabFragment2 extends ListFragment{
         btnlistadd2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(),TFragment.class);
+                Intent intent = new Intent(getActivity(),MainActivity.class);
                 startActivity(intent);
                 getActivity().finish();
             }
