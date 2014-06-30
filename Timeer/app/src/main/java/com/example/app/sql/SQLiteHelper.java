@@ -19,7 +19,7 @@ public class SQLiteHelper extends SQLiteOpenHelper
 	}
 	
 	@Override
-	public void onCreate(SQLiteDatabase p1)
+	public void onCreate(SQLiteDatabase db)
 	{
 		Log.i("Database", "success");
 	}

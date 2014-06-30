@@ -154,15 +154,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 TaskListFragment listFragment;
                 if(listKind==ListKind.TodayList||radioGroup.getCheckedRadioButtonId()==R.id.DialogRadioOnce){
                     listFragment=TaskListControllor.getInstance(ListKind.TodayList);
-                    listFragment.add(Name);
+                //    listFragment.add(Name);
                     listFragment.showUpdate();
                 }else{
                     listFragment=TaskListControllor.getInstance(ListKind.PeriodList);
-                    listFragment.add(Name);
+                 //   listFragment.add(Name);
                     listFragment.showUpdate();
                 }
                 listFragment=TaskListControllor.getInstance(ListKind.AllList);
-                listFragment.add(Name);
+               // listFragment.add(Name);
                 listFragment.showUpdate();
                 dialog.cancel();
             }

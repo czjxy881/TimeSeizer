@@ -10,6 +10,8 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.app.sql.Task;
+
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Vector;
@@ -19,7 +21,7 @@ import java.util.Vector;
  */
 public class TaskListAdapter extends BaseAdapter {
     //TODO:改成Task类
-    Vector<String> list=null;
+    Vector<Task> list=null;
     LayoutInflater inflater;
     private ImageButton DelButton,EditButton;
     private TextView DataText,TitleText,ContentText;
@@ -66,14 +68,13 @@ public class TaskListAdapter extends BaseAdapter {
         if(ListFragment.getEditClickListener(i)==null)EditButton.setVisibility(View.INVISIBLE);
         if(ListFragment.getDelClickListener(i)==null)DelButton.setVisibility(View.INVISIBLE);
 
-        String Title = list.get(i);
-        String Content = list.get(i);
+        Task now=list.get(i);
         //TODO: 获取任务时间
         SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyy-MM-dd   hh:mm:ss");
         String  DateInfo = sDateFormat.format(new java.util.Date());
 
-        TitleText.setText("任务名称:"+Title);
-        ContentText.setText("备注:"+Content);
+        TitleText.setText("任务名称:"+now.getName()+"    番茄数:"+now.getExpectNum());
+        ContentText.setText("备注:"+now.getNoteString());
         DataText.setText(DateInfo);
 
 
