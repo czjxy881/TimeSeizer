@@ -55,10 +55,7 @@ public class TodayList {
 			for(int i=0;i<vtask.size();i++){
 				task=vtask.get(i);
                 todayTask=new TodayTask();
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/UI
                 todayTask.set(0,0,0,task.getRunnerID(),task.Name,task.ID, task.ExpectNum, task.ExpectDate,0,task.NoteString);
 				vector.add(todayTask);
 			}

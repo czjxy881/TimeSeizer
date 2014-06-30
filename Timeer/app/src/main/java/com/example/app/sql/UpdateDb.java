@@ -152,13 +152,10 @@ public class UpdateDb {
      */
     public void delTask(int RunnerID,int ID){
         sql("Delete from PlanList where RunnerID=" + RunnerID);
-<<<<<<< HEAD
+
       //TODO  sql("Delete from PeroidList where ID=" + ID);
       //  sql("Delete from IDList where ID=" + ID);
-=======
-        sql("Delete from PeroidList where ID=" + ID);
-        sql("Delete from IDList where ID=" + ID);
->>>>>>> origin/UI
+
     }
 
     /**

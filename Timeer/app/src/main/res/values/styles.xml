@@ -5,11 +5,9 @@
 
 
     </style>
-<<<<<<< HEAD
-    <style name="mydialog" >
-=======
+
     <style name="mydialog" parent="@android:Theme.Holo.Light.Dialog">
->>>>>>> origin/UI
+
 
         <item name="android:windowNoTitle">true</item>
 
@@ -17,11 +15,6 @@
         <item name="android:windowBackground">@drawable/card</item>
         <item name="android:windowFrame">@null</item>
 
-
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/UI
     </style>
 
 </resources>

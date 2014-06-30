@@ -22,23 +22,19 @@
             android:layout_width="match_parent"
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal|bottom"
-<<<<<<< HEAD
-            android:background="@color/Grey"
-            android:orientation="vertical">
-=======
+
             android:background="@drawable/button"
             android:orientation="vertical"
 
             >
->>>>>>> origin/UI
+
             <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/btntanadd"
-<<<<<<< HEAD
-=======
+
                 android:layout_marginTop="4dp"
->>>>>>> origin/UI
+
                 android:textSize="16dp"
                 android:text="完成添加"
                 android:layout_gravity="center_horizontal|bottom"

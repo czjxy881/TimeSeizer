@@ -10,13 +10,7 @@ public class Task{
     protected  int Priority;
 
     boolean b=false;
-<<<<<<< HEAD
 
-
-
-=======
-	
->>>>>>> origin/UI
 	public String getName() {
 		return Name;
 	}
