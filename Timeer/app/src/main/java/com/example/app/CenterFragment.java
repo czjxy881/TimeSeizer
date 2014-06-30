@@ -45,7 +45,7 @@ public class CenterFragment extends Fragment {
 
     private int NowTomato;
     private int ContinueWork;
-    private int CurrentState; //0未开始,1执行中,2休息中
+    private int CurrentState=0; //0未开始,1执行中,2休息中
     private int Interrupt;
 
     private TimeCount time=null;
@@ -67,6 +67,10 @@ public class CenterFragment extends Fragment {
         return centerFragment;
     }
 
+    public boolean isfree(){
+        return CurrentState==0;
+    }
+
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if(isVisibleToUser){
@@ -74,7 +78,7 @@ public class CenterFragment extends Fragment {
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
             ((MainActivity)this.getActivity()).hideBarSetting();
-            if(Viewed){
+            if(Viewed&&CurrentState==0){
                 tryRead();
             }
 
@@ -171,6 +175,8 @@ public class CenterFragment extends Fragment {
      * 开始任务
      */
     private void startTask(){
+        if(time!=null)time.cancel();
+        clearNotification();
         CurrentState=1;
         ContinueWork++;
         NowTomato++;
@@ -206,7 +212,7 @@ public class CenterFragment extends Fragment {
     private void ready(){
         breakProgressBar.setTimenotRefresh(WORK*60*1000);
         breakProgressBar.setProgress(0);
-
+        CurrentState=0;
         DateC.setVisibility(View.VISIBLE);
         ClockC.setVisibility(View.VISIBLE);
         GoneTime.setVisibility(View.INVISIBLE);
@@ -225,13 +231,15 @@ public class CenterFragment extends Fragment {
             CurrentWorkText.setText("练习模式");
         }
     }
-
+    private void clearNotification(){
+        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
+        notificationManager.cancel(110203);
+    }
     private void onBackButton(){
         //TODO:数据库
         time.cancel();
         ready();
-        NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-        notificationManager.cancel(110203);
+        clearNotification();
     }
     private void finishTask(){
         //TODO:
@@ -264,6 +272,7 @@ public class CenterFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        //TODO 中断方式不优雅
         onInterrupt();
     }
 
@@ -291,8 +300,8 @@ public class CenterFragment extends Fragment {
             notification.flags|=Notification.FLAG_AUTO_CANCEL;
             Intent intent = new Intent();
             intent.setClass(getActivity(), MainActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); //加载已有Activity
             pd = PendingIntent.getActivity(getActivity(), 0, intent, 0);
+            ((MainActivity)getActivity()).setFragment(1);
         }
         /**
          * 计时过程显示

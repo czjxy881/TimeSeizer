@@ -117,6 +117,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
     public boolean onCreateOptionsMenu(Menu menu) {
         mMenu=menu;
         getMenuInflater().inflate(R.menu.mymain, menu);
+        hideBarSetting();
         MenuItemCompat.setShowAsAction(mMenu.getItem(2), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         MenuItemCompat.setShowAsAction(mMenu.getItem(1), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
         MenuItemCompat.setShowAsAction(mMenu.getItem(0), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM|MenuItemCompat.SHOW_AS_ACTION_WITH_TEXT);
