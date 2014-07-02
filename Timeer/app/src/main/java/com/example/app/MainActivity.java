@@ -30,6 +30,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -39,9 +40,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.app.TaskListControllor.ListKind;
 import com.example.app.sql.InnerforUI;
+import com.example.app.sql.Task;
 
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Formatter;
 import java.util.Locale;
 import java.util.Random;
 import java.util.Vector;
@@ -65,8 +69,11 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         return actionBar;
     }
 
+    /**
+     * 设置当前Fragment
+     * @param i 当前页面编号
+     */
     public void setFragment(int i){
-
         mViewPager.setCurrentItem(i);
     }
 
@@ -135,8 +142,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         dialog.setContentView(R.layout.alertdialog_freetimework);
 
         final TextView TitleView=((TextView)dialog.findViewById(R.id.TitleAddText));
-        TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
-        TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
+        final TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
+        final TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
+
+        final DatePicker Datepicker=((DatePicker)dialog.findViewById(R.id.DatePickerDialog));
         TitleView.clearComposingText();
         ContentView.clearComposingText();
         TomatoView.clearComposingText();
@@ -154,22 +163,38 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             public void onClick(View view) {
                 //TODO:数据库更新
                 String Name = TitleView.getText().toString();
-                TaskListFragment listFragment;
-                if(listKind==ListKind.TodayList||radioGroup.getCheckedRadioButtonId()==R.id.DialogRadioOnce){
-                    listFragment=TaskListControllor.getInstance(ListKind.TodayList);
+                String NumS=TomatoView.getText().toString();
+                if(Name.equals("")||NumS.equals("")){
+                    //TODO:可以设成红色
+                    Toast.makeText(dialog.getContext(),"名称和期望数目不能为空",Toast.LENGTH_SHORT).show();
+                    //dialog.cancel();
+                }else {
+                    int Num = Integer.valueOf(NumS);
+                    String Note = ContentView.getText().toString();
+                    Formatter formatter = new Formatter();
+                    formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
 
-                //    listFragment.add(Name);
+                    String EDate = formatter.toString();
+
+                    Task task = new Task();
+                    task.set(Name, -1, Num, EDate, Note, -1, -1);
+                    TaskListFragment listFragment;
+                    if (listKind == ListKind.TodayList || radioGroup.getCheckedRadioButtonId() == R.id.DialogRadioOnce) {
+                        listFragment = TaskListControllor.getInstance(ListKind.TodayList);
+
+                        listFragment.add(task);
+                        listFragment.showUpdate();
+                    } else {
+                        listFragment = TaskListControllor.getInstance(ListKind.PeriodList);
+                        //   listFragment.add(Name);
+                        listFragment.showUpdate();
+                    }
+                    listFragment = TaskListControllor.getInstance(ListKind.AllList);
+                    // listFragment.add(Name);
+
                     listFragment.showUpdate();
-                }else{
-                    listFragment=TaskListControllor.getInstance(ListKind.PeriodList);
-                 //   listFragment.add(Name);
-                    listFragment.showUpdate();
+                    dialog.cancel();
                 }
-                listFragment=TaskListControllor.getInstance(ListKind.AllList);
-               // listFragment.add(Name);
-
-                listFragment.showUpdate();
-                dialog.cancel();
             }
         });
         dialog.findViewById(R.id.DialogCancelButton).setOnClickListener(new View.OnClickListener() {

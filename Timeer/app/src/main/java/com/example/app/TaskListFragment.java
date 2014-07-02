@@ -40,16 +40,22 @@ public class TaskListFragment extends Fragment {
 
     }
     //TODO: 测试用
-    public void add(String s){
-
-       // presidents.add(s);
+    public void add(Task s){
+        InnerforUI.getInstance(getActivity()).clickAddTask(s.getName(),s.getExpectNum(),s.getExpectDate(),s.getNoteString(),0);
+     //   presidents.add(s);
     }
     public Vector<Task> getList(){
         return presidents;
     }
     public void showUpdate(){
         //TODO:根据listKind
-        presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTodayList();
+        switch(ListKind){
+            case TodayList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTodayList();break;
+            case PeriodList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showPeroidTask();break;
+            case AllList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTask();break;
+            case DoneList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showFinish();break;
+        }
+
 
         if(adapter==null)return;
         adapter.notifyDataSetChanged();

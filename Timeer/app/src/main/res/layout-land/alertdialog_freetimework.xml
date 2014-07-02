@@ -2,7 +2,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         tools:context="com.example.app.ListActivityt"
         >
@@ -102,9 +102,9 @@
                 android:gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
-            android:layout_height="140dp"
+            android:layout_height="0dp"
             android:layout_width="fill_parent"
-
+            android:layout_weight="1"
             android:layout_margin="3dp">
             <TextView
                 android:layout_weight="0.372"
@@ -112,20 +112,17 @@
                 android:layout_height="wrap_content"
                 android:text="预期完成日期:"
                 android:textSize="16sp"
-                android:gravity="center"
-                android:layout_gravity="center" />
+                android:gravity="center" />
             <DatePicker
                 android:layout_weight="0.618"
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:id="@+id/DatePickerDialog"
+                android:typeface="monospace"
                 android:gravity="center_vertical"
                 android:layoutMode="opticalBounds"
                 android:spinnersShown="true"
                 android:calendarViewShown="false"
-                android:layout_gravity="center"
-                android:measureAllChildren="false"
-                android:foregroundGravity="center"
                 style="@android:style/Widget.Holo.DatePicker" />
         </LinearLayout>
     </LinearLayout>

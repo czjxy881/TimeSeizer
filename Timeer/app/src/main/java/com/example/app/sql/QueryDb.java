@@ -90,11 +90,12 @@ public class QueryDb {
      * @return
      */
     public Vector<Task> FindTaskByDay( String Day) {
+        //TODO  检测设成<的可靠性
         Cursor cursor=db.query("PlanTask",null,
-                "ExpectDate='"+Day+"'",null,null, null, null);
+                "ExpectDate<='"+Day+"'",null,null, null, null);
         return CursorToTask(cursor);
     }
-    //TODO
+
     /**
      * get Task View according to order type
      * @param kind :KindEnum
