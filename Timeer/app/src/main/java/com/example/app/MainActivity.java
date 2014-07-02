@@ -42,8 +42,10 @@ import com.example.app.TaskListControllor.ListKind;
 import com.example.app.sql.InnerforUI;
 import com.example.app.sql.Task;
 
+import java.text.DateFormat;
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Formatter;
 import java.util.Locale;
@@ -144,8 +146,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         final TextView TitleView=((TextView)dialog.findViewById(R.id.TitleAddText));
         final TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
         final TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
+        final TextView DateView=((TextView)dialog.findViewById(R.id.DateTextDialog));
+        DateView.setText(android.text.format.DateFormat.format("yyyy-MM-dd",Calendar.getInstance().getTime()));
 
-        final DatePicker Datepicker=((DatePicker)dialog.findViewById(R.id.DatePickerDialog));
+        //final DatePicker Datepicker=((DatePicker)dialog.findViewById(R.id.DatePickerDialog));
         TitleView.clearComposingText();
         ContentView.clearComposingText();
         TomatoView.clearComposingText();
@@ -157,6 +161,35 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             radioGroup.setVisibility(View.GONE);
             radioGroup.clearCheck();
         }
+
+        DateView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Dialog dateDialog=new Dialog(dialog.getContext(),R.style.mydialog);
+                dateDialog.setContentView(R.layout.date_dialog);
+                final DatePicker Datepicker=((DatePicker)dateDialog.findViewById(R.id.Datepicker));
+                dateDialog.findViewById(R.id.DateDialogSave).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Formatter formatter = new Formatter();
+                        formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
+                        DateView.setText(formatter.toString());
+                        dateDialog.cancel();
+                    }
+                });
+                dateDialog.findViewById(R.id.DateDialogCancel).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dateDialog.cancel();
+                    }
+                });
+                dateDialog.show();
+            }
+        });
+
+
+
+
         //((RadioButton)findViewById(R.id.))
         dialog.findViewById(R.id.DialogSaveButton).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -171,10 +204,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 }else {
                     int Num = Integer.valueOf(NumS);
                     String Note = ContentView.getText().toString();
-                    Formatter formatter = new Formatter();
-                    formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
+                  //  Formatter formatter = new Formatter();
+                   // formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
 
-                    String EDate = formatter.toString();
+                    String EDate = DateView.getText().toString();
 
                     Task task = new Task();
                     task.set(Name, -1, Num, EDate, Note, -1, -1);

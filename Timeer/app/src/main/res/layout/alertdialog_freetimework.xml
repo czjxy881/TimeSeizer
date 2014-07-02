@@ -102,9 +102,9 @@
                 android:gravity="center_vertical" />
         </LinearLayout>
         <LinearLayout
-            android:layout_height="140dp"
+            android:layout_height="0dp"
             android:layout_width="fill_parent"
-
+            android:layout_weight="1"
             android:layout_margin="3dp">
             <TextView
                 android:layout_weight="0.372"
@@ -114,19 +114,18 @@
                 android:textSize="16sp"
                 android:gravity="center"
                 android:layout_gravity="center" />
-            <DatePicker
+            <TextView
                 android:layout_weight="0.618"
                 android:layout_width="0dp"
+                android:textSize="22dp"
                 android:layout_height="fill_parent"
-                android:id="@+id/DatePickerDialog"
-                android:gravity="center_vertical"
-                android:layoutMode="opticalBounds"
-                android:spinnersShown="true"
-                android:calendarViewShown="false"
+                android:id="@+id/DateTextDialog"
+                android:gravity="center_vertical|left"
                 android:layout_gravity="center"
-                android:measureAllChildren="false"
-                android:foregroundGravity="center"
-                style="@android:style/Widget.Holo.DatePicker" />
+                android:text="2014-07-03"
+                android:clickable="true"
+                android:textIsSelectable="false"
+                android:paddingLeft="4dp" />
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
