@@ -20,7 +20,7 @@ import java.util.Date;
 public class CircleProgressBar extends View {
     private double maxProgress = 100;//最大进度
     private double progress = 0;//当前进度
-    private int progressStrokeWidth = 60;//线宽
+    private float progressStrokeWidth = 60;//线宽
     private String remind="25:00";
     // 画圆所在的矩形区域
     RectF oval;
@@ -50,16 +50,18 @@ public class CircleProgressBar extends View {
         /**
          * 画最外层的大圆环
          */
-        float centre = (float)(getWidth()/2.0); //获取圆心的x坐标
+        float centerx = (float)(getWidth()/2.0); //获取圆心的x坐标
+
         paint = new Paint();
-        int radius = (int) (centre - progressStrokeWidth/2); //圆环的半径
+        float radius = (Math.min(centerx,getHeight()/2+getTopPaddingOffset()) - progressStrokeWidth/2-10); //圆环的半径
+        float centery=getTopPaddingOffset()+radius+35;
         paint.setColor(Color.WHITE);//(roundColor); //设置圆环的颜色
         paint.setStyle(Paint.Style.STROKE); //设置空心
         paint.setStrokeWidth(progressStrokeWidth); //设置圆环的宽度
         paint.setAntiAlias(true);  //消除锯齿
         paint.setShadowLayer(5,5,5,Color.GRAY);
 
-        canvas.drawCircle(centre, centre, radius, paint); //画出圆环
+        canvas.drawCircle(centerx, centery, radius, paint); //画出圆环
 
         float textsize=(float)(radius*0.6);
         Paint textPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
@@ -74,18 +76,18 @@ public class CircleProgressBar extends View {
         textPaint.setColor(Color.rgb(R,G,B));
         float textHeight =  textPaint.measureText(remind)/8;
         float stringSizeWidth = textPaint.measureText(remind)/2;
-        canvas.drawText(remind,(float)centre-stringSizeWidth,(float)centre+textHeight,textPaint);
+        canvas.drawText(remind,(float)centerx-stringSizeWidth,(float)centery+textHeight,textPaint);
 
 
-        SweepGradient sweepGradient = new SweepGradient(centre,centre,Color.rgb(146,0,146),Color.rgb(255,114,255));
+        SweepGradient sweepGradient = new SweepGradient(centerx,centery,Color.rgb(146,0,146),Color.rgb(255,114,255));
         Matrix m=new Matrix();
-        m.setRotate(270, centre, centre);
+        m.setRotate(270, centerx, centery);
         sweepGradient.setLocalMatrix(m);
 
         paint.setStrokeWidth(progressStrokeWidth); //设置圆环的宽度
         paint.setShader(sweepGradient);
-        RectF oval = new RectF(centre - radius, centre - radius, centre
-                + radius, centre + radius);
+        RectF oval = new RectF(centerx - radius, centery - radius, centerx
+                + radius, centerx + radius);
 
         paint.setStyle(Paint.Style.STROKE);
 

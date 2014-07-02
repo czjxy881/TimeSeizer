@@ -76,7 +76,8 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/CurrentWorkText"
                 android:layout_marginTop="10dp"
-                android:layout_above="@+id/linelayout" />
+                android:layout_above="@+id/linelayout"
+                android:layout_gravity="bottom" />
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
