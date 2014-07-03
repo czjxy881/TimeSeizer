@@ -24,7 +24,6 @@ import com.example.timerseizer.sql.InnerforUI;
 import com.example.timerseizer.sql.Task;
 
 import java.util.Calendar;
-import java.util.Date;
 import java.util.Formatter;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener  {
@@ -92,6 +91,25 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             getSupportActionBar().setSelectedNavigationItem(
                     savedInstanceState.getInt(STATE_SELECTED_NAVIGATION_ITEM));
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        final Dialog Exit=new Dialog(this,R.style.mydialog);
+        Exit.setContentView(R.layout.exit_dialog);
+        Exit.findViewById(R.id.DialogSure).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.exit(0);
+            }
+        });
+        Exit.findViewById(R.id.DialogCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Exit.cancel();
+            }
+        });
+        Exit.show();
     }
 
     @Override
