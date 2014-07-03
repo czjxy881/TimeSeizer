@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:id="@+id/listFragmentone"
-    tools:context="com.example.app.RightFragment"
+    tools:context="com.example.timerseizer.RightFragment"
     >
 
 

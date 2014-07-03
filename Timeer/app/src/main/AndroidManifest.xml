@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.app" >
+    package="com.example.timerseizer" >
 
     <application
         android:allowBackup="true"
@@ -8,7 +8,7 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.example.app.MainActivity"
+            android:name="com.example.timerseizer.MainActivity"
             android:label="@string/app_name" android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light"
 
@@ -20,11 +20,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".TabActivity" android:launchMode="singleInstance"
+        <activity android:name="com.example.timerseizer.TabActivity" android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light"
 
             ></activity>
-        <activity android:name=".Settings" android:launchMode="singleInstance"
+        <activity android:name="com.example.timerseizer.Settings" android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light"
             ></activity>
         <!--activity android:name=".CenterActivity" android:launchMode="singleInstance"
@@ -33,5 +33,4 @@
 
     </application>
     <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>
