@@ -180,7 +180,7 @@ public class TaskView {
      * @param kind
      * @return
      */
-    public Vector<Task> getAllList(KindEnum kind){return db.queryDb.findTaskByStyle(KindEnum.NULL);}
+    public Vector<Task> getAllList(KindEnum kind){return db.queryDb.findTaskByStyle(kind);}
 	/**
 	 *  get the list of Task according to ID
 	 * @param id ????ID

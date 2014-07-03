@@ -30,7 +30,7 @@ public class TodayTask extends Task {
 		ActualNum++;
         save();
 	}
-    public void save(){
+    private void save(){
         InitDb.getInstance(null).updateDb.updatePlanList(getForPlanList(),State.getNum());
     }
 	public void finish(){
@@ -42,7 +42,15 @@ public class TodayTask extends Task {
         State=StateEnum.ABANDON;
         save();
 	}
-
+    public int getActualNum(){
+        return ActualNum;
+    }
+    public int getInnerInturruptTimes(){
+        return InnerInturruptTimes;
+    }
+    public int getOuterInturruptTimes(){
+        return OuterInturruptTimes;
+    }
 	public String getState(){
         return State.toString();
 	}

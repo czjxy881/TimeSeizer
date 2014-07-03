@@ -96,7 +96,7 @@ public class TaskListFragment extends Fragment {
                     Bundle bundle = new Bundle();
                     bundle.putString("Name", now.getName());
                     bundle.putInt("Num", now.getExpectNum());
-
+                    bundle.putInt("RunnerID",now.getRunnerID());
                     CenterFragment.getInstance().setInfo(bundle);
                     ((MainActivity) getActivity()).setFragment(1);
                 }

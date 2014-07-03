@@ -17,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.timerseizer.sql.InnerforUI;
+import com.example.timerseizer.sql.TodayTask;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -25,13 +27,13 @@ import java.util.Date;
  * Created by xxx on 14-6-18.
  */
 public class CenterFragment extends Fragment {
-    private Button StopButton,StartButton,BackButton,InterruptButton;
+    private Button StopButton, StartButton, BackButton, InterruptButton;
     private Bundle extra;
-    private TextView CurrentWorkText,InterruptTimes,GoneTime;
+    private TextView CurrentWorkText, InterruptTimes, GoneTime;
     private CircleProgressBar breakProgressBar;
-    private MyDigitalClock DateC,ClockC;
+    private MyDigitalClock DateC, ClockC;
 
-    private int WORK=1;
+    private int WORK = 1;
     private int REST = 5;
 
     private String Title;
@@ -39,65 +41,70 @@ public class CenterFragment extends Fragment {
 
     private int NowTomato;
     private int ContinueWork;
-    private int CurrentState=0; //0未开始,1执行中,2休息中
+    private int CurrentState = 0; //0未开始,1执行中,2休息中
     private int Interrupt;
 
-    private TimeCount time=null;
+    private TimeCount time = null;
     private int timeSpan;
     private ActionBar actionBar;
 
     private boolean inPractise;
-    private Bundle bundle=null;
+    private Bundle bundle = null;
     private boolean isVisibleToUser;
-    private boolean Viewed=false;
-    public void setInfo(Bundle bundle){
-        this.bundle=bundle;
+    private boolean Viewed = false;
+
+    TodayTask task;
+
+    public void setInfo(Bundle bundle) {
+        this.bundle = bundle;
     }
 
     private static CenterFragment centerFragment;
-    public static CenterFragment getInstance(){
-        if (centerFragment==null){
-            centerFragment=new CenterFragment();
+
+    public static CenterFragment getInstance() {
+        if (centerFragment == null) {
+            centerFragment = new CenterFragment();
         }
         return centerFragment;
     }
 
-    public boolean isfree(){
-        return CurrentState==0;
+    public boolean isfree() {
+        return CurrentState == 0;
     }
 
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        this.isVisibleToUser=isVisibleToUser;
-        if(isVisibleToUser){
-            actionBar=((MainActivity)this.getActivity()).getMyActionBar();
+        this.isVisibleToUser = isVisibleToUser;
+        if (isVisibleToUser) {
+            actionBar = ((MainActivity) this.getActivity()).getMyActionBar();
             actionBar.setDisplayShowTitleEnabled(true);
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-            ((MainActivity)this.getActivity()).hideBarSetting();
-            if(Viewed&&CurrentState==0){
+            ((MainActivity) this.getActivity()).hideBarSetting();
+            if (Viewed && CurrentState == 0) {
                 tryRead();
             }
 
         }
     }
+
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_center, container, false);
-        actionBar=((MainActivity)this.getActivity()).getMyActionBar();
+        View view = inflater.inflate(R.layout.fragment_center, container, false);
+        actionBar = ((MainActivity) this.getActivity()).getMyActionBar();
 
         StartButton = (Button) view.findViewById(R.id.StartButton);
         StopButton = (Button) view.findViewById(R.id.StopButton);
-        InterruptButton= (Button) view.findViewById(R.id.InterruptButton);
+        InterruptButton = (Button) view.findViewById(R.id.InterruptButton);
         BackButton = (Button) view.findViewById(R.id.BackButton);
 
-        GoneTime=(TextView)view.findViewById(R.id.GoneTime);
-        InterruptTimes=(TextView)view.findViewById(R.id.InterruptTimes);
-        CurrentWorkText=(TextView)view.findViewById(R.id.CurrentWorkText);
+        GoneTime = (TextView) view.findViewById(R.id.GoneTime);
+        InterruptTimes = (TextView) view.findViewById(R.id.InterruptTimes);
+        CurrentWorkText = (TextView) view.findViewById(R.id.CurrentWorkText);
 
         breakProgressBar = (CircleProgressBar) view.findViewById(R.id.breakBar);
 
-        DateC=(MyDigitalClock)view.findViewById(R.id.Date);
-        ClockC=(MyDigitalClock)view.findViewById(R.id.myClock);
+        DateC = (MyDigitalClock) view.findViewById(R.id.Date);
+        ClockC = (MyDigitalClock) view.findViewById(R.id.myClock);
 
         DateC.setFormat(00);
         ClockC.setFormat(24);
@@ -132,27 +139,29 @@ public class CenterFragment extends Fragment {
                 onBackButton();
             }
         });
-        Viewed=true;
+        Viewed = true;
         return view;
     }
 
-    private void tryRead(){
+    private void tryRead() {
         try {
             Title = bundle.getString("Name");
-
-            AimTomato=bundle.getInt("Num");
-            inPractise=false;
-            bundle=null;
-        }catch (Exception e){
-            inPractise=true;
-
+            AimTomato = bundle.getInt("Num");
+            task = InnerforUI.getInstance().findTodayTaskByRunnerID(bundle.getInt("RunnerID"));
+            NowTomato = task.getActualNum();
+            Interrupt = task.getInnerInturruptTimes() + task.getOuterInturruptTimes();
+            inPractise = false;
+            bundle = null;
+        } catch (Exception e) {
+            inPractise = true;
+            NowTomato = Interrupt = 0;
         }
-        NowTomato=ContinueWork=CurrentState=Interrupt=0;
-       // Interrupt--;
+        ContinueWork = CurrentState = 0;
+        // Interrupt--;
 
-        if(inPractise==false) {
-            CurrentWorkText.setText("目标任务:" + Title);
-        }else{
+        if (inPractise == false) {
+            CurrentWorkText.setText( Title);
+        } else {
             CurrentWorkText.setText("练习模式");
         }
     }
@@ -164,15 +173,13 @@ public class CenterFragment extends Fragment {
     }
 
 
-
-
     /**
      * 开始任务
      */
-    private void startTask(){
-        if(time!=null)time.cancel();
+    private void startTask() {
+        if (time != null) time.cancel();
         clearNotification();
-        CurrentState=1;
+        CurrentState = 1;
         ContinueWork++;
         NowTomato++;
         //TODO:actionBar.Hide();
@@ -185,29 +192,37 @@ public class CenterFragment extends Fragment {
         StopButton.setVisibility(View.VISIBLE);
         StartButton.setVisibility(View.GONE);
         BackButton.setVisibility(View.GONE);
-        if(inPractise==false) {
-            CurrentWorkText.setText("当前任务:" + Title);
-            GoneTime.setText("当前番茄:"+String.valueOf(NowTomato)+"/"+String.valueOf(AimTomato));
-        }else{
+        if (inPractise == false) {
+            CurrentWorkText.setText(Title);
+            GoneTime.setText("当前番茄:" + String.valueOf(NowTomato) + "/" + String.valueOf(AimTomato));
+        } else {
             CurrentWorkText.setText("工作中");
-            GoneTime.setText("当前番茄:"+String.valueOf(NowTomato));
+            GoneTime.setText("当前番茄:" + String.valueOf(NowTomato));
         }
 
 
-        InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
+        InterruptTimes.setText("已中断:" + String.valueOf(Interrupt));
         timeSpan = WORK * 60 * 1000;
-        time = new TimeCount(timeSpan, 50,CurrentState);
+        time = new TimeCount(timeSpan, 50, CurrentState);
         time.start();
     }
 
-    private void onInterrupt(){
+    private void onInterrupt() {
         Interrupt++;
-        InterruptTimes.setText("已中断:"+String.valueOf(Interrupt));
+        if (inPractise == false) {
+            task.innerInturrpt();
+        }
+        InterruptTimes.setText("已中断:" + String.valueOf(Interrupt));
     }
-    private void ready(){
-        breakProgressBar.setTimenotRefresh(WORK*60*1000);
+
+    private void ready() {
+        breakProgressBar.setTimenotRefresh(WORK * 60 * 1000);
         breakProgressBar.setProgress(0);
-        NowTomato=ContinueWork=CurrentState=Interrupt=0;
+        if(inPractise==true){
+            NowTomato = ContinueWork = CurrentState = Interrupt = 0;
+        }else {
+            CurrentState = 0;
+        }
         //TODO 同步数据库
         DateC.setVisibility(View.VISIBLE);
         ClockC.setVisibility(View.VISIBLE);
@@ -218,37 +233,51 @@ public class CenterFragment extends Fragment {
         StartButton.setVisibility(View.VISIBLE);
         BackButton.setVisibility(View.GONE);
     }
-    private void breakWhenWork(){
+
+    private void breakWhenWork() {
         ready();
-        if(inPractise==false) {
-            ((MainActivity)getActivity()).setFragment(2);
+        if (inPractise == false) {
+            ((MainActivity) getActivity()).setFragment(2);
             Toast.makeText(getActivity(), "此次任务失败了", Toast.LENGTH_SHORT).show();
-        }else{
+        } else {
             CurrentWorkText.setText("练习模式");
         }
     }
-    private void clearNotification(){
+
+    private void clearNotification() {
         NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
         notificationManager.cancel(110203);
     }
-    private void onBackButton(){
+
+    private boolean Finished = false;
+
+    private void onBackButton() {
         //TODO:数据库
         time.cancel();
         ready();
         clearNotification();
+        if (Finished == true) {
+            ((MainActivity) getActivity()).setFragment(2);
+            TaskListControllor.getInstance(TaskListControllor.ListKind.TodayList).showUpdate();
+        }
     }
-    private void finishTask(){
+
+    private void finishTask() {
         //TODO:
+        if (inPractise == false) {
+            task.oneClockPass();
+            task.finish();
+        }
+        Finished = true;
         CurrentWorkText.setText("任务完成");
-        actionBar.setDisplayHomeAsUpEnabled(true);
         InterruptButton.setVisibility(View.GONE);
         StopButton.setVisibility(View.GONE);
         BackButton.setVisibility(View.VISIBLE);
     }
-    private void toRest(){
+
+    private void toRest() {
         //TODO:
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        CurrentState=2;
+        CurrentState = 2;
         DateC.setVisibility(View.INVISIBLE);
         ClockC.setVisibility(View.VISIBLE);
         GoneTime.setVisibility(View.VISIBLE);
@@ -257,10 +286,13 @@ public class CenterFragment extends Fragment {
         StartButton.setVisibility(View.VISIBLE);
         BackButton.setVisibility(View.VISIBLE);
         StopButton.setVisibility(View.GONE);
-        if(inPractise==false)GoneTime.setText("当前任务:"+Title);
+        if (inPractise == false) {
+            task.oneClockPass();
+            GoneTime.setText(Title);
+        }
         CurrentWorkText.setText("休息中");
         timeSpan = REST * 60 * 1000;
-        time = new TimeCount(timeSpan, 50,CurrentState);
+        time = new TimeCount(timeSpan, 50, CurrentState);
         time.start();
     }
 
@@ -278,39 +310,42 @@ public class CenterFragment extends Fragment {
         private int CurrentState;
         Notification notification;
         PendingIntent pd;
-        public TimeCount(long millisInFuture, long countDownInterval,int Currentstate) {
+
+        public TimeCount(long millisInFuture, long countDownInterval, int Currentstate) {
             super(millisInFuture, countDownInterval);// 参数依次为总时长,和计时的时间间隔
             alltime = millisInFuture;
             breakProgressBar.setTimenotRefresh(millisInFuture);
             breakProgressBar.setProgress(0);
-            CurrentState=Currentstate;
+            CurrentState = Currentstate;
             initNotification();
         }
-        private void initNotification(){
-            notification=new Notification();
-            //TODO:改图标
-            notification.icon=R.drawable.ic_stat_name;
 
-            notification.defaults=Notification.DEFAULT_ALL;
+        private void initNotification() {
+            notification = new Notification();
+            //TODO:改图标
+            notification.icon = R.drawable.ic_stat_name;
+
+            notification.defaults = Notification.DEFAULT_ALL;
             notification.flags |= notification.FLAG_INSISTENT; //重复
-            notification.flags|=Notification.FLAG_AUTO_CANCEL;
+            notification.flags |= Notification.FLAG_AUTO_CANCEL;
             Intent intent = new Intent();
             intent.setClass(getActivity(), MainActivity.class);
             pd = PendingIntent.getActivity(getActivity(), 0, intent, 0);
-            ((MainActivity)getActivity()).setFragment(1);
+            ((MainActivity) getActivity()).setFragment(1);
         }
+
         /**
          * 计时过程显示
          */
         @Override
         public void onTick(long millisUntilFinished) {
-            if(!isVisibleToUser)return;
-            long nowprogress;
+            if (!isVisibleToUser) return;
+            long NowProgress;
             double percentage;
             String string = new SimpleDateFormat("mm:ss").format(new Date(
                     millisUntilFinished));
-            nowprogress =  (alltime - millisUntilFinished);
-            percentage = (nowprogress * 100.0) / alltime;
+            NowProgress = (alltime - millisUntilFinished);
+            percentage = (NowProgress * 100.0) / alltime;
             breakProgressBar.setTextnotRefresh(string);
             breakProgressBar.setProgressNotInUiThread(percentage);
 
@@ -323,26 +358,29 @@ public class CenterFragment extends Fragment {
          */
         @Override
         public void onFinish() {
-            String title="",content="";
-            if(CurrentState==1){
-                if(inPractise==false&&AimTomato<=NowTomato){ //任务已完成
+            String title = "", content = "";
+            if (CurrentState == 1) {
+                if (inPractise == false && AimTomato <= NowTomato) { //任务已完成
                     finishTask();
-                    title="任务完成";content="恭喜恭喜";
-                }else{
+                    title = "任务完成";
+                    content = "恭喜恭喜";
+                } else {
                     toRest();
-                    title="休息啦";content="好好休息";
+                    title = "休息啦";
+                    content = "好好休息";
                 }
-            }else if(CurrentState==2){
+            } else if (CurrentState == 2) {
                 startTask();
-                title="学习啦";content="好好学习";
+                title = "学习啦";
+                content = "好好学习";
             }
 
 
             NotificationManager notificationManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-            notification.tickerText=title;
-            notification.when=System.currentTimeMillis();
+            notification.tickerText = title;
+            notification.when = System.currentTimeMillis();
             notification.setLatestEventInfo(getActivity(), title, content, pd);
-            notificationManager.notify(110203,notification);
+            notificationManager.notify(110203, notification);
             //Uri.withAppendedPath(Audio.Media.INTERNAL_CONTENT_URI, "6");
             cancel();
 

@@ -81,6 +81,11 @@ public class InnerforUI {
             todayList.setTodayList();////////////////////
 	}
 
+
+    public TodayTask findTodayTaskByRunnerID(int RunnerID){
+        return db.queryDb.findTodayTaskByRunnerID(RunnerID);
+    }
+
     /**
      * Delete Task from PeroidList
      * when delete,location infromed by ui
@@ -141,7 +146,7 @@ public class InnerforUI {
      * Show Task ,and save in the taskVector at the same time.
      * @return
      */
-	public Vector<Task> showTask(){return (taskVector=taskView.getAllList(KindEnum.NULL));}
+	public Vector<Task> showTask(){return (taskVector=taskView.getAllList(KindEnum.ExpectDate_ASC));}
 
     /**
      * Show Task depend on type
