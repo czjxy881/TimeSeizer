@@ -35,7 +35,7 @@ public class CenterFragment extends Fragment {
     private CircleProgressBar breakProgressBar;
     private MyDigitalClock DateC, ClockC;
 
-    private  int WORK = 1;
+    private  int WORK = 25;
     private  int REST = 5;
     private  int LONGREST = 5;
 
@@ -61,6 +61,7 @@ public class CenterFragment extends Fragment {
         SharedPreferences preferences=getActivity().getSharedPreferences("TimeSetting",Context.MODE_PRIVATE);
         WORK=preferences.getInt("TomatoTime",25);
         REST=preferences.getInt("RestTime",5);
+        LONGREST=preferences.getInt("LongRestTime",5);
         breakProgressBar.setText(WORK+":00");
 
     }

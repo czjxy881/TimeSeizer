@@ -103,7 +103,7 @@ public class Settings extends Activity {
 
 
         VibrateButton=(ToggleButton)findViewById(R.id.Vibrate);
-        VibrateButton.setChecked(preference.getBoolean("Vibrate",false));
+        VibrateButton.setChecked(preference.getBoolean("Vibrate", false));
 
         TickButton=(ToggleButton)findViewById(R.id.Tick);
         TickButton.setChecked(preference.getBoolean("Tick",false));
@@ -115,20 +115,25 @@ public class Settings extends Activity {
 
 
     }
+    private void save(){
+        editor.putBoolean("Vibrate",VibrateButton.isChecked());
+        editor.putBoolean("Tick",TickButton.isChecked());
+        editor.putBoolean("FinishSound",FinishButton.isChecked());
+        editor.commit();
+    }
 
-
+    @Override
+    public void onBackPressed() {
+        save();
+        CenterFragment.getInstance().updateTime();
+        finish();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                editor.putBoolean("Vibrate",VibrateButton.isChecked());
-                editor.putBoolean("Tick",TickButton.isChecked());
-                editor.putBoolean("FinishSound",FinishButton.isChecked());
-
-
-                editor.commit();
-                CenterFragment.getInstance().updateTime();
+                save();
                 finish();
                 return true;
             default:
