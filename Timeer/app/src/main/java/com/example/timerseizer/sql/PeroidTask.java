@@ -2,10 +2,10 @@ package com.example.timerseizer.sql;
 
 
 public class PeroidTask extends Task {
-	
+
 	private long Kind;
 
-    private boolean b=false;
+
 	public PeroidTask(){
 		Kind=1;
 	}
@@ -17,8 +17,8 @@ public class PeroidTask extends Task {
 		this.Kind=Kind;
 	}
 
-	
-	
+
+    //TODO:kind未写
 	public boolean judgeRun(String day){                 //Necessary??
 		return true;
 	}
@@ -33,18 +33,12 @@ public class PeroidTask extends Task {
 		this.Kind=Kind;
         this.Priority=Priority;
 	}
-    public void isNewPlan(boolean b){this.b=b;}
-	public String get(){
-		return "'"+Name+"',"+ID+",'"+NoteString+"':"+RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"':"+ID+","+Kind+":"+Priority;
-	}
-    public String getForIDList(){
-        return "'"+Name+"',"+ID+",'"+NoteString+"'";
+
+    @Override
+    public String get() {
+        return "'"+Name+"',"+ID+",'"+NoteString+"':"+RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"':"+ID+","+Kind+":"+Priority;
     }
-    //RunnerID,ID,ExpectNum,ExpectDate,BeginTime,Priority,State......................................................unDetermined
-    public String getForPlanListNoState(){
-        return (b==true? "null,"+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority
-                : RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority);
-    }
+
     public String getForPeroidList(){
         return ID+","+Kind;
     }

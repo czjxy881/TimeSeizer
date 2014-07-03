@@ -11,6 +11,9 @@ import java.util.Calendar;
  * Created by cdkyee on 2014/4/17.
  */
 public class InitDb {
+
+    //TODO
+    final boolean debug = true;
     public UpdateDb updateDb=null;
     public QueryDb queryDb=null;
     private static InitDb initDb=null;
@@ -123,21 +126,32 @@ public class InitDb {
     private void createTable(){//TODO
         db.execSQL("Create table if not exists IDList(ID int primary key,Name varchar(30),Note varchar(100))");
         db.execSQL("Create table if not exists PlanList(RunnerID integer primary key autoincrement,TaskID int references IDList(ID),ExpectNum int,ExpectDate String,Priority int,State int,ActualNum int,InnerInturruptTimes int,OuterInturruptTimes int)");
-        db.execSQL("Create table if not exists DailyList(Date String primary key,Summary char(3),BeginTime String,RestTime int,WorkTime int,LongRestTime int)");
+        db.execSQL("Create table if not exists DailyList(Date String primary key,Summary varchar(100),Rate float,BeginTime String,RestTime int,WorkTime int,LongRestTime int)");
         db.execSQL("Create table if not exists PeroidList(ID int primary key references IDList(ID),Kind int)");
 
-       // db.execSQL("replace into IDList(ID,Name,Note) values(3,'workhard','haha')");
-       // db.execSQL("replace into IDList(ID,Name,Note) values(1,'cdy','haha')");
-      //  db.execSQL("replace into IDList(ID,Name,Note) values(2,'cd','haha')");
-       // db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(1,1,10,'2013-02-16',5,0,0,0,0)");
-      //  db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(2,2,10,'2014-04-10',5,2,10,10,10)");
-      //  db.execSQL("replace into PeroidList(ID,Kind) values(1,1)");
-      //  db.execSQL("update IDList set Name='hardwork' where ID=3");
 
-        db.execSQL("Create view if not exists FinishTask as select IDList.*,RunnerID,ExpectNum,ExpectDate,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes from IDList,PlanList where IDList.ID=PlanList.TaskID and State=2");
+        db.execSQL("Create view if not exists FinishTask as select IDList.*,RunnerID,ExpectNum,ExpectDate,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes from IDList,PlanList where IDList.ID=PlanList.TaskID and (State=2 or State=1)");
         db.execSQL("Create view if not exists PeroidTask as select IDList.*,Kind,RunnerID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes from IDList,PeroidList,PlanList where IDList.ID=PeroidList.ID and IDList.ID=PlanList.TaskID");
-        db.execSQL("Create view if not exists PlanTask as select IDList.*,RunnerID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes from IDLIst,PlanList where IDLIst.ID=PlanList.TaskID");
+        db.execSQL("Create view if not exists PlanTask as select IDList.*,RunnerID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes from IDLIst,PlanList where IDLIst.ID=PlanList.TaskID and State=0");
+
+        if(debug) {
+            debug();
+        }
     }
+    //TODO 测试用
+    private void debug(){
+        db.execSQL("replace into IDList(ID,Name,Note) values(1,'cdy','haha')");
+        db.execSQL("replace into IDList(ID,Name,Note) values(2,'cd','haha')");
+        db.execSQL("replace into IDList(ID,Name,Note) values(3,'周期任务','haha')");
+        db.execSQL("replace into PeroidList(ID,Kind) values(3,1)");
+        db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(4,3,10,'2014-07-16',5,0,0,0,0)");
+        db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(1,1,10,'2013-02-16',5,0,0,0,0)");
+        db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(2,2,10,'2014-04-10',5,2,10,10,10)");
+        db.execSQL("replace into PlanList(RunnerID,TaskID,ExpectNum,ExpectDate,Priority,State,ActualNum,InnerInturruptTimes,OuterInturruptTimes) values(3,1,5,'2014-07-04',5,0,10,10,10)");
+        db.execSQL("update PlanList set State=1 where RunnerID=1;");
+        db.execSQL("update PlanList set State=2 where RunnerID=2;");
+    }
+
 
     /**
      * Database close

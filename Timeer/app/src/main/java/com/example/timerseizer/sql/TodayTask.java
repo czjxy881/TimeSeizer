@@ -3,46 +3,48 @@ package com.example.timerseizer.sql;
 import java.util.Date;
 
 public class TodayTask extends Task {
-    enum StateEnum{READY,ABANDON,FINISH,ERROR};
 	private int ActualNum;
 	private int InnerInturruptTimes;
 	private int OuterInturruptTimes;
-	private int State;
+	private StateEnum State;
 
 	Date date;
 	public TodayTask(){
 		ActualNum=0;
 		InnerInturruptTimes=0;
 		OuterInturruptTimes=0;
-		State=0;
+		State=StateEnum.READY;
 		RunnerID=-1;
 		date=new Date();
 	}
 
 	public void innerInturrpt(){
-		InnerInturruptTimes++;
+		InnerInturruptTimes++;save();
 	}
 
 	public void outerInturrpt(){
-		OuterInturruptTimes++;
+		OuterInturruptTimes++;save();
 	}
 
 	public void oneClockPass(){
 		ActualNum++;
+        save();
 	}
-
+    public void save(){
+        InitDb.getInstance(null).updateDb.updatePlanList(getForPlanList(),State.getNum());
+    }
 	public void finish(){
-		oneClockPass();
-		if(ExpectNum==ActualNum)
-		    State=2;
-	}
-	//????????
-	public void abort(){
-        OuterInturruptTimes++;
+		State=StateEnum.FINISH;
+        save();
 	}
 
-	public int getState(){
-        return State;
+	public void abort(){
+        State=StateEnum.ABANDON;
+        save();
+	}
+
+	public String getState(){
+        return State.toString();
 	}
 	public void set(int ActualNum,int InnerInturrptTimes,int OuterInturrptTimes,
 		int RunnerID,String Name,int ID,int ExpectNum,String ExpectDate,int State,String Note){
@@ -54,11 +56,15 @@ public class TodayTask extends Task {
 		this.ID=ID;
 		this.ExpectNum=ExpectNum;
 		this.ExpectDate=ExpectDate;
-		this.State=State;
+		this.State=StateEnum.get(State);
         this.NoteString=Note;
 	}
+    public String getForPlanList(){
+        return (RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority+","+ActualNum+","+InnerInturruptTimes+","+OuterInturruptTimes);
+    }
+    @Override
 	public String get(){
 		return "'"+Name+"':"+RunnerID+","+ID+":'"+
 				ExpectDate+"':"+ActualNum+","+InnerInturruptTimes+","+OuterInturruptTimes+":"+State+","+ExpectNum+":"+NoteString;
-	}//int RunnerID,int ID,String FinishDateString,String FinishTimeString,int ActualNum,int InnerInturrptTimes,int OuterInturrptTimes
+	}
 }

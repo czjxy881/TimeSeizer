@@ -110,7 +110,6 @@ public class InnerforUI {
         int ID=taskVector.get(location).getID();
         taskView.delTask(RunnerID,ID);
     }
-
     /**
      *    Add new peroidtask ..
       */

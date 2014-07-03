@@ -18,8 +18,6 @@ public class TodayList {
 	//
 	public TodayTask getNextTask(){
 		TodayTask t=null;
-		while(vector.get(taskIndex).getState()== StateEnum.FINISH.getNum())
-			taskIndex++;
 		if(vectorLength>0&&taskIndex<vectorLength){
 			t=vector.get(taskIndex);
 		}
@@ -29,7 +27,7 @@ public class TodayList {
 	public TodayTask getTaskByID(int ID){
 		int i=0;
 		for(;i<vectorLength;i++)
-			if(vector.get(i).getID()==ID&&vector.get(i).getState()== StateEnum.READY.getNum())
+			if(vector.get(i).getID()==ID)
 				return vector.get(i);
 		return null;
 	}
@@ -39,7 +37,7 @@ public class TodayList {
         int i=0;
         for(;i<vectorLength;i++) {
             task = vector.get(i);
-            if (task.getState()==state.getNum())
+            if (task.getState().equals(state))
                 vtemp.add(task);
         }
         return vtemp;

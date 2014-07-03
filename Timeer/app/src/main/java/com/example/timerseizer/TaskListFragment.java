@@ -18,7 +18,6 @@ import java.util.Vector;
  * Created by jxy on 14-6-30.
  */
 public class TaskListFragment extends Fragment {
-    //TODO:获取数据库
 
     public Vector<Task> presidents = new Vector<Task>();
 
@@ -29,31 +28,30 @@ public class TaskListFragment extends Fragment {
         //TODO 根据listKind生成
         ListKind=listKind;
 
-        InnerforUI.getInstance(getActivity()).clickAddTask("test",5,"2014-07-01","test1",0);
+        //InnerforUI.getInstance(getActivity()).clickAddTask("软件工程大作业",5,"2014-07-01","Time Seizer",0);
         showUpdate();
 
 
 
 
     }
-    //TODO: 测试用
     public void add(Task s){
-        InnerforUI.getInstance(getActivity()).clickAddTask(s.getName(),s.getExpectNum(),s.getExpectDate(),s.getNoteString(),0);
-     //   presidents.add(s);
+        switch(ListKind) {
+            case TodayList:InnerforUI.getInstance(getActivity()).clickAddTask(s.getName(),s.getExpectNum(),s.getExpectDate(),s.getNoteString(),0);break;
+            //TODO:周期任务kind
+            case PeriodList:InnerforUI.getInstance().clickAddPeroidNewTask(s.getName(),s.getExpectNum(),s.getExpectDate(),s.getNoteString(),1,0);break;
+        }
     }
     public Vector<Task> getList(){
         return presidents;
     }
     public void showUpdate(){
-        //TODO:根据listKind
         switch(ListKind){
             case TodayList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTodayList();break;
             case PeriodList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showPeroidTask();break;
             case AllList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTask();break;
             case DoneList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showFinish();break;
         }
-
-
         if(adapter==null)return;
         adapter.notifyDataSetChanged();
     }
@@ -62,6 +60,7 @@ public class TaskListFragment extends Fragment {
         View.OnClickListener now=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //TODO 增加编辑事件
                 adapter.notifyDataSetChanged();
             }
         };
@@ -72,9 +71,12 @@ public class TaskListFragment extends Fragment {
         View.OnClickListener now=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO:ListKind
-                InnerforUI.getInstance().clickDeleteTodayTask(i);
-                //presidents.remove(i);
+                //TODO:ListKind 删除
+                switch(ListKind) {
+                    case TodayList:InnerforUI.getInstance().clickDeleteTodayTask(i);break;
+                    case AllList:InnerforUI.getInstance().clickDeleteTask(i);break;
+                    case PeriodList:InnerforUI.getInstance().clickDeletePeroid(i);break;
+                }
                 showUpdate();
             }
         };
@@ -87,13 +89,12 @@ public class TaskListFragment extends Fragment {
             public void onClick(View view) {
 
                 if(CenterFragment.getInstance().isfree()==false){
-                    Toast.makeText(getActivity(),"有任务正在执行,不要三心二意",Toast.LENGTH_SHORT);
+                    Toast.makeText(getActivity(),"有任务正在执行,不要三心二意",Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Task now=presidents.get(i);
                     Bundle bundle = new Bundle();
                     bundle.putString("Name", now.getName());
-                   // bundle.putString("Content", now.get);
                     bundle.putInt("Num", now.getExpectNum());
 
                     CenterFragment.getInstance().setInfo(bundle);
@@ -103,7 +104,17 @@ public class TaskListFragment extends Fragment {
         };
         return now;
     }
-
+    //TODO: Abandon
+    public View.OnLongClickListener getLongClickListener(int i){
+        if(ListKind!= TaskListControllor.ListKind.TodayList)return null;
+        View.OnLongClickListener now=new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                return false;
+            }
+        };
+        return null;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 

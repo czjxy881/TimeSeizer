@@ -52,7 +52,7 @@ public class QueryDb {
      * get Today Information
      * @return
      */
-    public DailyClass FindDailyListNew(){
+    public DailyClass findDailyListNew(){
         DailyClass dailyClass =null;
         Cursor cursor=db.query("DailyList",null,null,null,null, null, "Date desc");
         if(cursor.moveToNext()){
@@ -190,8 +190,9 @@ public class QueryDb {
         return CursorToPeroidTask(cursor);
     }
     public Vector<PeroidTask> FindPeroidTaskByToday(){
-        Cursor cursor=db.query("PeroidTask",null,
-                "ExpectDate='"+DAY+"'",null,null, null, null);
+        //TODO 设置周期性任务检测
+        //Cursor cursor=db.query("PeroidTask",null,"ExpectDate<='"+DAY+"'",null,null, null, null);
+        Cursor cursor=db.query("PeroidTask",null,null,null,null, null, null);
         return CursorToPeroidTask(cursor);
     }
     private PeroidTask getPeroidTaskEntity(Cursor cursor) {
@@ -267,7 +268,7 @@ public class QueryDb {
         int OuterInturruptTimes=cursor.getInt(cursor.getColumnIndex("OuterInturruptTimes"));
         int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
         String Note=cursor.getString(cursor.getColumnIndex("Note"));
-        int State=2;
+        int State=cursor.getInt(cursor.getColumnIndex("State"));
         object.set(ActualNum,InnerInturruptTimes,OuterInturruptTimes,RunnerID,Name,ID,ExpectNum,ExpectDate,State,Note);
         return object;
     }

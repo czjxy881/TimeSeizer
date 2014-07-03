@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,6 +24,7 @@ import com.example.timerseizer.sql.InnerforUI;
 import com.example.timerseizer.sql.Task;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Formatter;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.OnNavigationListener  {
@@ -121,20 +123,23 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         final TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
         final TextView DateView=((TextView)dialog.findViewById(R.id.DateTextDialog));
         DateView.setText(android.text.format.DateFormat.format("yyyy-MM-dd",Calendar.getInstance().getTime()));
-
-        //final DatePicker Datepicker=((DatePicker)dialog.findViewById(R.id.DatePickerDialog));
         TitleView.clearComposingText();
         ContentView.clearComposingText();
         TomatoView.clearComposingText();
         final ListKind listKind=turnIndex2ListKind(actionBar.getSelectedNavigationIndex());
         final RadioGroup radioGroup=(RadioGroup)dialog.findViewById(R.id.DialogRadioGroup);
+        final LinearLayout linearLayout=(LinearLayout)dialog.findViewById(R.id.DateLinearLayout);
         if(listKind== ListKind.AllList){
             radioGroup.setVisibility(View.VISIBLE);
         }else{
             radioGroup.setVisibility(View.GONE);
             radioGroup.clearCheck();
         }
-
+        if(listKind==ListKind.TodayList){
+            linearLayout.setVisibility(View.GONE);
+        }else{
+            linearLayout.setVisibility(View.VISIBLE);
+        }
         DateView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -177,22 +182,17 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
                 }else {
                     int Num = Integer.valueOf(NumS);
                     String Note = ContentView.getText().toString();
-                  //  Formatter formatter = new Formatter();
-                   // formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
-
                     String EDate = DateView.getText().toString();
-
                     Task task = new Task();
                     task.set(Name, -1, Num, EDate, Note, -1, -1);
                     TaskListFragment listFragment;
                     if (listKind == ListKind.TodayList || radioGroup.getCheckedRadioButtonId() == R.id.DialogRadioOnce) {
                         listFragment = TaskListControllor.getInstance(ListKind.TodayList);
-
                         listFragment.add(task);
                         listFragment.showUpdate();
                     } else {
                         listFragment = TaskListControllor.getInstance(ListKind.PeriodList);
-                        //   listFragment.add(Name);
+                        listFragment.add(task);
                         listFragment.showUpdate();
                     }
                     listFragment = TaskListControllor.getInstance(ListKind.AllList);
@@ -234,40 +234,49 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public boolean onNavigationItemSelected(int position, long id) {
-        // When the given dropdown item is selected, show its contents in the
-        // page view.
-        Fragment s=null;
-
+    public void changeActionBarButton(int position){
         switch (position){
-            case 0:s=TaskListControllor.getInstance(ListKind.TodayList);
+            case 0:
                 mMenu.findItem(R.id.menu_listadd).setVisible(true);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 1:s=TaskListControllor.getInstance(ListKind.PeriodList);
+            case 1:
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 2:s=TaskListControllor.getInstance(ListKind.AllList);
+            case 2:
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(true);
                 break;
-            case 3:s=TaskListControllor.getInstance(ListKind.DoneList);
+            case 3:
                 mMenu.findItem(R.id.menu_listadd).setVisible(false);
                 mMenu.findItem(R.id.menu_add).setVisible(false);
                 break;
 
         }
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(int position, long id) {
+        Fragment s=null;
+
+        switch (position){
+            case 0:s=TaskListControllor.getInstance(ListKind.TodayList);
+                break;
+            case 1:s=TaskListControllor.getInstance(ListKind.PeriodList);
+                break;
+            case 2:s=TaskListControllor.getInstance(ListKind.AllList);
+                break;
+            case 3:s=TaskListControllor.getInstance(ListKind.DoneList);
+                break;
+
+        }
 
 
-        if(s!=null)
-            getSupportFragmentManager().beginTransaction().replace(R.id.fgtright,s).commit();
-        /*
-        if(s!=null)getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fgtright, s)
-                .commit();
-        */
+        if(s!=null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fgtright, s).commit();
+            changeActionBarButton(position);
+        }
         return true;
     }
     /**
@@ -300,21 +309,16 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
         @Override
         public Fragment getItem(int position) {
-            // getItem is called to instantiate the fragment for the given page.
-            // Return a PlaceholderFragment (defined as a static inner class below).
             Fragment f=null;
             switch (position){
                 case 0:
                     f=LeftFragment.getInstance();
                     break;
                 case 1:
-
                     f=CenterFragment.getInstance();
                     break;
                 case 2:
-
                     f=RightFragment.getInstance();
-
                     break;
             }
             return f;
@@ -323,7 +327,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
 
         @Override
         public int getCount() {
-            // Show 3 total pages.
             return 3;
         }
     }

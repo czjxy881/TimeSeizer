@@ -13,7 +13,7 @@ public class Today {//Set in InnerForUI
 
 	public Today(InitDb db){
         this.db=db;
-        DailyClass dailyClass =db.queryDb.FindDailyListNew();
+        DailyClass dailyClass =db.queryDb.findDailyListNew();
         if(dailyClass !=null) {
             setWorkTime(dailyClass.getWorkTime());
             setRestTime(dailyClass.getRestTime());

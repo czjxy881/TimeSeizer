@@ -17,6 +17,8 @@ public class TaskListControllor {
     public static TaskListFragment getInstance(ListKind i){
         if(list[i.ordinal()]==null){
             list[i.ordinal()]=new TaskListFragment(i);
+        }else{
+            list[i.ordinal()].showUpdate();
         }
         return list[i.ordinal()];
     }

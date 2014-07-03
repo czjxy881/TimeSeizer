@@ -5,12 +5,20 @@ package com.example.timerseizer.sql;
  */
 public enum StateEnum {
     READY(0),ABANDON(1),FINISH(2),ERROR(3);
-    private int num;
+    int num;
     private StateEnum(int num){
         this.num=num;
     }
-
-    public int getNum() {
+    public static StateEnum get(int i){
+        switch (i){
+            case 0:return READY;
+            case 1:return ABANDON;
+            case 2:return FINISH;
+            case 3:return ERROR;
+        }
+        return ERROR;
+    }
+    public int getNum(){
         return num;
     }
 }

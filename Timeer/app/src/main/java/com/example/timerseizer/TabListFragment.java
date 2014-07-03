@@ -39,24 +39,22 @@ public class TabListFragment extends Fragment {
     public TabListFragment(TabListControllor.TabListKind listKind){
         //TODO 根据listKind生成
         ListKind=listKind;
-        presidents.add("123");
-        presidents.add("222223");
-        presidents.add("123");
-        presidents.add("222223");
-        presidents.add("123");
-        presidents.add("222223");
-        presidents.add("123");
-        presidents.add("222223");
-        presidents.add("123");
-        presidents.add("222223");
+        presidents.add("软件工程");
+        presidents.add("软件体系结构");
+        presidents.add("编译原理");
+        presidents.add("人工智能");
+        presidents.add("人机交互");
+        presidents.add("云计算");
+        presidents.add("并行程序设计");
+        presidents.add("计算机图像");
+        presidents.add("多媒体技术");
+        presidents.add("嵌入式");
         isCheckMap.clear();
     }
     public Vector<String> getList(){
         return presidents;
     }
     public View.OnClickListener getClickListener(final int i,final View sview) {
-
-
         View.OnClickListener now=new View.OnClickListener() {
 
 

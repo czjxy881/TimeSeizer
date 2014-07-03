@@ -65,10 +65,10 @@ public class TaskView {
         int RunnerID=-1;//no need
         int ID=db.queryDb.findTaskID(Name,NoteString);
         String init = ",0,0,0";
+        task.isNewPlan(true);
         /*检测同样Name和Note的Task有没有*/
         if(ID==-1) {
             task.set(Name, CurrentID, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
-            task.isNewPlan(true);
             db.updateDb.updateIDList(task.getForIDList());
             db.updateDb.updatePlanList(task.getForPlanListNoState() + init, 0);
             CurrentID++;
@@ -130,7 +130,7 @@ public class TaskView {
         String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
         db.updateDb.updateIDList(a.getForIDList());
         //1:infrom that Task's ID is a new ID,will be ingored by InitDb.tidePlanTask
-        db.updateDb.updatePlanList(a.getForPlanListNoState()+init,1);
+        db.updateDb.updatePlanList(a.getForPlanListNoState()+init,0);
         db.updateDb.updatePeroidList(a.getForPeroidList());
         CurrentID++;
     }

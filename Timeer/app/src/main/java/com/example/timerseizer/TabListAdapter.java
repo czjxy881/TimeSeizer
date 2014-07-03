@@ -68,7 +68,6 @@ public class TabListAdapter extends BaseAdapter {
             }
         });
         layout.setOnClickListener(ListFragment.getClickListener(i, view));
-
         return view;
     }
 
