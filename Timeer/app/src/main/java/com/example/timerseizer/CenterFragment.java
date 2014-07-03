@@ -4,7 +4,9 @@ package com.example.timerseizer;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
@@ -33,8 +35,9 @@ public class CenterFragment extends Fragment {
     private CircleProgressBar breakProgressBar;
     private MyDigitalClock DateC, ClockC;
 
-    private int WORK = 1;
-    private int REST = 5;
+    private  int WORK = 1;
+    private  int REST = 5;
+    private  int LONGREST = 5;
 
     private String Title;
     private int AimTomato;
@@ -54,7 +57,13 @@ public class CenterFragment extends Fragment {
     private boolean Viewed = false;
 
     TodayTask task;
+    public void updateTime(){
+        SharedPreferences preferences=getActivity().getSharedPreferences("TimeSetting",Context.MODE_PRIVATE);
+        WORK=preferences.getInt("TomatoTime",25);
+        REST=preferences.getInt("RestTime",5);
+        breakProgressBar.setText(WORK+":00");
 
+    }
     public void setInfo(Bundle bundle) {
         this.bundle = bundle;
     }
