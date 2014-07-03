@@ -39,7 +39,7 @@ public class TaskView {
 	 * @return Vector<Task>
 	 */
 
-	public Vector<Task> getListByDay(String Day){return db.queryDb.FindTaskByDay(Day);}
+	public Vector<Task> getListByDay(String Day){return db.queryDb.findTaskByDay(Day);}
 
     /**
      * get today Task list
@@ -63,12 +63,20 @@ public class TaskView {
 	public void addTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Priority){
         Task task = new Task();
         int RunnerID=-1;//no need
-        task.set(Name, CurrentID,ExpectNum, ExpectDate, NoteString,RunnerID, Priority);
-        String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
-        task.isNewPlan(true);
-		db.updateDb.updateIDList(task.getForIDList());
-		db.updateDb.updatePlanList(task.getForPlanListNoState()+init,0);
-		CurrentID++;
+        int ID=db.queryDb.findTaskID(Name,NoteString);
+        String init = ",0,0,0";
+        /*检测同样Name和Note的Task有没有*/
+        if(ID==-1) {
+            task.set(Name, CurrentID, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
+            task.isNewPlan(true);
+            db.updateDb.updateIDList(task.getForIDList());
+            db.updateDb.updatePlanList(task.getForPlanListNoState() + init, 0);
+            CurrentID++;
+        }else{
+            task.set(Name, ID, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
+            db.updateDb.updatePlanList(task.getForPlanListNoState() + init, 0);
+
+        }
 	}
 
     /**
@@ -104,7 +112,7 @@ public class TaskView {
      * @return
      */
     public boolean setPeroidTask(int RunnerID,int ExpectNum,String ExpectDate,long Kind,int Priority,String Note){
-        Task task=db.queryDb.FindTaskByRunnerID(RunnerID);
+        Task task=db.queryDb.findTaskByRunnerID(RunnerID);
         if(task!=null){
             PeroidTask pTask=new PeroidTask();
             pTask.set(RunnerID,task.getName(),task.getID(),ExpectNum,ExpectDate,Note,Kind,Priority);
@@ -137,14 +145,13 @@ public class TaskView {
     }
 
     /**
-     * Delete Task
+     * Delete Task 永久删除任务
      * @param RunnerID
      * @param ID
      */
     public void delTask(int RunnerID,int ID){
         db.updateDb.delTask(RunnerID,ID);
     }
-
     /**
      * Delete the Peroid feature from Task
      * @param ID
@@ -166,21 +173,21 @@ public class TaskView {
     ExpectNum_DESC(5),ExpectDate_ASC(6),ExpectDate_DESC(7);
      * @return
      */
-    public Vector<Task> getListByOrder(KindEnum kind){ return db.queryDb.FindTaskByStyle(kind);}
+    public Vector<Task> getListByOrder(KindEnum kind){ return db.queryDb.findTaskByStyle(kind);}
 
     /**
      * get the list of Task
      * @param kind
      * @return
      */
-    public Vector<Task> getAllList(KindEnum kind){return db.queryDb.FindTaskByStyle(KindEnum.NULL);}
+    public Vector<Task> getAllList(KindEnum kind){return db.queryDb.findTaskByStyle(KindEnum.NULL);}
 	/**
 	 *  get the list of Task according to ID
 	 * @param id ????ID
 	 * @return Vector<Task>
 	 */
 	public Vector<Task> getTaskById(int id){
-		return db.queryDb.FindTaskByID(id);
+		return db.queryDb.findTaskByID(id);
 	}
 
     /**
@@ -188,7 +195,7 @@ public class TaskView {
      * @param RunnerID
      * @return
      */
-    public Task getTaskByRunnerId(int RunnerID) { return db.queryDb.FindTaskByRunnerID(RunnerID);}
+    public Task getTaskByRunnerId(int RunnerID) { return db.queryDb.findTaskByRunnerID(RunnerID);}
 	/**
 	 *  get the list of PeroidTask according to ID
 	 * @return Vector<Task>

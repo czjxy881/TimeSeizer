@@ -98,6 +98,7 @@ public class InnerforUI {
     public void clickDeleteTodayTask(int location){
         int RunnerID=todayTaskVector.get(location).getRunnerID();
         int ID=todayTaskVector.get(location).getID();
+
         taskView.delTask(RunnerID,ID);
     }
     /**

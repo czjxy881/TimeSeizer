@@ -1,5 +1,6 @@
 package com.example.app.sql;
 
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 /**
@@ -152,10 +153,12 @@ public class UpdateDb {
      */
     public void delTask(int RunnerID,int ID){
         sql("Delete from PlanList where RunnerID=" + RunnerID);
-
-      //TODO  sql("Delete from PeroidList where ID=" + ID);
-      //  sql("Delete from IDList where ID=" + ID);
-
+        Cursor cursor=db.query("PlanTask",null,
+                "RunnerID="+RunnerID,null,null, null, null);
+        if(cursor.getCount()==0) {
+            sql("Delete from PeroidList where ID=" + ID);
+            sql("Delete from IDList where ID=" + ID);
+        }
     }
 
     /**

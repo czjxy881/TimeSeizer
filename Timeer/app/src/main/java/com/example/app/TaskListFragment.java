@@ -30,12 +30,12 @@ public class TaskListFragment extends Fragment {
     TaskListControllor.ListKind ListKind;
     public TaskListFragment(TaskListControllor.ListKind listKind){
         //TODO 根据listKind生成
-
-
-        InnerforUI.getInstance(getActivity()).clickAddTask("test",5,"2014-7-1","test1",0);
-
         ListKind=listKind;
+
+        InnerforUI.getInstance(getActivity()).clickAddTask("test",5,"2014-07-01","test1",0);
         showUpdate();
+
+
 
 
     }

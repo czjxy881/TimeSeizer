@@ -60,7 +60,6 @@ public class QueryDb {
         }
         return dailyClass;
     }
-
     private DailyClass getDailyListEntity(Cursor cursor) {
         DailyClass object=new DailyClass();
         String Date=cursor.getString(cursor.getColumnIndex("Date"));
@@ -75,13 +74,25 @@ public class QueryDb {
     }
 
     /**
+     * 根据Name和Note查询ID
+     * @param Name 任务名
+     * @param Note 任务备注
+     * @return ID,如果没有返回-1
+     */
+    public int findTaskID(String Name,String Note){
+        Cursor cursor=db.query("IDList",null,
+                "Name='"+Name+"' and Note='"+Note+"'",null,null, null, null);
+        if(cursor.moveToNext()==false)return -1;
+        return cursor.getInt(cursor.getColumnIndex("ID"));
+    }
+    /**
      * get Task View by RunnerID
      * @return
      */
-    public Vector<Task> FindTaskByID(int ID){
+    public Vector<Task> findTaskByID(int ID){
         Cursor cursor=db.query("PlanTask",null,
                 "ID="+ID,null,null, null, null);
-        return CursorToTask(cursor);
+        return cursorToTask(cursor);
     }
 
     /**
@@ -89,11 +100,11 @@ public class QueryDb {
      * @param Day
      * @return
      */
-    public Vector<Task> FindTaskByDay( String Day) {
+    public Vector<Task> findTaskByDay(String Day) {
         //TODO  检测设成<的可靠性
         Cursor cursor=db.query("PlanTask",null,
                 "ExpectDate<='"+Day+"'",null,null, null, null);
-        return CursorToTask(cursor);
+        return cursorToTask(cursor);
     }
 
     /**
@@ -101,7 +112,7 @@ public class QueryDb {
      * @param kind :KindEnum
      * @return
      */
-    public Vector<Task> FindTaskByStyle(KindEnum kind) {
+    public Vector<Task> findTaskByStyle(KindEnum kind) {
         String string=null;
         switch(kind) {
             case Name_ASC:string = "Name ASC"; break;
@@ -116,17 +127,17 @@ public class QueryDb {
         }
         Cursor cursor=db.query("PlanTask",null,
                 null,null,null, null,string);
-        return CursorToTask(cursor);
+        return cursorToTask(cursor);
     }
     /**
      * get Task by RunnerID
      * @param RunnerID
      * @return
      */
-    public Task FindTaskByRunnerID(int RunnerID) {
+    public Task findTaskByRunnerID(int RunnerID) {
         Cursor cursor=db.query("PlanTask",null,
                 "RunnerID="+RunnerID,null,null, null, null);
-        Vector<Task> vector=CursorToTask(cursor);
+        Vector<Task> vector= cursorToTask(cursor);
         if(vector.isEmpty())return null;
         else return vector.get(0);
     }
@@ -135,7 +146,7 @@ public class QueryDb {
      * @param cursor
      * @return
      */
-    private Vector<Task> CursorToTask(Cursor cursor){
+    private Vector<Task> cursorToTask(Cursor cursor){
         Vector<Task> vector=new Vector<Task>();
         while(cursor.moveToNext()){
             vector.add(getTaskEntity(cursor));
@@ -143,7 +154,7 @@ public class QueryDb {
         return vector;
     }
     /**
-     * help CursorToTask to get Task by Cursor
+     * help cursorToTask to get Task by Cursor
      * @param cursor
      * @return
      */
