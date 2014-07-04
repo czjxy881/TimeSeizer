@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/Grey"
-    tools:context="com.example.app.MainActivity$PlaceholderFragment"
+    tools:context="com.example.timerseizer.MainActivity$PlaceholderFragment"
     >
 
         <TextView

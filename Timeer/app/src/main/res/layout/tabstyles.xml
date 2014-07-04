@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.app.MainActivity"
+    tools:context="com.example.timerseizer.MainActivity"
     android:paddingBottom="1dp"
     android:paddingTop="1dp"
     android:paddingLeft="3dp"
