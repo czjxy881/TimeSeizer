@@ -26,15 +26,8 @@
             android:name="com.example.timerseizer.Settings"
             android:launchMode="singleInstance"
             android:theme="@style/Theme.Base.AppCompat.Light" />
-        <!--
-            activity android:name=".CenterActivity" android:launchMode="singleInstance"
-            android:theme="@style/Theme.Base.AppCompat.Light"
-            ></activity
-        -->
-        <activity
-            android:name="com.example.timerseizer.SettingsActivity"
-            android:label="@string/title_activity_settings" >
-        </activity>
+
+
     </application>
 
     <uses-permission android:name="android.permission.VIBRATE" />
