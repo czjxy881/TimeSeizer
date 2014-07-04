@@ -192,7 +192,7 @@ public class QueryDb {
     public Vector<PeroidTask> findPeroidTaskByToday(){
         //TODO 设置周期性任务检测
         //Cursor cursor=db.query("PeroidTask",null,"ExpectDate<='"+DAY+"'",null,null, null, null);
-        Cursor cursor=db.query("PeroidTask",null,null,null,null, null, "ExpectDate");
+        Cursor cursor=db.query("PeroidTask",null,null,null,"ID", null, "ExpectDate");
         return cursorToPeroidTask(cursor);
     }
     private PeroidTask cursorToPeroidTaskEntity(Cursor cursor) {

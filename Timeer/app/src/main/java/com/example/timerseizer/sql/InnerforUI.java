@@ -107,6 +107,11 @@ public class InnerforUI {
 
         taskView.delTask(RunnerID,ID);
     }
+    public Vector<PeroidTask> findPeroidTaskByID(int ID){
+        return db.queryDb.findPeroidTaskByID(ID);
+    }
+
+
     /**
      * Delete Task from Task list,requiring Task's location in TaskVector
      * @param location
@@ -217,37 +222,6 @@ public class InnerforUI {
      */
 	public void setTodayList(TaskView taskView){todayList.setTodayList();}
 
-    /**
-     * set next Task
-     */
-    /*
-    public TodayTask setNextTask(){
-        TodayTask task=list.getNextTask();
-        NowTask = task;
-        CurrentState=false;
-        return task;
-    }
-    */
-    /**
-     * set definite Task as next one
-     * @param ID
-     */
- //   public void setNextTaskByID(int ID){timer.setTaskByID(ID,todayList);}
-
-    /**
-     * start Task
-     * @param ID
-     */
- //   public void start(int ID){timer.start();}
-
-    /**
-     * abort current Task
-     */
-//	public void abort(){timer.stop();}
-
-    /**
-     *     show Today Information
-     */
 	public Today getToday(){return today;}
 
 }

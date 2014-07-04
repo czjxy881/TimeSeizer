@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.example.timerseizer.sql.InnerforUI;
 import com.example.timerseizer.sql.Task;
 
+import java.util.List;
 import java.util.Vector;
 
 /**
@@ -49,12 +50,12 @@ public class TaskListFragment extends Fragment {
         adapter.notifyDataSetChanged();
 
     }
-    public View.OnClickListener getEditClickListener(int i){
+    public View.OnClickListener getEditClickListener(final int i){
         if(ListKind== TaskListControllor.ListKind.DoneList)return null;
         View.OnClickListener now=new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO 增加编辑事件
+                new EditDialog(getActivity(),ListKind,presidents.get(i).getRunnerID()).show();
                 adapter.notifyDataSetChanged();
             }
         };

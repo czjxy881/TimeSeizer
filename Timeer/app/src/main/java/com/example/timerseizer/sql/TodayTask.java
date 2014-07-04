@@ -30,7 +30,7 @@ public class TodayTask extends Task {
 		ActualNum++;
         save();
 	}
-    private void save(){
+    public void save(){
         InitDb.getInstance(null).updateDb.updatePlanList(getForPlanList(),State.getNum());
     }
 	public void finish(){

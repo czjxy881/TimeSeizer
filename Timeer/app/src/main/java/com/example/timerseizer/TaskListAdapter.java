@@ -86,8 +86,9 @@ public class TaskListAdapter extends BaseAdapter {
             }
             dataText.setText(Html.fromHtml(state));
         }
-
-
+        if(ListFragment.ListKind== TaskListControllor.ListKind.PeriodList){
+            dataText.setText("下次运行日期:"+now.getExpectDate());
+        }
         editButton.setOnClickListener(ListFragment.getEditClickListener(i));
         delButton.setOnClickListener(ListFragment.getDelClickListener(i));
         layout.setOnClickListener(ListFragment.getClickListener(i));

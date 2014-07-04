@@ -39,7 +39,9 @@ public class Task{
     public void setPriority(int Priority){
         this.Priority=Priority;
     }
-	
+    public int getPriority(){
+        return Priority;
+    }
 	
 	public void set(String Name,int ID,int ExpectNum,String ExpectDate,String NoteString,int RunnerID,int Priority){
 		this.Name=Name;	

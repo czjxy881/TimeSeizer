@@ -129,106 +129,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
         return true;
     }
 
-    /**
-     * 生成添加弹窗,根据现在列表完成动态布局
-     */
-    private void initDialog(){
-        dialog = new Dialog(MainActivity.this, R.style.mydialog);
-        dialog.setContentView(R.layout.alertdialog_freetimework);
 
-        final TextView TitleView=((TextView)dialog.findViewById(R.id.TitleAddText));
-        final TextView ContentView=((TextView)dialog.findViewById(R.id.ContentAddText));
-        final TextView TomatoView=((TextView)dialog.findViewById(R.id.TomatoAddText));
-        final TextView DateView=((TextView)dialog.findViewById(R.id.DateTextDialog));
-        DateView.setText(android.text.format.DateFormat.format("yyyy-MM-dd",Calendar.getInstance().getTime()));
-        TitleView.clearComposingText();
-        ContentView.clearComposingText();
-        TomatoView.clearComposingText();
-        final ListKind listKind=turnIndex2ListKind(actionBar.getSelectedNavigationIndex());
-        final RadioGroup radioGroup=(RadioGroup)dialog.findViewById(R.id.DialogRadioGroup);
-        final LinearLayout linearLayout=(LinearLayout)dialog.findViewById(R.id.DateLinearLayout);
-        if(listKind== ListKind.AllList){
-            radioGroup.setVisibility(View.VISIBLE);
-        }else{
-            radioGroup.setVisibility(View.GONE);
-            radioGroup.clearCheck();
-        }
-        if(listKind==ListKind.TodayList){
-            linearLayout.setVisibility(View.GONE);
-        }else{
-            linearLayout.setVisibility(View.VISIBLE);
-        }
-        DateView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final Dialog dateDialog=new Dialog(dialog.getContext(),R.style.mydialog);
-                dateDialog.setContentView(R.layout.date_dialog);
-                final DatePicker Datepicker=((DatePicker)dateDialog.findViewById(R.id.Datepicker));
-                dateDialog.findViewById(R.id.DateDialogSave).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Formatter formatter = new Formatter();
-                        formatter.format("%04d-%02d-%02d", Datepicker.getYear(), Datepicker.getMonth()+1, Datepicker.getDayOfMonth());
-                        DateView.setText(formatter.toString());
-                        dateDialog.cancel();
-                    }
-                });
-                dateDialog.findViewById(R.id.DateDialogCancel).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        dateDialog.cancel();
-                    }
-                });
-                dateDialog.show();
-            }
-        });
-
-
-
-
-        //((RadioButton)findViewById(R.id.))
-        dialog.findViewById(R.id.DialogSaveButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //TODO:数据库更新
-                String Name = TitleView.getText().toString();
-                String NumS=TomatoView.getText().toString();
-                if(Name.equals("")||NumS.equals("")){
-                    //TODO:可以设成红色
-                    Toast.makeText(dialog.getContext(),"名称和期望数目不能为空",Toast.LENGTH_SHORT).show();
-                    //dialog.cancel();
-                }else {
-                    int Num = Integer.valueOf(NumS);
-                    String Note = ContentView.getText().toString();
-                    String EDate = DateView.getText().toString();
-                    Task task = new Task();
-                    task.set(Name, -1, Num, EDate, Note, -1, -1);
-                    TaskListFragment listFragment;
-                    if (listKind == ListKind.TodayList || radioGroup.getCheckedRadioButtonId() == R.id.DialogRadioOnce) {
-                        listFragment = TaskListControllor.getInstance(ListKind.TodayList);
-                        listFragment.add(task);
-                        listFragment.showUpdate();
-                    } else {
-                        listFragment = TaskListControllor.getInstance(ListKind.PeriodList);
-                        listFragment.add(task);
-                        listFragment.showUpdate();
-                    }
-                    listFragment = TaskListControllor.getInstance(ListKind.AllList);
-                    // listFragment.add(Name);
-
-                    listFragment.showUpdate();
-                    dialog.cancel();
-                }
-            }
-        });
-        dialog.findViewById(R.id.DialogCancelButton).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dialog.cancel();
-            }
-        });
-        dialog.show();
-    }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -246,8 +147,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             return true;
         }
         if (id==R.id.menu_add) {
-            initDialog();
-
+            new EditDialog(this,turnIndex2ListKind(actionBar.getSelectedNavigationIndex())).show();
         }
         if (id==R.id.menu_cancel) {
             System.exit(0);

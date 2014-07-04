@@ -16,8 +16,12 @@ public class PeroidTask extends Task {
 	public void setKind(int Kind){
 		this.Kind=Kind;
 	}
-
-
+    public void save(){
+        InitDb.getInstance(null).updateDb.updatePlanList(getForPlanList(),0);
+    }
+    public String getForPlanList(){
+        return (RunnerID+","+ID+","+ExpectNum+",'"+ExpectDate+"',"+Priority+",0,0,0");
+    }
     //TODO:kind未写
 	public boolean judgeRun(String day){                 //Necessary??
 		return true;
