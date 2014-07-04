@@ -10,6 +10,9 @@ import android.widget.CheckBox;
 import android.widget.ListView;
 
 
+import com.example.timerseizer.sql.InnerforUI;
+import com.example.timerseizer.sql.Task;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
@@ -18,8 +21,7 @@ import java.util.Vector;
  * Created by xxx on 2014/6/30.
  */
 public class TabListFragment extends Fragment {
-    //TODO:获取数据库
-    public Vector<String> presidents = new Vector<String>();
+    public Vector<Task> presidents = new Vector<Task>();
     Button button;
     View view=null;
     TabListAdapter adapter;
@@ -34,24 +36,31 @@ public class TabListFragment extends Fragment {
         }
         return  isCheckMap.get(i);
     }
+    public void save(){
+        for(Integer i:isCheckMap.keySet()){
+            if(isCheckMap.get(i)==true){
+                switch (ListKind){
+                    case PeriodList: InnerforUI.getInstance().addToTodayFromPeriodList(i);break;
+                    case AllList:InnerforUI.getInstance().addToTodayFromAllList(i);break;
+                    case DoneList:InnerforUI.getInstance().addToTodayFromDoneList(i);break;
+                }
 
-
-    public TabListFragment(TabListControllor.TabListKind listKind){
-        //TODO 根据listKind生成
-        ListKind=listKind;
-        presidents.add("软件工程");
-        presidents.add("软件体系结构");
-        presidents.add("编译原理");
-        presidents.add("人工智能");
-        presidents.add("人机交互");
-        presidents.add("云计算");
-        presidents.add("并行程序设计");
-        presidents.add("计算机图像");
-        presidents.add("多媒体技术");
-        presidents.add("嵌入式");
-        isCheckMap.clear();
+            }
+        }
     }
-    public Vector<String> getList(){
+    public void update(){
+        switch (ListKind){
+            case PeriodList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance().showPeroidTask();break;
+            case AllList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showTask();break;
+            case DoneList:presidents= (Vector<Task>)(Vector)InnerforUI.getInstance(getActivity()).showFinish();break;
+        }
+    }
+    public TabListFragment(TabListControllor.TabListKind listKind){
+        ListKind=listKind;
+        isCheckMap.clear();
+        update();
+    }
+    public Vector<Task> getList(){
         return presidents;
     }
     public View.OnClickListener getClickListener(final int i,final View sview) {
@@ -70,10 +79,19 @@ public class TabListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        //view=inflater.inflate(android.R.layout.list_content,container,false);
         view=inflater.inflate(R.layout.listfragment_one,container,false);
         ListView listView = ((ListView) view.findViewById(android.R.id.list));
         button=((Button)view.findViewById(R.id.btntanadd));
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((TabActivity)getActivity()).save();
+                TaskListControllor.update();
+                (getActivity()).finish();
+            }
+        });
+
+
         adapter = new TabListAdapter(getActivity(),this);
         listView.setAdapter(adapter);
         listView.setDivider(null);

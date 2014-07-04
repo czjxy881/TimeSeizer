@@ -2,6 +2,7 @@ package com.example.timerseizer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -76,12 +77,14 @@ public class TaskListAdapter extends BaseAdapter {
         if (ListFragment.getEditClickListener(i) == null) editButton.setVisibility(View.INVISIBLE);
         if (ListFragment.getDelClickListener(i) == null){
             delButton.setVisibility(View.INVISIBLE);
-            if(((TodayTask)now).getState().equals(StateEnum.ABANDON.toString())){
-                dataText.setTextColor(Color.RED);
-            }else {
-                dataText.setTextColor(Color.BLUE);
+            String state=((TodayTask)now).getState();
+            if(state.equals(StateEnum.ABANDON.toString())){
+                state="当前状态:<font color='red'>"+state+"</font>";
             }
-            dataText.setText("当前状态:" + ((TodayTask) now).getState());
+            else{
+                state="当前状态:<font color='blue'>"+state+"</font>";
+            }
+            dataText.setText(Html.fromHtml(state));
         }
 
 

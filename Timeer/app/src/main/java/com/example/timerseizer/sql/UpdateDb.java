@@ -153,9 +153,9 @@ public class UpdateDb {
      */
     public void delTask(int RunnerID,int ID){
         sql("Delete from PlanList where RunnerID=" + RunnerID);
-        Cursor cursor=db.query("PlanTask",null,
-                "ID="+ID,null,null, null, null);
-        if(cursor.getCount()==0) {
+        Cursor cursor=db.query("PlanList",null,
+                "TaskID="+ID,null,null, null, null);
+        if(cursor.moveToNext()==false) {
             sql("Delete from PeroidList where ID=" + ID);
             sql("Delete from IDList where ID=" + ID);
         }

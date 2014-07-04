@@ -5,7 +5,7 @@ package com.example.timerseizer;
  */
 public class TabListControllor {
     public static enum TabListKind{
-        TAbperiodList,TaballList,TabdoneList
+        PeriodList,AllList,DoneList
     }
     public static TabListFragment []list=new TabListFragment[3];
     /**
@@ -17,6 +17,7 @@ public class TabListControllor {
         if(list[i.ordinal()]==null){
             list[i.ordinal()]=new TabListFragment(i);
         }
+        list[i.ordinal()].update();
         return list[i.ordinal()];
     }
     /**
@@ -27,10 +28,15 @@ public class TabListControllor {
     public static TabListFragment getInstance(int i){
         TabListKind listKind=null;
         switch (i){
-            case 0:listKind=TabListKind.TAbperiodList;break;
-            case 1:listKind=TabListKind.TaballList;break;
-            case 2:listKind=TabListKind.TabdoneList;break;
+            case 0:listKind=TabListKind.PeriodList;break;
+            case 1:listKind=TabListKind.AllList;break;
+            case 2:listKind=TabListKind.DoneList;break;
         }
         return getInstance(listKind);
+    }
+    public static void save(){
+        for(TabListKind s:TabListKind.values()) {
+            getInstance(s).save();
+        }
     }
 }

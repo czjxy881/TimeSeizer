@@ -23,7 +23,7 @@
             android:layout_height="45dp"
             android:layout_gravity="center_horizontal|bottom"
 
-            android:background="@drawable/button"
+            android:background="@color/Grey"
             android:orientation="vertical"
 
             >

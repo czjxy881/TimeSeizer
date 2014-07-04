@@ -69,7 +69,7 @@ public class RightFragment extends android.support.v4.app.Fragment  {
             actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_LIST);
 
             ((MainActivity)this.getActivity()).changeActionBarButton(actionBar.getSelectedNavigationIndex());
-
+            TaskListControllor.update();
         }
     }
 

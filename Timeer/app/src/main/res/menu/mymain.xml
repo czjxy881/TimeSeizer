@@ -20,5 +20,12 @@
         android:icon="@drawable/listadd"
         android:showAsAction="always|withText"
         android:title="列表添加"/>
+    <item
+        android:id="@+id/menu_cancel"
+        android:orderInCategory="4"
+        android:icon="@android:drawable/ic_menu_close_clear_cancel"
+        android:title="退出"
+        android:showAsAction="ifRoom|withText"
+        />
 
 </menu>

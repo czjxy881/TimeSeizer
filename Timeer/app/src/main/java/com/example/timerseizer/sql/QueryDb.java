@@ -100,11 +100,11 @@ public class QueryDb {
      * @param Day
      * @return
      */
-    public Vector<Task> findTaskByDay(String Day) {
+    public Vector<TodayTask> findTaskByDay(String Day) {
         //TODO  检测设成<的可靠性
         Cursor cursor=db.query("PlanTask",null,
                 "ExpectDate<='"+Day+"'",null,null, null,"ExpectDate");
-        return cursorToTask(cursor);
+        return cursorToTodayTask(cursor);
     }
 
     /**
@@ -172,30 +172,30 @@ public class QueryDb {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    private Vector<PeroidTask> CursorToPeroidTask(Cursor cursor){
+    private Vector<PeroidTask> cursorToPeroidTask(Cursor cursor){
         Vector<PeroidTask> vector=new Vector<PeroidTask>();
         while(cursor.moveToNext()){
-            vector.add(getPeroidTaskEntity(cursor));
+            vector.add(cursorToPeroidTaskEntity(cursor));
         }
         return vector;
     }
-    public Vector<PeroidTask> FindPeroidTask(){
+    public Vector<PeroidTask> findPeroidTask(){
         Cursor cursor=db.query("PeroidTask",null,
                 null,null,null, null, null);
-        return CursorToPeroidTask(cursor);
+        return cursorToPeroidTask(cursor);
     }
-    public Vector<PeroidTask> FindPeroidTaskByID(int ID){
+    public Vector<PeroidTask> findPeroidTaskByID(int ID){
         Cursor cursor=db.query("PeroidTask",null,
                 "ID="+ID,null,null, null, null);
-        return CursorToPeroidTask(cursor);
+        return cursorToPeroidTask(cursor);
     }
-    public Vector<PeroidTask> FindPeroidTaskByToday(){
+    public Vector<PeroidTask> findPeroidTaskByToday(){
         //TODO 设置周期性任务检测
         //Cursor cursor=db.query("PeroidTask",null,"ExpectDate<='"+DAY+"'",null,null, null, null);
         Cursor cursor=db.query("PeroidTask",null,null,null,null, null, "ExpectDate");
-        return CursorToPeroidTask(cursor);
+        return cursorToPeroidTask(cursor);
     }
-    private PeroidTask getPeroidTaskEntity(Cursor cursor) {
+    private PeroidTask cursorToPeroidTaskEntity(Cursor cursor) {
         PeroidTask object=new PeroidTask();
         int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
         String Name=cursor.getString(cursor.getColumnIndex("Name"));
@@ -211,14 +211,21 @@ public class QueryDb {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public TodayTask findTodayTaskByRunnerID(int RunnerID){
+    private Vector<TodayTask> cursorToTodayTask(Cursor cursor){
         Vector<TodayTask> vector=new Vector<TodayTask>();
-        Cursor cursor=db.query("PlanTask",null,
-                "RunnerID="+RunnerID,null,null, null, null);
         while(cursor.moveToNext()){
             vector.add(getTodayTaskEntity(cursor));
         }
-        return vector.get(0);
+        return vector;
+    }
+
+    public TodayTask findTodayTaskByRunnerID(int RunnerID){
+        Cursor cursor=db.query("PlanTask",null,
+                "RunnerID="+RunnerID,null,null, null, null);
+        if(cursor.moveToNext()){
+            return getTodayTaskEntity(cursor);
+        }
+        return null;
     }
     private TodayTask getTodayTaskEntity(Cursor cursor) {
         TodayTask object=new TodayTask();
@@ -237,40 +244,24 @@ public class QueryDb {
         return object;
     }
 
-    public Vector<TodayTask> FindFinshTaskByDay(String Day){
+    public Vector<TodayTask> findFinshTaskByDay(String Day){
         Vector<TodayTask> vector=new Vector<TodayTask>();
         Cursor cursor=db.query("FinishTask",null,
                 "ExpectDate='"+Day+"'",null,null, null, "ExpectDate DESC");
         while(cursor.moveToNext()){
-            vector.add(getFinishTaskEntity(cursor));
+            vector.add(getTodayTaskEntity(cursor));
         }
         return vector;
     }
 
-    public Vector<TodayTask> FindFinshTask(){
+    public Vector<TodayTask> findFinshTask(){
         Vector<TodayTask> vector=new Vector<TodayTask>();
         Cursor cursor=db.query("FinishTask",null,
                 null,null,null, null, "RunnerID DESC");
         while(cursor.moveToNext()){
-            vector.add(getFinishTaskEntity(cursor));
+            vector.add(getTodayTaskEntity(cursor));
         }
         return vector;
-    }
-    private TodayTask getFinishTaskEntity(Cursor cursor) {
-        TodayTask object=new TodayTask();
-
-        String Name=cursor.getString(cursor.getColumnIndex("Name"));
-        int ID=cursor.getInt(cursor.getColumnIndex("ID"));
-        int ExpectNum=cursor.getInt(cursor.getColumnIndex("ExpectNum"));
-        String ExpectDate=cursor.getString(cursor.getColumnIndex("ExpectDate"));
-        int ActualNum=cursor.getInt(cursor.getColumnIndex("ActualNum"));
-        int InnerInturruptTimes=cursor.getInt(cursor.getColumnIndex("InnerInturruptTimes"));
-        int OuterInturruptTimes=cursor.getInt(cursor.getColumnIndex("OuterInturruptTimes"));
-        int RunnerID=cursor.getInt(cursor.getColumnIndex("RunnerID"));
-        String Note=cursor.getString(cursor.getColumnIndex("Note"));
-        int State=cursor.getInt(cursor.getColumnIndex("State"));
-        object.set(ActualNum,InnerInturruptTimes,OuterInturruptTimes,RunnerID,Name,ID,ExpectNum,ExpectDate,State,Note);
-        return object;
     }
 
     public int getDayActualNum(String day){

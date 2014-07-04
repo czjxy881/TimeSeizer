@@ -59,7 +59,7 @@ public class Task{
      * infrom current action(add new task or get existing task)
      * @param b
      */
-    public void isNewPlan(boolean b){this.b=b;}
+    public void setIsNewPlan(boolean b){this.b=b;}
 
     //null:because ID/RunnerID has autoincrement.
     public String getForIDList(){

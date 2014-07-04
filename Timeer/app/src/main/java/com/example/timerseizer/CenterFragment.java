@@ -62,7 +62,7 @@ public class CenterFragment extends Fragment {
         WORK=preferences.getInt("TomatoTime",25);
         REST=preferences.getInt("RestTime",5);
         LONGREST=preferences.getInt("LongRestTime",5);
-        breakProgressBar.setText(WORK+":00");
+        breakProgressBar.setTime(WORK*60000);
 
     }
     public void setInfo(Bundle bundle) {
@@ -150,6 +150,7 @@ public class CenterFragment extends Fragment {
             }
         });
         Viewed = true;
+        updateTime();
         return view;
     }
 

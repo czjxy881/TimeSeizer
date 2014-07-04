@@ -9,8 +9,17 @@ public class TodayList {
 	private Vector<TodayTask> vector=null;
 	private int taskIndex=0;
 	private int vectorLength=-1;
+    private static TodayList todayList;
+    public static TodayList getInstance(TaskView taskView){
+        if(todayList==null){
+            todayList=new TodayList(taskView);
+        }else{
+            todayList.setTodayList();
+        }
+        return todayList;
+    }
 
-	public TodayList(TaskView taskView){
+	private TodayList(TaskView taskView){
         this.taskView=taskView;
         vector=new Vector<TodayTask>();
 		setTodayList();
@@ -47,15 +56,6 @@ public class TodayList {
 		return vector;
 	}
 	public void setTodayList() {
-		Vector<Task> vtask=taskView.getTodayOptionalTask();
-		Task task;
-        TodayTask todayTask;
-			for(int i=0;i<vtask.size();i++){
-				task=vtask.get(i);
-                todayTask=new TodayTask();
-
-                todayTask.set(0,0,0,task.getRunnerID(),task.Name,task.ID, task.ExpectNum, task.ExpectDate,0,task.NoteString);
-				vector.add(todayTask);
-			}
+		vector=taskView.getTodayOptionalTask();
 	}
 }

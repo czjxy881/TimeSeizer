@@ -39,14 +39,14 @@ public class TaskView {
 	 * @return Vector<Task>
 	 */
 
-	public Vector<Task> getListByDay(String Day){return db.queryDb.findTaskByDay(Day);}
+	public Vector<TodayTask> getListByDay(String Day){return db.queryDb.findTaskByDay(Day);}
 
     /**
      * get today Task list
      * *
      * @return
      */
-    public Vector<Task> getTodayOptionalTask(){ return getListByDay(db.DAY); }
+    public Vector<TodayTask> getTodayOptionalTask(){ return getListByDay(db.DAY); }
 
     /**
      *get the available ID
@@ -65,7 +65,7 @@ public class TaskView {
         int RunnerID=-1;//no need
         int ID=db.queryDb.findTaskID(Name,NoteString);
         String init = ",0,0,0";
-        task.isNewPlan(true);
+        task.setIsNewPlan(true);
         /*检测同样Name和Note的Task有没有*/
         if(ID==-1) {
             task.set(Name, CurrentID, ExpectNum, ExpectDate, NoteString, RunnerID, Priority);
@@ -83,9 +83,9 @@ public class TaskView {
      * set a task to today list
      * @param task
      */
-    public void setTask(Task task){
+    public void addTask(Task task){
         String init=",0,0,0";                               //Initial ActualNum/InnerInturrptTimes/OuterInturruptTimes
-        task.isNewPlan(true);
+        task.setIsNewPlan(true);
         db.updateDb.updatePlanList(task.getForPlanListNoState()+init, 0);
     }
 	/**
@@ -95,7 +95,7 @@ public class TaskView {
     public PeroidTask addPeroidTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
             int RunnerID=-1;//no need
             PeroidTask pTask=new PeroidTask();
-            pTask.isNewPlan(true);
+            pTask.setIsNewPlan(true);
             pTask.set(RunnerID,Name, CurrentID,ExpectNum, ExpectDate,NoteString, Kind,Priority);
             addPeriodTaskToLists(pTask);
             return pTask;
@@ -164,7 +164,7 @@ public class TaskView {
 	 *  get the list of PeroidTask
 	 * @return Vector<PeroidTask>
 	 */
-	public Vector<PeroidTask> getPeriodTask(){return db.queryDb.FindPeroidTaskByToday();}
+	public Vector<PeroidTask> getPeriodTask(){return db.queryDb.findPeroidTaskByToday();}
 
     /**
      *  get the list of Task order by sort type
@@ -200,16 +200,16 @@ public class TaskView {
 	 *  get the list of PeroidTask according to ID
 	 * @return Vector<Task>
 	 */
-	public Vector<PeroidTask> getPeriodTaskById(int id){return db.queryDb.FindPeroidTaskByID(id);}
+	public Vector<PeroidTask> getPeriodTaskById(int id){return db.queryDb.findPeroidTaskByID(id);}
     /**
      *  get the list of finish Task according to Day
      * @return Vector<Task>
      */
-    public Vector<TodayTask> getFinishTaskByDay(String Day){return db.queryDb.FindFinshTaskByDay(Day);}
+    public Vector<TodayTask> getFinishTaskByDay(String Day){return db.queryDb.findFinshTaskByDay(Day);}
     /**
      *  get the list of finish Task
      * @return Vector<Task>
      */
-    public Vector<TodayTask> getFinishTask(){return db.queryDb.FindFinshTask();}
+    public Vector<TodayTask> getFinishTask(){return db.queryDb.findFinshTask();}
 
 }

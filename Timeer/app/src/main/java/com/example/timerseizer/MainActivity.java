@@ -245,10 +245,13 @@ public class MainActivity extends ActionBarActivity implements ActionBar.OnNavig
             startActivity(intent);
             return true;
         }
-        if (id==R.id.menu_add){
+        if (id==R.id.menu_add) {
             initDialog();
 
-                   }
+        }
+        if (id==R.id.menu_cancel) {
+            System.exit(0);
+        }
         return super.onOptionsItemSelected(item);
     }
 

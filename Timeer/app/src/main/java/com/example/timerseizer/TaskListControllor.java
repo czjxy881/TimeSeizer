@@ -22,5 +22,18 @@ public class TaskListControllor {
         }
         return list[i.ordinal()];
     }
-
+    public static TaskListFragment getInstance(int i){
+        ListKind listKind=null;
+        switch (i){
+            case 0:listKind=ListKind.PeriodList;break;
+            case 1:listKind=ListKind.AllList;break;
+            case 2:listKind=ListKind.DoneList;break;
+        }
+        return getInstance(listKind);
+    }
+    public static void update(){
+        for(ListKind s:ListKind.values()) {
+            getInstance(s).showUpdate();
+        }
+    }
 }

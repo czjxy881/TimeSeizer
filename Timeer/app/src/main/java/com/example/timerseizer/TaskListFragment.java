@@ -25,15 +25,8 @@ public class TaskListFragment extends Fragment {
     TaskListAdapter adapter;
     TaskListControllor.ListKind ListKind;
     public TaskListFragment(TaskListControllor.ListKind listKind){
-        //TODO 根据listKind生成
         ListKind=listKind;
-
-        //InnerforUI.getInstance(getActivity()).clickAddTask("软件工程大作业",5,"2014-07-01","Time Seizer",0);
         showUpdate();
-
-
-
-
     }
     public void add(Task s){
         switch(ListKind) {
@@ -54,6 +47,7 @@ public class TaskListFragment extends Fragment {
         }
         if(adapter==null)return;
         adapter.notifyDataSetChanged();
+
     }
     public View.OnClickListener getEditClickListener(int i){
         if(ListKind== TaskListControllor.ListKind.DoneList)return null;

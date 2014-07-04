@@ -37,6 +37,12 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
      */
     ViewPager mViewPager;
 
+
+    public void save(){
+        TabListControllor.save();
+    }
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,9 +142,9 @@ public class TabActivity extends ActionBarActivity implements ActionBar.TabListe
         public Fragment getItem(int position) {
             Fragment f=null;
             switch (position){
-                case 0:f=TabListControllor.getInstance(TabListControllor.TabListKind.TAbperiodList);break;
-                case 1:f=TabListControllor.getInstance(TabListControllor.TabListKind.TaballList);break;
-                case 2:f=TabListControllor.getInstance(TabListControllor.TabListKind.TabdoneList);break;
+                case 0:f=TabListControllor.getInstance(TabListControllor.TabListKind.PeriodList);break;
+                case 1:f=TabListControllor.getInstance(TabListControllor.TabListKind.AllList);break;
+                case 2:f=TabListControllor.getInstance(TabListControllor.TabListKind.DoneList);break;
 
             }
             return f;

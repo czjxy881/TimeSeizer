@@ -13,9 +13,10 @@ public class InnerforUI {
     private TaskView taskView=null;
     private Today today=null;
 
-    private Vector<Task> taskVector;
-    private Vector<TodayTask> todayTaskVector;
-    private Vector<PeroidTask> peroidTaskVector;
+    private Vector<Task> TaskVector;
+    private Vector<TodayTask> TodayTaskVector;
+    private Vector<PeroidTask> PeroidTaskVector;
+    private Vector<TodayTask> DoneTaskVector;
     private static int UNDEFINE=-1;
     private static int NO_NEED=-2;
 
@@ -35,7 +36,7 @@ public class InnerforUI {
 	private InnerforUI(Context context){
         taskView=TaskView.getInstance(context);
         db=taskView.db;
-		todayList=new TodayList(taskView);
+		todayList=TodayList.getInstance(taskView);
 		today=initialToday(context);
         DAY=db.DAY;
 	}
@@ -92,27 +93,27 @@ public class InnerforUI {
      * @param location :item's  of peroidTask List
      */
     public void clickDeletePeroid(int location){
-        int ID=peroidTaskVector.get(location).getID();
+        int ID= PeroidTaskVector.get(location).getID();
         taskView.delPeroid(ID);
     }
 
     /**
-     * Delete Task from Today list,requiring Task's location in todayTaskVector
+     * Delete Task from Today list,requiring Task's location in TodayTaskVector
      * @param location
      */
     public void clickDeleteTodayTask(int location){
-        int RunnerID=todayTaskVector.get(location).getRunnerID();
-        int ID=todayTaskVector.get(location).getID();
+        int RunnerID= TodayTaskVector.get(location).getRunnerID();
+        int ID= TodayTaskVector.get(location).getID();
 
         taskView.delTask(RunnerID,ID);
     }
     /**
-     * Delete Task from Task list,requiring Task's location in taskVector
+     * Delete Task from Task list,requiring Task's location in TaskVector
      * @param location
      */
     public void clickDeleteTask(int location){
-        int RunnerID=taskVector.get(location).getRunnerID();
-        int ID=taskVector.get(location).getID();
+        int RunnerID= TaskVector.get(location).getRunnerID();
+        int ID= TaskVector.get(location).getID();
         taskView.delTask(RunnerID,ID);
     }
     /**
@@ -120,33 +121,56 @@ public class InnerforUI {
       */
 	public void clickAddPeroidNewTask(String Name,int ExpectNum,String ExpectDate,String NoteString,int Kind,int Priority){
             PeroidTask peroidTask=taskView.addPeroidTask(Name, ExpectNum, ExpectDate, NoteString, Kind, Priority);
-            peroidTaskVector.add(peroidTask);
+            PeroidTaskVector.add(peroidTask);
     }
     /**
-     *  Change normal Task to PeroidTask,requiring Task's location in taskVector and the cycle type
+     *  Change normal Task to PeroidTask,requiring Task's location in TaskVector and the cycle type
      *   location
      *   kind
      */
 	public boolean clickSetPeroidTask(int location,long Kind){
-            Task task=taskVector.get(location);
+            Task task= TaskVector.get(location);
 			return taskView.setPeroidTask(task.getRunnerID(),task.getExpectNum(), task.getExpectDate(),Kind,1,task.getNoteString());
 	}
 
     /**
-     * old Task add to Today
-     * @param location
+     * 从任务列表添加任务到今日任务
+     * @param location 任务列表的列
      */
-    public void clickAddToToday(int location){
-        Task task=taskVector.get(location);
+    public void addToTodayFromAllList(int location){
+        Task task= TaskVector.get(location);
         task.setExpectDate(DAY);
-        taskView.setTask(task);
-        todayList.setTodayList();
+        taskView.addTask(task);
+        //todayList.setTodayList();
+    }
+
+    /**
+     * 从已完成列表添加任务到今日任务
+     * @param location 任务列表的列
+     */
+    public void addToTodayFromDoneList(int location){
+        Task task=DoneTaskVector.get(location);
+        task.setExpectDate(DAY);
+        taskView.addTask(task);
+        //todayList.setTodayList();
     }
     /**
-     * Show Task ,and save in the taskVector at the same time.
+     * 从周期列表添加任务到今日任务
+     * @param location 任务列表的列
+     */
+    public void addToTodayFromPeriodList(int location){
+        Task task=PeroidTaskVector.get(location);
+        task.setExpectDate(DAY);
+        taskView.addTask(task);
+       // todayList.setTodayList();
+    }
+
+
+    /**
+     * Show Task ,and save in the TaskVector at the same time.
      * @return
      */
-	public Vector<Task> showTask(){return (taskVector=taskView.getAllList(KindEnum.ExpectDate_ASC));}
+	public Vector<Task> showTask(){return (TaskVector =taskView.getAllList(KindEnum.ExpectDate_ASC));}
 
     /**
      * Show Task depend on type
@@ -154,20 +178,19 @@ public class InnerforUI {
     Name_ASC(0),Name_DESC(1),ID_ASC(2),ID_DESC(3),ExpectNum_ASC(4),
     ExpectNum_DESC(5),ExpectDate_ASC(6),ExpectDate_DESC(7);
     **/
-    public Vector<Task> showTaskByOrder(KindEnum Kind){return (taskVector=taskView.getListByOrder(Kind));}
+    public Vector<Task> showTaskByOrder(KindEnum Kind){return (TaskVector =taskView.getListByOrder(Kind));}
 
     /**
-     * Show PeroidTask,and save in the peroidTaskVector at the same time.
+     * Show PeroidTask,and save in the PeroidTaskVector at the same time.
      * @return
      */
-	public Vector<PeroidTask> showPeroidTask(){return (peroidTaskVector=taskView.getPeriodTask());}
+	public Vector<PeroidTask> showPeroidTask(){return (PeroidTaskVector =taskView.getPeriodTask());}
 
     /**
-     *     Show TodayList ,and save in the todayTaskVector at the same time
+     *     Show TodayList ,and save in the TodayTaskVector at the same time
      */
 	public Vector<TodayTask> showTodayList(){
-		TodayList todayList=new TodayList(taskView);
-		return (todayTaskVector=todayList.getTodayList());
+		return (TodayTaskVector =TodayList.getInstance(taskView).getTodayList());
 	}
 
     /**
@@ -185,7 +208,7 @@ public class InnerforUI {
         return taskView.getFinishTaskByDay(Day);
     }
     public Vector<TodayTask> showFinish(){
-        return taskView.getFinishTask();
+        return DoneTaskVector=taskView.getFinishTask();
     }
 
     /**
