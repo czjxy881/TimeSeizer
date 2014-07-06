@@ -13,7 +13,7 @@ import java.util.Calendar;
 public class InitDb {
 
     //TODO
-    final boolean debug = true;
+    final boolean debug = false;
     public UpdateDb updateDb=null;
     public QueryDb queryDb=null;
     private static InitDb initDb=null;
