@@ -6,7 +6,7 @@ buildscript {
         maven { url 'http://clinker.47deg.com/nexus/content/groups/public' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.9.+'
+        classpath 'com.android.tools.build:gradle:1.0.0'
 
 }
 

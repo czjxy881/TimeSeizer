@@ -4,84 +4,75 @@
     android:layout_height="fill_parent"
     android:orientation="vertical"
     android:background="@color/Grey"
-    tools:context="com.example.timerseizer.MainActivity$PlaceholderFragment"
-    >
-
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:text="今日总结"
-            android:textSize="45dp"
-            android:gravity="center"
-
-            android:layout_weight="0.372"
-            android:id="@+id/tvzjnumber"
-            android:textStyle="bold" />
-
-<LinearLayout
-
-    android:layout_width="fill_parent"
-    android:layout_height="0dp"
-    android:layout_weight="0.618"
-    >
+    tools:context="com.example.timerseizer.MainActivity$PlaceholderFragment">
 
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:orientation="vertical"
-        android:paddingLeft="5dp"
-        android:paddingRight="2dp"
-        android:layout_weight="1">
 
-        <TextView
-            android:background="@drawable/card_top"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:text="今日完成"
-            android:textColor="@color/DarkBlue"
-            android:textSize="33dp"
-            android:gravity="center"
-            android:layout_weight="1" />
-        <TextView
-            android:background="@drawable/card_bottom"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:id="@+id/tvfqnumber"
-            android:textColor="@color/DarkBlue"
-            android:text="27"
-            android:textSize="70dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"
+        android:layout_marginTop="10dp">
 
-    </LinearLayout>
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="0dp"
-        android:layout_height="fill_parent"
-        android:paddingLeft="3dp"
-        android:paddingRight="5dp"
-        android:layout_weight="1">
-        <TextView
-            android:background="@drawable/card_top"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:text="中断次数"
-            android:textColor="@android:color/holo_red_dark"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:paddingLeft="5dp"
+            android:paddingRight="2dp"
+            android:layout_weight="1">
 
-            android:textSize="33dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
-        <!--android:textColor="#ffff211a"-->
-        <TextView
-            android:background="@drawable/card_bottom"
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:id="@+id/tvddnumber"
-            android:textColor="@android:color/holo_red_dark"
-            android:text="5"
-            android:textSize="70dp"
-            android:gravity="center"
-            android:layout_weight="1"/>
+            <TextView
+                android:background="@drawable/card_top"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:text="今日完成"
+                android:textColor="@color/DarkBlue"
+                android:textSize="33dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+            <TextView
+                android:background="@drawable/card_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:id="@+id/tvfqnumber"
+                android:textColor="@color/DarkBlue"
+                android:text="27"
+                android:textSize="70dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:paddingLeft="3dp"
+            android:paddingRight="5dp"
+            android:layout_weight="1">
+
+            <TextView
+                android:background="@drawable/card_top"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:text="中断次数"
+                android:textColor="@android:color/holo_red_dark"
+
+                android:textSize="33dp"
+                android:gravity="center"
+                android:layout_weight="1" />
+            <!--android:textColor="#ffff211a"-->
+            <TextView
+                android:background="@drawable/card_bottom"
+                android:layout_width="fill_parent"
+                android:layout_height="0dp"
+                android:id="@+id/tvddnumber"
+                android:textColor="@android:color/holo_red_dark"
+                android:text="5"
+                android:textSize="70dp"
+                android:gravity="center"
+                android:layout_weight="1" />
         </LinearLayout>
 
     </LinearLayout>
@@ -90,59 +81,19 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
-        android:layout_weight="0.418"
-        android:layout_marginTop="2dp">
-        <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:textSize="30dp"
-            android:text="自我评价"
-            android:gravity="center"
-            android:layout_weight="1"/>
-        <RatingBar
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:numStars="5"
-            android:stepSize="0.5"
-            android:rating="0"
-            android:id="@+id/rbmyscore"
-            android:layout_weight="1"
-            android:layout_gravity="center"
-            android:mirrorForRtl="false"
-            android:layout_marginBottom="5dp" />
+        android:layout_weight="0.8"
+        android:layout_marginTop="20dp"
+        android:weightSum="1"
+        android:layout_marginBottom="20dp">
 
+
+        <WebView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/webView"
+            android:layout_weight="1" />
 
     </LinearLayout>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight="0.253"
-        android:layout_gravity="center">
-        <Button
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/Summary"
-            android:textSize="16dp"
-            android:text="说点什么"
-            android:background="@drawable/buttonselector"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp" />
-        <Button
-
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:id="@+id/btnpingjia"
-            android:textSize="16dp"
-            android:text="完成评价"
-            android:background="@drawable/buttonselector"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginLeft="20dp" />
-    </LinearLayout>
 </LinearLayout>
 

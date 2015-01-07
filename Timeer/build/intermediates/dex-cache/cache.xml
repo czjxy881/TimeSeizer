@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/jxy/TimeSeizer/Timeer/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/19.0.1/classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="f71a6822470c9eb659d4f4a6cb57b780b35f058b">
+        <dex dex="/Users/jxy/TimeSeizer/Timeer/app/build/intermediates/pre-dexed/debug/classes-891e4a185163126b254a90c5f3b4d4046fd9eb43.jar" />
+    </item>
+    <item
+        jar="/Applications/Android Studio.app/sdk/extras/android/m2repository/com/android/support/support-v4/19.0.1/support-v4-19.0.1.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="587da9a481ffd341d2fa091704489b89845ddacd">
+        <dex dex="/Users/jxy/TimeSeizer/Timeer/app/build/intermediates/pre-dexed/debug/support-v4-19.0.1-3bf117e59e2e0f41bbf9219f2be90cdcf1dd583d.jar" />
+    </item>
+
+</items>

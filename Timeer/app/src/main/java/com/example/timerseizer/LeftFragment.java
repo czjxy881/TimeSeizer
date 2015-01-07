@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -56,32 +58,28 @@ public class LeftFragment extends Fragment {
            // etsummary=(EditText)getActivity().findViewById(R.id.etsummary);
             tvfqnumber=(TextView)getActivity().findViewById(R.id.tvfqnumber);
             tvddnumber=(TextView)getActivity().findViewById(R.id.tvddnumber);
-            rbmysocre = (RatingBar)getActivity().findViewById(R.id.rbmyscore);
-            btnpingjia = (Button)getActivity().findViewById(R.id.btnpingjia);
-            summary = (Button)getActivity().findViewById(R.id.Summary);
-
-            //RatingBar的设置
-            rbmysocre.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            WebView webView=(WebView)getActivity().findViewById(R.id.webView);
+         //   rbmysocre = (RatingBar)getActivity().findViewById(R.id.rbmyscore);
+          //  btnpingjia = (Button)getActivity().findViewById(R.id.btnpingjia);
+         //   summary = (Button)getActivity().findViewById(R.id.Summary);
+            webView.getSettings().setJavaScriptEnabled(true);
+            webView.loadUrl("file:///android_asset/web/index.htm");
+            webView.setScrollBarStyle(View.SCROLLBARS_OUTSIDE_OVERLAY);
+            webView.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onRatingChanged(RatingBar ratingBar, float v, boolean b) {
-                    Toast.makeText(getActivity(), "你获得星星是"+v, Toast.LENGTH_SHORT).show();
+                public boolean onTouch(View view, MotionEvent motionEvent) {
+                    switch (motionEvent.getAction()){
+                        case MotionEvent.ACTION_UP:
+                            view.getParent().requestDisallowInterceptTouchEvent(false);
+                            break;
+                        case MotionEvent.ACTION_DOWN:
+                            view.getParent().requestDisallowInterceptTouchEvent(true);
+                            break;
+                    }
+                    return false;
                 }
             });
 
-            btnpingjia.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    //TODO::完成完成评价的按钮的设置
-
-                }
-            });
-
-            summary.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    SummaryDialog();
-                }
-            });
         }
     }
 
