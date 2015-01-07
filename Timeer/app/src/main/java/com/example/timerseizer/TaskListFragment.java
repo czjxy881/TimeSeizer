@@ -1,6 +1,5 @@
 package com.example.timerseizer;
 
-import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,7 +18,6 @@ import java.util.Vector;
 /**
  * Created by jxy on 14-6-30.
  */
-@SuppressLint("ValidFragment")
 public class TaskListFragment extends Fragment {
 
     public Vector<Task> presidents = new Vector<Task>();

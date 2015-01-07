@@ -157,5 +157,18 @@
         <View android:layout_width="fill_parent"
             android:layout_height="1dip"
             android:background="#FF909090"/>
+        <TextView android:layout_width="wrap_content"
+            android:id="@+id/suggest_worktime"
+            android:layout_height="40dp"
+            android:textSize="20sp"
+            android:text="建议番茄时间为:25min"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/Red" />
+        <TextView android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:textSize="15sp"
+            android:text="ps:系统自动根据近一周完成情况推算出建议时间"
+            android:layout_marginTop="5dp"
+/>
     </TableLayout>
 </ScrollView>

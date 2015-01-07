@@ -12,6 +12,10 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import com.example.timerseizer.sql.InnerforUI;
+import com.example.timerseizer.sql.TodayList;
+import com.example.timerseizer.sql.TodayTask;
+
 
 /**
  * TODO 代码不好看 要用Preference重写
@@ -19,7 +23,7 @@ import android.widget.ToggleButton;
  */
 public class Settings extends Activity {
     SeekBar TomatoSeekBar,RestSeekBar,LongRestSeekBar;
-    TextView TomatoText,RestText,LongRestText;
+    TextView TomatoText,RestText,LongRestText,SuggestText;
     ToggleButton VibrateButton,TickButton,FinishButton;
 
     SharedPreferences preference;
@@ -40,7 +44,8 @@ public class Settings extends Activity {
         TomatoText=(TextView)findViewById(R.id.SettingTomatoText);
         RestText=(TextView)findViewById(R.id.SettingRestText);
         LongRestText=(TextView)findViewById(R.id.SettingLongRestText);
-
+        SuggestText=(TextView)findViewById(R.id.suggest_worktime);
+        SuggestText.setText("建议番茄时间为: "+suggest()+"mins");
         TomatoSeekBar.setProgress(preference.getInt("TomatoTime",25)-1);
         TomatoText.setText(preference.getInt("TomatoTime", 25) + "min");
         TomatoSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -142,5 +147,12 @@ public class Settings extends Activity {
         }
     }
 
-
+    public int suggest(){
+        int inter=InnerforUI.getInstance().getInterruptTimesInWeek();
+        int finish=InnerforUI.getInstance().getTomatoNumber();
+        int time=(int)(1.0*finish/inter*25);
+        time=Math.min(time,60);
+        time=Math.max(time,15);
+        return (int)(1.0*finish/inter*30);
+    }
 }

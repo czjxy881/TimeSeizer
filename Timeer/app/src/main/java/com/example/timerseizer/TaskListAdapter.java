@@ -2,6 +2,9 @@ package com.example.timerseizer;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.shapes.Shape;
 import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,11 +71,18 @@ public class TaskListAdapter extends BaseAdapter {
         ImageButton editButton = (ImageButton) view.findViewById(R.id.EditButton);
         ImageButton delButton = (ImageButton) view.findViewById(R.id.DelButton);
         LinearLayout layout = (LinearLayout) view.findViewById(R.id.layout);
-
+        /*
+        LinearLayout backlayout=(LinearLayout)view.findViewById(R.id.tasklayout);
+        int red=(int)Math.random()*(255-230)+230;
+        int blue=(int)Math.random()*(255-230)+230;
+        int yellow=(int)(int)Math.random()*(255-230)+230;
+        int color=red*256*256+blue*256+yellow;
+        layout.setBackgroundColor(0);
+        */
         Task now = ListFragment.getList().get(i);
         //TODO 设置任务详情
         titleText.setText("任务名称:" + now.getName() + "    番茄数:" + now.getExpectNum());
-        contentText.setText("备注:" + now.getNoteString() + " Run:" + now.getRunnerID() + " ID:" + now.getID());
+        contentText.setText("备注:" + now.getNoteString() + " Run:" + now.getRunnerID() + " ID:" + now.getID());//+" color:"+color);
         dataText.setText("目标日期:"+now.getExpectDate());
         if (ListFragment.getEditClickListener(i) == null) editButton.setVisibility(View.INVISIBLE);
         if (ListFragment.getDelClickListener(i) == null){

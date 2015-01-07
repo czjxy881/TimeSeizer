@@ -15,7 +15,9 @@
         android:background="@drawable/listcard"
         android:focusable="false"
         android:paddingBottom="10dp"
-        android:paddingTop="10dp">
+        android:paddingTop="10dp"
+        android:id="@+id/tasklayout"
+        >
         <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="0dp"

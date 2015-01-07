@@ -224,4 +224,15 @@ public class InnerforUI {
 
 	public Today getToday(){return today;}
 
+    public int getTomatoNumber(){
+        //TODO：补充数据库查询，查询已完成的番茄数
+        return 23;
+    }
+    public int getInterruptTimesInWeek()
+    {
+        //TODO:补充数据库查询,查询中断次数
+        return 20;
+    }
+
+
 }
