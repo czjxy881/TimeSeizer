@@ -9,11 +9,31 @@ public class Today {//Set in InnerForUI
 	private String StartTime;
 	private String Summary;
 
+    public int getInterrupt() {
+        return Interrupt;
+    }
+
+    public void addInterrupt() {
+        Interrupt++;
+    }
+
+    private int Interrupt;
+
+    public int getFinish() {
+        return Finish;
+    }
+
+    public void addFinish() {
+        Finish++;
+    }
+
+    private int Finish;
     InitDb db=null;
 
 	public Today(InitDb db){
         this.db=db;
         DailyClass dailyClass =db.queryDb.findDailyListNew();
+        Interrupt=Finish=0;
         if(dailyClass !=null) {
             setWorkTime(dailyClass.getWorkTime());
             setRestTime(dailyClass.getRestTime());

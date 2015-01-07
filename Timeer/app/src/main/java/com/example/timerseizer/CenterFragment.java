@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 
 import com.example.timerseizer.sql.InnerforUI;
+import com.example.timerseizer.sql.Today;
 import com.example.timerseizer.sql.TodayTask;
 
 import java.text.SimpleDateFormat;
@@ -220,6 +221,7 @@ public class CenterFragment extends Fragment {
 
     private void onInterrupt() {
         Interrupt++;
+        InnerforUI.getInstance().getToday().addInterrupt();
         if (inPractise == false) {
             task.innerInturrpt();
         }
@@ -284,6 +286,7 @@ public class CenterFragment extends Fragment {
         InterruptButton.setVisibility(View.GONE);
         StopButton.setVisibility(View.GONE);
         BackButton.setVisibility(View.VISIBLE);
+        InnerforUI.getInstance().getToday().addFinish();
     }
 
     private void toRest() {
